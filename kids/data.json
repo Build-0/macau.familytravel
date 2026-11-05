@@ -1,0 +1,372 @@
+{
+  "updated": "2026-11-05",
+  "updated_label": "2026年11月5日（四）",
+  "window_label": "11月5日 – 11月22日",
+  "note": "",
+  "warning": "",
+  "renren": [
+    {
+      "id": "market",
+      "title": "家鄉市集嘉年華",
+      "category": "市集",
+      "reliability": "official",
+      "reliability_note": "旅遊局官方活動頁",
+      "image": "img/market.jpg",
+      "image_caption": "",
+      "dates": "11月5日（四）– 8日（日）",
+      "times": "11:00 – 21:00",
+      "weekend": true,
+      "venue": "澳門漁人碼頭勵駿大道",
+      "fee": "免費入場",
+      "age": "設3至12歲兒童市集（旅遊局官方頁）",
+      "quota": "官方未列明",
+      "booking": "官方頁只寫「免費入場」，未列報名安排",
+      "summary": "家鄉特產市集加傳統文化展演，今年續設專為3至12歲小朋友而設的兒童市集。",
+      "dede": true,
+      "links": [
+        {
+          "label": "旅遊局活動頁",
+          "url": "https://www.macaotourism.gov.mo/zh-hant/events/whatson/14140"
+        }
+      ],
+      "dede_level": "enter",
+      "dede_note": "可隨行（按場地判斷）：戶外開放場地，可推BB車；晚上人多，建議11:00開場時段去",
+      "grade": "A",
+      "grade_basis": "官方寫明設3至12歲兒童市集，小朋友可以親身參與買賣，加上傳統文化展演",
+      "tags": [
+        "高互動",
+        "接觸其他小朋友"
+      ],
+      "renren_note": "推薦參加：兒童市集對象包括4歲",
+      "sold_out": false,
+      "status": "new",
+      "days": [
+        "2026-11-05",
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08"
+      ],
+      "venue_short": "漁人碼頭"
+    },
+    {
+      "id": "gp",
+      "title": "大賽車親子嘉年華",
+      "category": "嘉年華",
+      "reliability": "official",
+      "reliability_note": "大賽車官網 → 推廣活動 → 2026",
+      "image": "img/gp.jpg",
+      "image_caption": "示意圖（萌友製作，非官方海報）",
+      "dates": "11月7日（六）– 8日（日）",
+      "times": "7日 15:00 – 21:00｜8日 10:00 – 21:00",
+      "weekend": true,
+      "venue": "塔石廣場",
+      "fee": "官方未公布",
+      "age": "官方未公布",
+      "quota": "官方未公布",
+      "booking": "官網未列報名安排。萌友標示「需預先報名」，但官方頁冇呢項資料",
+      "summary": "模擬東望洋跑道的迷你賽車場，加上多項互動遊戲，讓小朋友體驗大賽車的不同工作崗位。",
+      "dede": true,
+      "links": [
+        {
+          "label": "大賽車官網活動頁",
+          "url": "https://www.macau.grandprix.gov.mo/zh-hant/promotion/73rd_grand_prix_family_carnival"
+        }
+      ],
+      "dede_level": "enter",
+      "dede_note": "可隨行（按場地判斷）：廣場開放場地，可推BB車；現場可能嘈吵擁擠，建議8日上午10點開場時去",
+      "grade": "A",
+      "grade_basis": "官方寫明有模擬東望洋跑道的迷你賽車場及多項互動遊戲，可以體驗賽車工作崗位",
+      "tags": [
+        "車車",
+        "高互動"
+      ],
+      "renren_note": "推薦參加：車車主題，又可以落場玩，但官方未列遊戲年齡",
+      "sold_out": false,
+      "status": "new",
+      "days": [
+        "2026-11-07",
+        "2026-11-08"
+      ],
+      "venue_short": "塔石廣場"
+    },
+    {
+      "id": "redblood",
+      "title": "《紅血球大冒險》戶外小丑劇",
+      "category": "演出",
+      "reliability": "social",
+      "reliability_note": "主辦方 Facebook 帖文",
+      "image": "img/redblood.jpg",
+      "image_caption": "",
+      "dates": "11月8日（日）",
+      "times": "12:00｜15:00｜16:30（每場約1小時）",
+      "weekend": true,
+      "venue": "氹仔花城公園側（近成都街）",
+      "fee": "免費觀賞",
+      "age": "親子家庭及所有保有童心的朋友",
+      "quota": "官方未列明",
+      "booking": "戶外演出，主辦方未列報名安排",
+      "summary": "紅血球、白血球和血小板小精靈組隊，一路對抗病毒魔王。主題是友情與合作，以搞笑為主，不說教。",
+      "dede": true,
+      "links": [
+        {
+          "label": "主辦方帖文",
+          "url": "https://www.facebook.com/redpillsclowncare/posts/pfbid0E6YV5VjPNRUfLguC84rp1Y1f4Mb33rLzH3RuPEmLxvMnjz1kR28J5NdnMN6ScwWMl"
+        },
+        {
+          "label": "DART 詳情",
+          "url": "https://www.dartmacau.com/blank-1/zi-jia-ju-chang-xiao-hong-dian-xiao-chou-you-ban-hong-xue-qiu-da-mao-xian-2026-11-08-12-00"
+        }
+      ],
+      "dede_level": "enter",
+      "dede_note": "可隨行（主辦方寫明親子家庭）：戶外公園，留意日曬",
+      "grade": "A",
+      "grade_basis": "主辦方寫明係戶外互動兒童小丑劇，小丑會同觀眾互動",
+      "tags": [
+        "高互動",
+        "演出"
+      ],
+      "renren_note": "推薦參加：主辦方寫明適合親子家庭，搞笑為主，4歲易明",
+      "sold_out": false,
+      "status": "new",
+      "days": [
+        "2026-11-08"
+      ],
+      "venue_short": "氹仔花城公園"
+    },
+    {
+      "id": "craft",
+      "title": "塔石藝墟親子手作坊（只可現場候補）",
+      "category": "工作坊",
+      "grade": "B",
+      "grade_basis": "文化局親子班：手繪雪糕紋花盆與多肉植藝（3至12歲）、陶藝彩繪薑餅人碟（4至12歲），小朋友親手做。內容屬A級，但抽籤已截止，只可現場候補，所以列B",
+      "status": "new",
+      "sold_out": false,
+      "tags": [
+        "高互動",
+        "親手做"
+      ],
+      "reliability": "aggregator",
+      "reliability_note": "萌友轉載文化局原文；一戶通官方頁需登入，未能讀取",
+      "image": "",
+      "image_caption": "",
+      "dates": "11月21日（六）",
+      "times": "花盆 13:30 – 14:30｜薑餅人碟 16:00 – 18:30",
+      "weekend": false,
+      "venue": "塔石廣場（塔石藝墟，秋季市集11月19–22日、26–29日）",
+      "fee": "MOP 50（現場候補要即場繳費）",
+      "age": "花盆3至12歲；薑餅人碟4至12歲（萌友轉載文化局）",
+      "quota": "每班12人；親子班須由一名18歲或以上人士陪同",
+      "booking": "一戶通抽籤報名已於10月30日截止。每場開始前30分鐘派現場候補輪候籌，可提早到場排隊",
+      "summary": "文化局喺塔石藝墟辦的親子手作坊，大人陪小朋友一齊做。想試就提早半個鐘去排候補。",
+      "renren_note": "推薦參加：兩班都涵蓋4歲，要親手做又有其他小朋友",
+      "dede_level": "enter",
+      "dede_note": "可隨行（按場地判斷）：塔石廣場戶外開放；但親子班只限一名大人陪同上堂，要另一位大人照顧德德",
+      "dede": true,
+      "links": [
+        {
+          "label": "花盆班（萌友）",
+          "url": "https://moefriends.com/product/onestop-2817940292/"
+        },
+        {
+          "label": "薑餅人碟班（萌友）",
+          "url": "https://moefriends.com/product/onestop-2818299489/"
+        },
+        {
+          "label": "塔石藝墟秋季公告",
+          "url": "https://m.icm.gov.mo/en/News/detail/25022"
+        }
+      ],
+      "days": [
+        "2026-11-21"
+      ],
+      "venue_short": "塔石廣場"
+    },
+    {
+      "id": "xinghai",
+      "title": "聽見星海：冼星海的音樂奇幻之旅",
+      "category": "演出",
+      "reliability": "official",
+      "reliability_note": "澳門國際音樂節官網",
+      "image": "img/xinghai.jpg",
+      "image_caption": "",
+      "dates": "14日（六）白鴿巢公園｜15日（日）綠楊花園休憩區",
+      "times": "15:00 – 15:45｜17:00 – 17:45",
+      "weekend": false,
+      "venue": "白鴿巢公園／綠楊花園休憩區",
+      "fee": "官方未公布",
+      "age": "官方未公布",
+      "quota": "官方未公布",
+      "booking": "官網未列報名安排",
+      "summary": "趣味戲劇加現場音樂，講出生於澳門的音樂家冼星海的故事。",
+      "dede": true,
+      "links": [
+        {
+          "label": "音樂節官網",
+          "url": "https://www.icm.gov.mo/fimm/38/cn/event/4835"
+        }
+      ],
+      "dede_level": "enter",
+      "dede_note": "可隨行（按場地判斷）：戶外公園演出，官方未列年齡限制",
+      "grade": "B",
+      "grade_basis": "官方寫明以趣味戲劇加現場音樂講故事；題材係歷史人物，對4歲吸引力一般",
+      "tags": [
+        "演出"
+      ],
+      "renren_note": "可入場：戶外演出，但故事內容偏深",
+      "sold_out": false,
+      "status": "new",
+      "days": [
+        "2026-11-14",
+        "2026-11-15"
+      ],
+      "venue_short": "白鴿巢／綠楊花園"
+    },
+    {
+      "id": "justice",
+      "title": "說故事劇場《正義使者：晃晃星人之卷》",
+      "category": "演出",
+      "reliability": "aggregator",
+      "reliability_note": "只見於 DART；劇團 Facebook 需登入，未能讀取",
+      "image": "img/justice.jpg",
+      "image_caption": "",
+      "dates": "14日 青洲坊空地｜21日 蓮花前地｜22日 康公廟前地（另有12月12、13日）",
+      "times": "16:00 – 16:30｜17:00 – 17:30",
+      "weekend": false,
+      "venue": "多個社區（每日地點不同）",
+      "fee": "未能核實",
+      "age": "未能核實",
+      "quota": "未能核實",
+      "booking": "未能核實",
+      "summary": "零道具、純肢體的星際故事：怪異的晃晃星人被當成威脅，一個少年鼓起勇氣，讓大家重新思考甚麼是正義。題材偏向學童，但每場只有30分鐘。",
+      "dede": false,
+      "links": [
+        {
+          "label": "DART 詳情",
+          "url": "https://www.dartmacau.com/blank-1/guai-lao-shu-ju-tuan-you-li-sheng-huo-yue-zhang-shuo-gu-shi-ju-chang-zheng-yi-shi-zhe-huang-huang-xing-ren-zhi-juan-2026"
+        },
+        {
+          "label": "劇團 Facebook",
+          "url": "https://www.facebook.com/thefunnyoldtreetheatre"
+        }
+      ],
+      "dede_level": "",
+      "dede_note": "",
+      "grade": "B",
+      "grade_basis": "純肢體說故事劇場，每場30分鐘；題材講「正義」，偏向學童",
+      "tags": [
+        "演出"
+      ],
+      "renren_note": "可入場（未能核實年齡）：題材對4歲偏深，適合順道經過時睇",
+      "sold_out": false,
+      "status": "new",
+      "days": [
+        "2026-11-14",
+        "2026-11-21",
+        "2026-11-22"
+      ],
+      "venue_short": "多個社區"
+    }
+  ],
+  "dede": [
+    {
+      "id": "baby",
+      "title": "寶寶的第一場音樂會",
+      "category": "演出",
+      "reliability": "official",
+      "reliability_note": "享澳門售票網",
+      "image": "img/baby.jpg",
+      "image_caption": "",
+      "dates": "11月21日（六）– 22日（日）",
+      "times": "14:45｜17:00（每場45分鐘）",
+      "weekend": false,
+      "venue": "澳門文化中心黑盒I",
+      "fee": "2人套票 MOP200（1大1小）｜3人套票 MOP300",
+      "age": "0至3歲（售票網觀眾須知）",
+      "quota": "須含1位成年人及1位幼兒",
+      "booking": "四場全部售罄，留意加場或退票",
+      "summary": "寶寶坐在地墊上，近距離聽澳門樂團演奏。用3人套票可以兩兄弟一齊入場。",
+      "dede": true,
+      "links": [
+        {
+          "label": "享澳門售票網",
+          "url": "https://ticketing.enjoymacao.mo/programme/P-660194"
+        }
+      ],
+      "dede_level": "play",
+      "dede_note": "德德推介專區（售票網：0至3歲）：演出當日德德約12週大，以聆聽和感受音樂為主",
+      "grade": "A",
+      "grade_basis": "售票網寫明專為0至3歲而設，寶寶坐或躺喺地墊上近距離聽現場演奏",
+      "tags": [
+        "音樂"
+      ],
+      "renren_note": "3人套票的第3位不限年齡，仁仁可以陪同入場",
+      "sold_out": true,
+      "status": "new",
+      "days": [
+        "2026-11-21",
+        "2026-11-22"
+      ],
+      "venue_short": "文化中心黑盒I"
+    }
+  ],
+  "urgent": [
+    {
+      "title": "塔石藝墟親子手作坊",
+      "text": "抽籤報名已截止；11月21日每場開始前30分鐘到塔石廣場排現場候補。",
+      "url": "https://moefriends.com/product/onestop-2818299489/"
+    },
+    {
+      "title": "寶寶的第一場音樂會",
+      "text": "已售罄，想去要留意售票網有冇退票或加場。",
+      "url": "https://ticketing.enjoymacao.mo/programme/P-660194"
+    }
+  ],
+  "unverified": [
+    {
+      "title": "《正義使者：晃晃星人之卷》",
+      "layer": "已查 DART 詳情頁",
+      "reason": "費用、年齡留空；劇團 Facebook 需登入",
+      "url": "https://www.facebook.com/thefunnyoldtreetheatre"
+    },
+    {
+      "title": "大賽車親子嘉年華",
+      "layer": "已查大賽車官網推廣活動頁",
+      "reason": "官方未公布費用、年齡及報名安排",
+      "url": "https://www.macau.grandprix.gov.mo/zh-hant/promotion/73rd_grand_prix_family_carnival"
+    }
+  ],
+  "sources": [
+    {
+      "label": "旅遊局：家鄉市集嘉年華",
+      "url": "https://www.macaotourism.gov.mo/zh-hant/events/whatson/14140"
+    },
+    {
+      "label": "大賽車官網：親子嘉年華",
+      "url": "https://www.macau.grandprix.gov.mo/zh-hant/promotion/73rd_grand_prix_family_carnival"
+    },
+    {
+      "label": "澳門國際音樂節：聽見星海",
+      "url": "https://www.icm.gov.mo/fimm/38/cn/event/4835"
+    },
+    {
+      "label": "享澳門售票網：澳門樂團樂季",
+      "url": "https://ticketing.enjoymacao.mo/programme/P-660194"
+    },
+    {
+      "label": "吸點 DART 即將舉行演出",
+      "url": "https://www.dartmacau.com/upcomingshowmacau"
+    },
+    {
+      "label": "萌友 親子活動",
+      "url": "https://moefriends.com/audience/family/"
+    },
+    {
+      "label": "文化局：塔石藝墟秋季市集",
+      "url": "https://m.icm.gov.mo/en/News/detail/25022"
+    }
+  ],
+  "excluded": [],
+  "register": [],
+  "window_start": "2026-11-05",
+  "window_end": "2026-11-22"
+}
