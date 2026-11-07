@@ -1,292 +1,2868 @@
-<!doctype html>
-<html lang="zh-Hant">
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>仁仁德德去邊度</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
-<style>
-/* Layout: phone-first feed. Two single-choice rows on top (who, then when), then poster-led cards; details fold away. Palette: Macau azulejo blue + egg-tart gold. */
-:root{
-  --bg:#eef2f8; --surface:#ffffff; --ink:#152038; --muted:#5d6780; --line:#dbe2ee;
-  --tile:#1f4f9c; --tile-soft:#e3ebf8; --gold:#f0a92a; --gold-soft:#fdf0d6;
-  --go:#1c7a4e; --go-soft:#dff2e8; --maybe:#1f4f9c; --maybe-soft:#e3ebf8; --warn:#b2452f; --warn-soft:#fbe6df;
-  --baby:#b5578a; --baby-soft:#f8e4ef; --shade:rgba(10,18,36,.55);
-  --font:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
-  --num:"Baloo 2","Noto Sans TC",system-ui,sans-serif;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0d1220; --surface:#161d30; --ink:#e9eef8; --muted:#9aa5bd; --line:#28324a;
-  --tile:#8db1f0; --tile-soft:#1c2843; --gold:#f4bd52; --gold-soft:#3a2d13;
-  --go:#6fd3a0; --go-soft:#14321f; --maybe:#8db1f0; --maybe-soft:#1c2843; --warn:#f29a85; --warn-soft:#3a1c17;
-  --baby:#ee9ac6; --baby-soft:#3a1a2c; --shade:rgba(0,0,0,.6); color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0d1220; --surface:#161d30; --ink:#e9eef8; --muted:#9aa5bd; --line:#28324a;
-  --tile:#8db1f0; --tile-soft:#1c2843; --gold:#f4bd52; --gold-soft:#3a2d13;
-  --go:#6fd3a0; --go-soft:#14321f; --maybe:#8db1f0; --maybe-soft:#1c2843; --warn:#f29a85; --warn-soft:#3a1c17;
-  --baby:#ee9ac6; --baby-soft:#3a1a2c; --shade:rgba(0,0,0,.6); color-scheme:dark}
-*{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.55;
-  padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px));padding-block:16px 48px}
-.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
-a{color:inherit}
-button{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>澳門周邊親子遊</title>
 
-.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
-h1{font-size:26px;font-weight:900;margin:0;line-height:1.2;letter-spacing:.02em}
-.upd{font-size:12px;color:var(--muted);text-align:right;white-space:nowrap}
-.tiles{height:8px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--tile) 0 8px,transparent 8px 12px,var(--gold) 12px 20px,transparent 20px 24px)}
-.warn{background:var(--warn-soft);color:var(--ink);border-radius:12px;padding:10px 14px;font-size:14px;font-weight:500}
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="澳門出發的周邊親子旅遊指南 - 珠海、中山、廣州、佛山、清遠、惠州、江門、陽江">
+    <meta name="theme-color" content="#D4A500">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="澳門周邊遊">
 
-/* row 1: who */
-.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:4px}
-.seg button{border:0;background:none;border-radius:12px;padding:9px 4px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;color:var(--muted)}
-.seg button i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:900;color:#fff}
-#w-ren i{background:var(--go)} #w-de i{background:var(--baby)}
-.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
 
-/* row 2: when */
-.strip{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.strip::-webkit-scrollbar{display:none}
-.day{flex:0 0 52px;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:6px 0 7px;cursor:pointer;
-  display:flex;flex-direction:column;align-items:center;gap:1px}
-.day .wd{font-size:11px;color:var(--muted)}
-.day .dn{font-family:var(--num);font-weight:800;font-size:20px;line-height:1.15}
-.day .cnt{font-size:11px;font-weight:700;color:var(--maybe)}
-.day .cnt.a{color:#a86a00}
-.day.we .wd,.day.we .dn{color:var(--warn)}
-.day.quick{flex-basis:66px;justify-content:center}
-.day.quick .dn{font-family:var(--font);font-size:15px;font-weight:900;line-height:1.3}
-.day.gap{flex:0 0 1px;padding:0;border:0;background:var(--line);cursor:default;margin:6px 2px}
-.day[aria-pressed="true"]{background:var(--tile);border-color:var(--tile)}
-.day[aria-pressed="true"] .wd,.day[aria-pressed="true"] .dn,.day[aria-pressed="true"] .cnt{color:var(--bg)}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* alerts */
-.alerts{display:flex;flex-direction:column;gap:8px}
-.alert{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:10px 12px;text-decoration:none}
-.alert .ic{flex:0 0 38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:19px;background:var(--warn-soft)}
-.alert.reg .ic{background:var(--gold-soft)}
-.alert b{display:block;font-size:14px;line-height:1.35}
-.alert span{display:block;font-size:13px;color:var(--muted);line-height:1.4}
-.alert .go{margin-left:auto;font-size:18px;color:var(--tile);font-weight:700}
+        /* 色卡 - 陽光橙黃漸變主題 */
+        :root {
+            --primary: #FFB347;           /* 明亮橙黃 - 主色 */
+            --primary-dark: #FF9500;      /* 鮮橙色 - 強調 */
+            --primary-light: #FFD699;     /* 淡橙黃 */
+            --primary-gradient: linear-gradient(135deg, #FFD699 0%, #FFB347 50%, #FF9500 100%);
+            --header-bg: #1A365D;         /* 深海藍 - 標題背景 */
+            --accent: #FF6B35;            /* 活力橙 - 強調按鈕 */
+            --text-dark: #1A365D;         /* 深色文字 */
+            --text-light: #6B7280;        /* 淺色文字 */
+            --bg-cream: #FFFCF5;          /* 溫暖奶油背景 */
+            --bg-white: #FFFFFF;
+            --card-shadow: rgba(255, 179, 71, 0.25);
+            --dad-color: #0EA5E9;         /* 天藍色 */
+            --mom-color: #EC4899;         /* 粉紅色 */
+            --kid-color: #FF9500;         /* 鮮橙色 */
+            --parents-color: #8B5CF6;     /* 紫羅蘭 */
+            --danger: #EF4444;
+            --success: #10B981;
+            /* 舊變量保持兼容 */
+            --charcoal-fabric: #1A365D;
+            --burnt-orange: #FF6B35;
+            --mustard-yellow: #FFB347;
+        }
 
-section{display:flex;flex-direction:column;gap:14px}
-h2{font-size:18px;font-weight:900;margin:0 0 -6px;display:flex;align-items:center;gap:8px}
-h2 i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:900;color:#fff}
-#sec-ren h2 i{background:var(--go)} #sec-de h2 i{background:var(--baby)}
-h2 small{font-size:12px;font-weight:500;color:var(--muted)}
-.feed{display:flex;flex-direction:column;gap:16px}
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: var(--bg-cream);
+            min-height: 100vh;
+            padding-bottom: 70px;
+        }
 
-/* card */
-.card{background:var(--surface);border-radius:20px;overflow:hidden;border:1px solid var(--line)}
-.hero{position:relative;height:210px;background:var(--tile-soft);overflow:hidden}
-.hero .bgimg{position:absolute;inset:-20px;width:calc(100% + 40px);height:calc(100% + 40px);object-fit:cover;filter:blur(18px) saturate(1.2);opacity:.9;max-width:none}
-.hero .fg{position:relative;display:block;height:100%;max-width:100%;margin:0 auto;object-fit:contain;padding:14px 0;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}
-.hero .noimg{height:100%;display:grid;place-items:center;font-size:56px}
-.grade{position:absolute;top:10px;left:10px;display:flex;align-items:center;gap:6px;background:var(--surface);border-radius:999px;padding:3px 10px 3px 3px;font-size:13px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.18)}
-.grade b{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-family:var(--num);font-size:19px;font-weight:800;color:#fff;background:var(--maybe)}
-.grade.A b{background:var(--gold);color:#2a1d02}
-.flags{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.flag{border-radius:999px;padding:3px 10px;font-size:12px;font-weight:800;background:var(--gold);color:#2a1d02;box-shadow:0 2px 8px rgba(0,0,0,.18)}
-.flag.sold{background:var(--warn);color:#fff}
-.flag.upd{background:var(--tile);color:#fff}
-.date{position:absolute;left:10px;bottom:10px;background:var(--shade);color:#fff;border-radius:14px;padding:4px 12px 6px;backdrop-filter:blur(6px);line-height:1}
-.date small{display:block;font-size:11px;opacity:.85;margin-bottom:2px}
-.date span{font-family:var(--num);font-weight:800;font-size:26px}
-.cap{position:absolute;right:10px;bottom:10px;font-size:10px;color:#fff;background:var(--shade);border-radius:6px;padding:2px 6px}
+        /* ==================== 頂部搜尋欄 ==================== */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--primary-gradient);
+            padding: 14px 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(255, 149, 0, 0.3);
+        }
 
-.cbody{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px}
-.cbody h3{margin:0;font-size:18px;font-weight:900;line-height:1.35;text-wrap:balance}
-.hook{margin:-4px 0 0;font-size:14px;color:var(--muted)}
-.facts{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}
-.facts span{display:inline-flex;align-items:center;gap:5px;min-width:0}
-.facts svg{flex:0 0 16px;width:16px;height:16px;stroke:var(--tile);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.who{display:flex;flex-wrap:wrap;gap:8px}
-.kid{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px 3px 3px;font-size:13px;font-weight:700}
-.kid i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:900;color:#fff}
-.kid.ren{background:var(--go-soft);color:var(--go)} .kid.ren i{background:var(--go)}
-.kid.ren.lite{background:var(--maybe-soft);color:var(--maybe)} .kid.ren.lite i{background:var(--maybe)}
-.kid.de{background:var(--baby-soft);color:var(--baby)} .kid.de i{background:var(--baby)}
-.tags{display:flex;flex-wrap:wrap;gap:6px}
-.tags span{font-size:12px;border-radius:999px;padding:2px 9px;background:var(--bg);color:var(--muted)}
-.actions{display:flex;align-items:center;gap:10px}
-.btn{flex:1;text-align:center;text-decoration:none;font-weight:700;font-size:14px;border-radius:12px;padding:9px 12px;background:var(--tile);color:var(--bg)}
-.rel{font-size:12px;color:var(--muted);white-space:nowrap}
-details.more{border-top:1px dashed var(--line);padding-top:8px}
-details.more summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--tile);list-style:none}
-details.more summary::-webkit-details-marker{display:none}
-details.more summary::after{content:" ＋"}
-details.more[open] summary::after{content:" －"}
-details.more dl{margin:8px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;font-size:13px}
-details.more dt{color:var(--muted);white-space:nowrap}
-details.more dd{margin:0;min-width:0;overflow-wrap:anywhere}
-details.more .links{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:13px}
-details.more .links a{color:var(--tile);font-weight:700;text-decoration:none}
-.empty{color:var(--muted);font-size:14px;text-align:center;padding:18px;background:var(--surface);border-radius:16px;border:1px dashed var(--line);margin:0}
+        .top-bar-title {
+            color: var(--header-bg);
+            font-size: 1.25rem;
+            font-weight: 800;
+            white-space: nowrap;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.3);
+        }
 
-details.log{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:13px}
-details.log summary{cursor:pointer;font-weight:700;color:var(--muted)}
-details.log h4{margin:12px 0 4px;font-size:13px}
-details.log p{margin:0 0 6px;color:var(--muted)}
-details.log a{color:var(--tile);font-weight:700;text-decoration:none}
-footer{font-size:12px;color:var(--muted);text-align:center}
-</style>
+        .search-box {
+            flex: 1;
+            display: flex;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+        }
 
-<div class="wrap">
-  <header style="display:flex;flex-direction:column;gap:12px">
-    <div class="tiles" aria-hidden="true"></div>
-    <div class="top"><h1>仁仁德德去邊度</h1><div class="upd" id="upd">—</div></div>
-    <div class="warn" id="warn" hidden></div>
-    <div class="seg" role="group" aria-label="睇邊個">
-      <button id="w-all" data-w="all" aria-pressed="true">全部</button>
-      <button id="w-ren" data-w="ren" aria-pressed="false"><i>仁</i>仁仁專區</button>
-      <button id="w-de" data-w="de" aria-pressed="false"><i>德</i>德德專區</button>
+        .search-input {
+            flex: 1;
+            border: none;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            min-width: 0;
+        }
+
+        .search-input:focus { outline: none; }
+
+        .search-btn {
+            background: var(--header-bg);
+            border: none;
+            padding: 10px 15px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-btn:hover {
+            background: #1a252f;
+        }
+
+        /* ==================== 篩選區域 ==================== */
+        .filter-section {
+            background: white;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            /* Sticky 篩選區域 */
+            position: sticky;
+            top: 52px;
+            z-index: 90;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .filter-row {
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 5px 15px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .filter-row::-webkit-scrollbar { display: none; }
+
+        .filter-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: #888;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .filter-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            background: var(--bg-cream);
+            border: 1px solid #ddd;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            margin-right: 6px;
+        }
+
+        .filter-tag:hover { border-color: var(--primary); }
+
+        .filter-tag.clear-btn {
+            background: transparent;
+            border-color: #ccc;
+            color: #999;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            opacity: 0.7;
+        }
+
+        .filter-tag.clear-btn:hover {
+            background: #f5f5f5;
+            border-color: #aaa;
+            color: #666;
+            opacity: 1;
+        }
+
+        .filter-tag.active {
+            background: var(--primary-gradient);
+            color: var(--header-bg);
+            border-color: var(--primary-dark);
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(255, 149, 0, 0.3);
+        }
+
+        /* 偏好篩選標籤 */
+        .filter-tag.dad.active { background: var(--dad-color); border-color: var(--dad-color); color: white; }
+        .filter-tag.mom.active { background: var(--mom-color); border-color: var(--mom-color); color: white; }
+        .filter-tag.kid.active { background: var(--kid-color); border-color: var(--kid-color); color: white; }
+        .filter-tag.parents.active { background: var(--parents-color); border-color: var(--parents-color); color: white; }
+
+        /* 類型篩選標籤 - 統一使用橙黃漸變 */
+        .filter-tag.nature.active,
+        .filter-tag.village.active,
+        .filter-tag.resort.active,
+        .filter-tag.history.active,
+        .filter-tag.animal.active,
+        .filter-tag.park.active,
+        .filter-tag.island.active {
+            background: var(--primary-gradient);
+            border-color: var(--primary-dark);
+            color: var(--header-bg);
+            box-shadow: 0 2px 8px rgba(255, 149, 0, 0.3);
+        }
+
+        /* 季節篩選標籤 */
+        .filter-tag.spring.active { background: #FF8FAB; border-color: #FF8FAB; color: white; }
+        .filter-tag.summer.active { background: #FF9800; border-color: #FF9800; color: white; }
+        .filter-tag.autumn.active { background: #D2691E; border-color: #D2691E; color: white; }
+        .filter-tag.winter.active { background: #64B5F6; border-color: #64B5F6; color: white; }
+
+        /* ==================== 城市選擇欄 ==================== */
+        .city-bar {
+            background: white;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .city-bar::-webkit-scrollbar { display: none; }
+
+        .city-container {
+            display: inline-flex;
+            gap: 0;
+            padding: 0 10px;
+        }
+
+        .city-tab {
+            padding: 10px 18px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            color: #666;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .city-tab:hover { color: var(--text-dark); }
+
+        .city-tab.active {
+            color: var(--primary-dark);
+            border-bottom-color: var(--primary-dark);
+            font-weight: 700;
+            background: linear-gradient(to bottom, rgba(255, 179, 71, 0.2), transparent);
+        }
+
+        .city-distance {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 3px;
+        }
+
+        /* ==================== 主內容區 ==================== */
+        .main-content {
+            padding: 15px;
+            padding-bottom: 80px;
+        }
+
+        /* ==================== 城市區塊 ==================== */
+        .city-section {
+            margin-bottom: 30px;
+        }
+
+        .city-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, var(--header-bg) 0%, #2C5282 50%, #1A365D 100%);
+            border-radius: 14px;
+            color: white;
+            /* Sticky Header - 城市名固定在篩選區下方 */
+            position: sticky;
+            top: 230px;
+            z-index: 50;
+            box-shadow: 0 4px 20px rgba(26, 54, 93, 0.3);
+            border-left: 5px solid var(--primary);
+        }
+
+        .city-icon {
+            font-size: 1.5rem;
+        }
+
+        .city-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .city-info {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-left: auto;
+        }
+
+        /* ==================== 類型區塊 ==================== */
+        .type-section {
+            margin-bottom: 25px;
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 15px;
+            box-shadow: 0 2px 12px var(--card-shadow);
+        }
+
+        .type-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 12px 14px;
+            background: linear-gradient(135deg, rgba(255, 179, 71, 0.2) 0%, rgba(255, 214, 153, 0.15) 50%, rgba(255, 149, 0, 0.1) 100%);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-dark);
+            /* Sticky Header - 類型標題在城市標題下方 */
+            position: sticky;
+            top: 290px;
+            z-index: 40;
+        }
+
+        .type-icon {
+            font-size: 1.2rem;
+            background: var(--primary-gradient);
+            padding: 8px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(255, 149, 0, 0.3);
+        }
+
+        .type-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .type-prefer {
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-left: auto;
+            font-weight: 500;
+        }
+
+        .type-prefer.dad { background: var(--dad-color); color: white; }
+        .type-prefer.mom { background: var(--mom-color); color: white; }
+        .type-prefer.kid { background: var(--kid-color); color: white; }
+        .type-prefer.parents { background: var(--parents-color); color: white; }
+
+        /* ==================== 景點卡片 ==================== */
+        .spots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .spot-card {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            border: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .spot-card:hover {
+            transform: translateY(-4px);
+            background: white;
+            box-shadow: 0 10px 30px rgba(255, 149, 0, 0.3);
+        }
+
+        /* 卡片分類顏色邊框 */
+        .spot-card.border-dad { border-left: 4px solid var(--dad-color); }
+        .spot-card.border-mom { border-left: 4px solid var(--mom-color); }
+        .spot-card.border-kid { border-left: 4px solid var(--kid-color); }
+        .spot-card.border-parents { border-left: 4px solid var(--parents-color); }
+
+        .spot-header {
+            padding: 15px 18px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .spot-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .spot-badges {
+            display: flex;
+            gap: 6px;
+        }
+
+        .spot-badge {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .spot-badge.day { background: var(--primary-light); color: var(--primary-dark); }
+        .spot-badge.overnight { background: #E8EEF3; color: var(--header-bg); }
+        .spot-badge.annual { background: #C8E6C9; color: #2E7D32; }
+
+        .spot-body {
+            padding: 10px 18px 15px;
+        }
+
+        .spot-desc {
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .spot-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .spot-tag {
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: var(--bg-cream);
+        }
+
+        .spot-tag.prefer-dad { background: #E3F2FD; color: var(--dad-color); }
+        .spot-tag.prefer-mom { background: #FCE4EC; color: var(--mom-color); }
+        .spot-tag.prefer-kid { background: #FFF3E0; color: var(--kid-color); }
+        .spot-tag.prefer-parents { background: linear-gradient(135deg, #E3F2FD, #FCE4EC); color: #666; }
+
+        /* 景點卡片內的偏好標籤 */
+        .spot-prefer {
+            font-size: 0.8rem;
+            padding: 5px 12px;
+            border-radius: 14px;
+            font-weight: 500;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .spot-prefer.dad { background: var(--dad-color); color: white; }
+        .spot-prefer.mom { background: var(--mom-color); color: white; }
+        .spot-prefer.kid { background: var(--kid-color); color: white; }
+        .spot-prefer.parents { background: var(--parents-color); color: white; }
+
+        /* 景點卡片內的季節標籤 */
+        .spot-season {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-right: 4px;
+        }
+        .spot-season.spring { background: #FFE8EE; color: #D81B60; }
+        .spot-season.summer { background: #FFF3E0; color: #EF6C00; }
+        .spot-season.autumn { background: #FBE9E7; color: #BF360C; }
+        .spot-season.winter { background: #E3F2FD; color: #1976D2; }
+
+        /* 卡片頂部標籤區 */
+        .spot-tags-top {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+
+        /* 地址顯示 */
+        .spot-address {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        /* 信息網格 */
+        .spot-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0;
+            padding: 12px 14px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .spot-info-row {
+            font-size: 0.85rem;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .spot-info-row i {
+            color: var(--primary);
+            width: 16px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .spot-info-row.didi {
+            grid-column: 1 / -1;
+            background: #FFF8E1;
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: #E65100;
+            font-weight: 500;
+        }
+
+        .spot-info-row.didi i {
+            color: #FF9800;
+        }
+
+        /* 距離顏色：近=綠 中=橙 遠=紅 */
+        .spot-info-row.km-near { color: #2E7D32; }
+        .spot-info-row.km-near i { color: #4CAF50; }
+        .spot-info-row.km-mid { color: #E65100; }
+        .spot-info-row.km-mid i { color: #FF9800; }
+        .spot-info-row.km-far { color: #C62828; }
+        .spot-info-row.km-far i { color: #F44336; }
+
+        /* Tips 區塊 */
+        .spot-tips {
+            font-size: 0.88rem;
+            color: #555;
+            padding: 10px 14px;
+            background: linear-gradient(135deg, #E8F5E9, #F1F8E9);
+            border-radius: 10px;
+            border-left: 4px solid var(--success);
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        .spot-tips i {
+            color: #FFC107;
+            margin-right: 6px;
+        }
+
+        .spot-footer {
+            padding: 12px 18px;
+            background: var(--bg-cream);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+        }
+
+        /* 快捷操作按鈕 */
+        .spot-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .spot-action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 6px 10px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.7rem;
+        }
+
+        .spot-action-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary-dark);
+        }
+
+        .spot-action-btn i {
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+
+        .spot-action-btn.primary {
+            background: var(--primary-gradient);
+            border-color: var(--primary);
+            color: var(--header-bg);
+            box-shadow: 0 2px 8px rgba(255, 149, 0, 0.25);
+        }
+
+        .spot-action-btn.primary:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 4px 12px rgba(255, 149, 0, 0.4);
+        }
+
+        .spot-transport {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .spot-transport i {
+            margin-right: 5px;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: var(--header-bg);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(255, 149, 0, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(255, 149, 0, 0.4);
+        }
+
+        /* ==================== 已去過區塊 ==================== */
+        .visited-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            border: 1px dashed #ddd;
+        }
+
+        .visited-header {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #888;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .visited-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .visited-item {
+            font-size: 0.8rem;
+            padding: 5px 12px;
+            background: white;
+            border-radius: 15px;
+            color: #888;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* 一般已去過 - 黃色 */
+        .visited-item.visited-normal {
+            background: linear-gradient(135deg, #FFF8DC, #FFFACD);
+            border: 1px solid var(--primary);
+            color: var(--primary-dark);
+        }
+
+        /* 會再去的景點 - 綠色高亮 */
+        .visited-item.visited-revisit {
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            border: 2px solid var(--success);
+            color: #2E7D32;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        /* ==================== 底部導航 ==================== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            padding-bottom: max(8px, env(safe-area-inset-bottom));
+            border-top: 1px solid #eee;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5px 15px;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 3px;
+        }
+
+        .nav-item span {
+            font-size: 0.7rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .nav-item.active i {
+            color: var(--primary-dark);
+            text-shadow: 0 2px 8px rgba(255, 149, 0, 0.4);
+        }
+
+        /* ==================== 統計信息 ==================== */
+        .stats-bar {
+            background: white;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-around;
+            border-bottom: 1px solid #eee;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            text-shadow: 0 1px 2px rgba(255, 149, 0, 0.2);
+        }
+
+        .stat-number.highlight {
+            color: var(--success);
+        }
+
+        .stat-number.pending {
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* ==================== 空狀態 ==================== */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        /* ==================== 回到頂部 ==================== */
+        .back-to-top {
+            position: fixed;
+            bottom: 80px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--charcoal-fabric);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 500;
+        }
+
+        .back-to-top.show { display: flex; }
+
+        /* ==================== 響應式 ==================== */
+        @media (max-width: 768px) {
+            .spots-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-bar-title {
+                display: none;
+            }
+
+            .city-tab {
+                padding: 6px 12px;
+            }
+
+            /* 手機版：只固定搜尋欄，其他不固定 */
+            .filter-section {
+                position: static;
+            }
+
+            .city-header {
+                position: static;
+            }
+
+            .type-header {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 頂部搜尋欄 -->
+    <div class="top-bar">
+        <div class="top-bar-title">🌏 澳門周邊親子遊</div>
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchInput" placeholder="查找景點、美食...">
+            <button class="search-btn" onclick="doSearch()">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
     </div>
-    <div class="strip" id="strip" role="group" aria-label="揀日子"></div>
-  </header>
 
-  <div class="alerts" id="alerts"></div>
+    <!-- 統計信息 -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number" id="totalSpots">0</div>
+            <div class="stat-label">景點總數</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="visitedSpots">0</div>
+            <div class="stat-label">已去過</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" id="toVisitSpots">0</div>
+            <div class="stat-label">待探索</div>
+        </div>
+    </div>
 
-  <section id="sec-ren"><h2><i>仁</i>仁仁專區 <small id="ren-count"></small></h2><div class="feed" id="renren"><p class="empty">載入中…</p></div></section>
-  <section id="sec-de"><h2><i>德</i>德德專區 <small>專為嬰兒而設</small></h2><div class="feed" id="dede"></div></section>
+    <!-- 城市選擇欄 -->
+    <div class="city-bar">
+        <div class="city-container">
+            <div class="city-tab active" data-city="all">
+                <span>全部</span>
+            </div>
+            <div class="city-tab" data-city="zhuhai">
+                <span>🏝️ 珠海</span>
+                <span class="city-distance">最近</span>
+            </div>
+            <div class="city-tab" data-city="zhongshan">
+                <span>🏙️ 中山</span>
+                <span class="city-distance">~1小時</span>
+            </div>
+            <div class="city-tab" data-city="foshan">
+                <span>🏯 佛山</span>
+                <span class="city-distance">~1.5小時</span>
+            </div>
+            <div class="city-tab" data-city="guangzhou">
+                <span>🦁 廣州</span>
+                <span class="city-distance">~2小時</span>
+            </div>
+            <div class="city-tab" data-city="jiangmen">
+                <span>🏰 江門</span>
+                <span class="city-distance">~2.5小時</span>
+            </div>
+            <div class="city-tab" data-city="yangjiang">
+                <span>🏖️ 陽江</span>
+                <span class="city-distance">~3小時</span>
+            </div>
+            <div class="city-tab" data-city="qingyuan">
+                <span>🌊 清遠</span>
+                <span class="city-distance">~2.5小時</span>
+            </div>
+            <div class="city-tab" data-city="huizhou">
+                <span>🏖️ 惠州</span>
+                <span class="city-distance">~3小時</span>
+            </div>
+            <div class="city-tab" data-city="hongkong">
+                <span>🇭🇰 香港</span>
+                <span class="city-distance">~1小時</span>
+            </div>
+        </div>
+    </div>
 
-  <details class="log" id="log"><summary id="log-sum">查證紀錄</summary><div id="log-body"></div></details>
-  <footer>逢星期一、五上午更新｜資料以主辦方最新公布為準</footer>
-</div>
+    <!-- 篩選區域 - 景點 -->
+    <div class="filter-section" id="spotFilters">
+        <!-- 偏好篩選 -->
+        <div class="filter-row">
+            <span class="filter-label">偏好：</span>
+            <div class="filter-tag parents" data-prefer="parents">👨👩 爸媽共同</div>
+            <div class="filter-tag dad" data-prefer="dad">👨 爸爸愛</div>
+            <div class="filter-tag mom" data-prefer="mom">👩 媽媽愛</div>
+            <div class="filter-tag kid" data-prefer="kid">👶 小朋友愛</div>
+            <div class="filter-tag clear-btn" onclick="clearFilter('prefer')">重置</div>
+        </div>
+        <!-- 類型篩選 -->
+        <div class="filter-row">
+            <span class="filter-label">類型：</span>
+            <div class="filter-tag nature" data-type="nature">🌿 大自然</div>
+            <div class="filter-tag village" data-type="village">🏘️ 農村古村</div>
+            <div class="filter-tag resort" data-type="resort">♨️ 度假村</div>
+            <div class="filter-tag history" data-type="history">🏛️ 歷史人文</div>
+            <div class="filter-tag animal" data-type="animal">🦁 動物萌寵</div>
+            <div class="filter-tag park" data-type="park">🎢 主題樂園</div>
+            <div class="filter-tag island" data-type="island">🏝️ 海島海灘</div>
+            <div class="filter-tag clear-btn" onclick="clearFilter('type')">重置</div>
+        </div>
+        <!-- 行程篩選 -->
+        <div class="filter-row">
+            <span class="filter-label">行程：</span>
+            <div class="filter-tag" data-trip="day">☀️ 一日遊</div>
+            <div class="filter-tag" data-trip="overnight">🌙 兩天一夜</div>
+            <div class="filter-tag" data-trip="visited">✅ 已去過</div>
+            <div class="filter-tag" data-trip="annual">⭐ 有年卡</div>
+            <div class="filter-tag clear-btn" onclick="clearFilter('trip')">重置</div>
+        </div>
+        <!-- 季節篩選 -->
+        <div class="filter-row">
+            <span class="filter-label">季節：</span>
+            <div class="filter-tag spring" data-season="spring">🌸 春季</div>
+            <div class="filter-tag summer" data-season="summer">☀️ 夏季</div>
+            <div class="filter-tag autumn" data-season="autumn">🍂 秋季</div>
+            <div class="filter-tag winter" data-season="winter">❄️ 冬季</div>
+            <div class="filter-tag clear-btn" onclick="clearFilter('season')">重置</div>
+        </div>
+    </div>
 
-<script>
-(function(){
-  const $=id=>document.getElementById(id);
-  const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const REL={official:"✅ 官方核實",social:"🟡 官方社交平台",aggregator:"⚪ 待官方確認"};
-  const TAGI={"車車":"🚗","恐龍":"🦕","動物":"🐾","高互動":"🙌","接觸其他小朋友":"👫","親手做":"✋","演出":"🎭","音樂":"🎵"};
-  const CATI={"演出":"🎭","嘉年華":"🎡","文化體驗":"🏮","主題活動":"🚒","市集":"🛍️","工作坊":"✂️"};
-  const WD=["日","一","二","三","四","五","六"];
-  const ICON={
-    time:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
-    pin:'<svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
-    fee:'<svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>'};
-  let data=null, who="all", when="all", weekendSet=[];
-  try{who=localStorage.getItem("kidsWho")||"all"}catch(e){}
+    <!-- 篩選區域 - 美食 -->
+    <div class="filter-section" id="foodFilters" style="display: none;">
+        <!-- 類型篩選 -->
+        <div class="filter-row">
+            <span class="filter-label">類型：</span>
+            <div class="filter-tag" data-foodtype="hotpot">🍲 火鍋</div>
+            <div class="filter-tag" data-foodtype="farmfood">🥬 農家菜</div>
+            <div class="filter-tag" data-foodtype="xinjiang">🍖 新疆菜</div>
+            <div class="filter-tag" data-foodtype="northwest">🍜 西北菜</div>
+            <div class="filter-tag" data-foodtype="cafe">☕ 咖啡廳</div>
+            <div class="filter-tag" data-foodtype="local">🦐 當地特色</div>
+            <div class="filter-tag clear-btn" onclick="clearFilter('foodtype')">重置</div>
+        </div>
+        <!-- 辣度/兒童友好 -->
+        <div class="filter-row">
+            <span class="filter-label">口味：</span>
+            <div class="filter-tag" data-spicy="none">😊 不辣</div>
+            <div class="filter-tag" data-spicy="mild">🌶️ 可辣可不辣</div>
+            <div class="filter-tag" data-spicy="hot">🔥 辣</div>
+            <div class="filter-tag" data-kidfriendly="true">👶 兒童友好</div>
+            <div class="filter-tag clear-btn" onclick="clearFilter('foodfilter')">重置</div>
+        </div>
+    </div>
 
-  const parse=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
-  const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-  const lvl=e=>e.dede_level||(e.dede?"enter":"");
-  const allItems=()=>[...(data.renren||[]),...(data.dede||[])];
-  const inWhen=e=>when==="all"?true:when==="weekend"?(e.days||[]).some(x=>weekendSet.includes(x)):(e.days||[]).includes(when);
+    <!-- 主內容區 -->
+    <div class="main-content" id="mainContent">
+        <!-- 由 JS 動態生成 -->
+    </div>
 
-  function computeWeekend(){
-    const s=parse(data.window_start||data.updated||iso(new Date()));
-    const out=[];
-    for(let i=0;i<7;i++){const d=new Date(s);d.setDate(s.getDate()+i);if(d.getDay()===6||d.getDay()===0){out.push(iso(d));if(d.getDay()===0)break}}
-    return out;
-  }
-  function dateBlock(e){
-    const all=e.days||[]; if(!all.length) return "";
-    const showOne=when!=="all"&&when!=="weekend";
-    const f=parse(showOne?when:all[0]);
-    let main=String(f.getDate());
-    if(!showOne&&all.length>1){const l=parse(all[all.length-1]);const consec=(l-f)/864e5===all.length-1;main=consec?`${f.getDate()}–${l.getDate()}`:all.map(x=>parse(x).getDate()).join("・")}
-    const sub=(showOne||all.length===1)?` 星期${WD[f.getDay()]}`:"";
-    return `<div class="date"><small>${f.getMonth()+1}月${sub}</small><span>${main}</span></div>`;
-  }
-  function kids(e){
-    let h="";const rn=e.renren_note||"";
-    if(rn.startsWith("推薦")) h+=`<span class="kid ren"><i>仁</i>推薦參加</span>`;
-    else if(rn) h+=`<span class="kid ren lite"><i>仁</i>可入場</span>`;
-    const l=lvl(e);
-    if(l==="play") h+=`<span class="kid de"><i>德</i>可參與</span>`;
-    else if(l==="enter") h+=`<span class="kid de"><i>德</i>可隨行</span>`;
-    return h?`<div class="who">${h}</div>`:"";
-  }
-  function card(e){
-    const img=e.image?`<img class="bgimg" src="${esc(e.image)}" alt="" aria-hidden="true"><img class="fg" src="${esc(e.image)}" alt="${esc(e.title)} 海報" loading="lazy" onerror="this.parentNode.querySelectorAll('img').forEach(i=>i.remove())">`:`<div class="noimg" aria-hidden="true">${CATI[e.category]||"✨"}</div>`;
-    const g=e.grade==="A"?`<div class="grade A"><b>A</b>值得專程去</div>`:e.grade==="B"?`<div class="grade"><b>B</b>可以順道去</div>`:"";
-    const flags=[e.status==="new"?'<span class="flag">新</span>':"",e.status==="updated"?'<span class="flag upd">更新</span>':"",e.status==="closing"?'<span class="flag sold">即將截止</span>':"",e.sold_out?'<span class="flag sold">已售罄</span>':""].join("");
-    const tags=(e.tags||[]).filter(t=>t!=="演出").map(t=>`<span>${TAGI[t]||""} ${esc(t)}</span>`).join("");
-    const main=(e.links||[])[0];
-    const rest=(e.links||[]).slice(1).map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("");
-    const row=(k,v)=>v?`<dt>${k}</dt><dd>${esc(v)}</dd>`:"";
-    return `<article class="card">
-      <div class="hero">${img}${g}<div class="flags">${flags}</div>${dateBlock(e)}${e.image_caption?`<span class="cap">${esc(e.image_caption)}</span>`:""}</div>
-      <div class="cbody">
-        <h3>${esc(e.title)}</h3>
-        <p class="hook">${esc(e.summary)}</p>
-        <div class="facts"><span>${ICON.time}${esc(e.times)}</span><span>${ICON.pin}${esc(e.venue_short||e.venue)}</span><span>${ICON.fee}${esc(e.fee)}</span></div>
-        ${kids(e)}
-        ${tags?`<div class="tags">${tags}</div>`:""}
-        <div class="actions">${main?`<a class="btn" href="${esc(main.url)}" target="_blank" rel="noopener">${esc(main.label)} ↗</a>`:""}<span class="rel">${REL[e.reliability]||""}</span></div>
-        <details class="more"><summary>詳細資料</summary><dl>
-          ${row("日期",e.dates)}${row("地點",e.venue)}${row("年齡",e.age)}${row("報名",e.booking)}${row("名額",e.quota)}
-          ${row("點解推薦",e.grade_basis)}${row("仁仁",e.renren_note)}${row("德德",e.dede_note)}${row("來源",e.reliability_note)}
-        </dl>${rest?`<div class="links">${rest}</div>`:""}</details>
-      </div></article>`;
-  }
-  function pool(){
-    if(who==="ren") return data.renren||[];
-    if(who==="de") return data.dede||[];
-    return allItems();
-  }
-  function strip(){
-    const items=pool();
-    const today=iso(new Date());
-    const days=[...new Set(items.flatMap(e=>e.days||[]))].filter(d=>(!data.window_end||d<=data.window_end)).sort();
-    const cnt=list=>{const n=list.length;const a=list.some(e=>e.grade==="A");return n?`<span class="cnt${a?" a":""}">${n}項</span>`:`<span class="cnt">—</span>`};
-    const wk=items.filter(e=>(e.days||[]).some(x=>weekendSet.includes(x)));
-    const wkLabel=weekendSet.length?weekendSet.map(x=>parse(x).getDate()).join("–"):"";
-    let h=`<button class="day quick" data-d="all" aria-pressed="${when==="all"}"><span class="dn">全部</span>${cnt(items)}</button>`;
-    h+=`<button class="day quick we" data-d="weekend" aria-pressed="${when==="weekend"}"><span class="wd">${wkLabel}日</span><span class="dn">本週末</span>${cnt(wk)}</button>`;
-    h+=`<span class="day gap" aria-hidden="true"></span>`;
-    for(const k of days){
-      const d=parse(k);const ev=items.filter(e=>(e.days||[]).includes(k));
-      h+=`<button class="day${[0,6].includes(d.getDay())?" we":""}" data-d="${k}" aria-pressed="${k===when}" aria-label="${d.getMonth()+1}月${d.getDate()}日，${ev.length}項活動"><span class="wd">${k===today?"今日":WD[d.getDay()]}</span><span class="dn">${d.getDate()}</span>${cnt(ev)}</button>`;
+    <!-- 底部導航 -->
+    <nav class="bottom-nav">
+        <a class="nav-item active" data-page="home">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>景點</span>
+        </a>
+        <a class="nav-item" data-page="food">
+            <i class="fas fa-utensils"></i>
+            <span>美食</span>
+        </a>
+        <a class="nav-item" data-page="route">
+            <i class="fas fa-route"></i>
+            <span>快速查找</span>
+        </a>
+    </nav>
+
+    <!-- 回到頂部 -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+    // ==================== 景點資料 ====================
+    const spotsData = {
+        zhuhai: {
+            name: "珠海",
+            icon: "🏝️",
+            distance: "最近",
+            transport: "拱北/灣仔/橫琴口岸",
+            types: {
+                nature: {
+                    name: "大自然",
+                    icon: "🌿",
+                    prefer: ["dad"],
+                    spots: [
+                        { name: "橫琴花海長廊", desc: "13.6公里，5個驛站，櫻花木棉/鳳凰木/月季花海，歐式燈塔打卡", trip: "day", visited: true, revisit: true, season: "spring,autumn", km: 8, address: "橫琴新區環島東路", hours: "全天開放", didiInfo: "拱北口岸約25分鐘¥35", transport: "自駕/打車", tips: "建議騎單車遊覽，驛站可休息補給" },
+                        { name: "野狸島", desc: "市區最近外島，0.3km²，租單車環島40分鐘，野餐看日落", trip: "day", visited: true, season: "spring,autumn,winter", km: 12, address: "香洲區情侶路野狸島", hours: "全天開放", didiInfo: "拱北口岸約20分鐘¥30", transport: "公交3路/自駕", tips: "傍晚去看日落最美，可租單車環島" },
+                        { name: "綠手指有機農園", desc: "金灣平沙，免費入場，300畝有機農場，自助採摘蔬果、餵鴨子", trip: "day", visited: false, season: "spring,autumn", km: 45, address: "金灣區平沙鎮", hours: "09:00-18:00", didiInfo: "拱北口岸約50分鐘¥90", transport: "自駕為主", tips: "採摘按斤計費，建議自備野餐墊" }
+                    ]
+                },
+                island: {
+                    name: "海島海灘",
+                    icon: "🏝️",
+                    prefer: ["dad", "mom"],
+                    spots: [
+                        { name: "東澳島", desc: "廣東小塞班，國家4A級，船程40分鐘，透明玻璃教堂、古堡銃城", trip: "overnight", visited: false, season: "summer", km: 35, address: "萬山海洋開發試驗區", hours: "全天（需乘船）", didiInfo: "拱北口岸→香洲港約20分鐘¥25", transport: "香洲港/橫琴碼頭乘船", tips: "提前買船票，旺季一票難求" },
+                        { name: "外伶仃島", desc: "國家4A級，船程1小時10分，果凍海、橘子落日、伶仃峰", trip: "overnight", visited: false, season: "summer", km: 40, address: "萬山海洋開發試驗區", hours: "全天（需乘船）", didiInfo: "拱北口岸→香洲港約20分鐘¥25", transport: "香洲港乘船1小時10分", tips: "島上民宿需提前預訂，週末人多" },
+                        { name: "桂山島", desc: "廣東小鐮倉，船程50分鐘，半山漁村、燈塔、文天祥雕像", trip: "day", visited: false, season: "spring,autumn", km: 38, address: "萬山海洋開發試驗區", hours: "全天（需乘船）", didiInfo: "拱北口岸→香洲港約20分鐘¥25", transport: "香洲港乘船50分鐘", tips: "可當天來回，帶乾糧上島" },
+                        { name: "萬山島", desc: "150年天后宮、浮石灣「亞洲奇觀」、海釣勝地", trip: "overnight", visited: false, season: "summer", km: 55, address: "萬山海洋開發試驗區", hours: "全天（需乘船）", didiInfo: "拱北口岸→香洲港約20分鐘¥25", transport: "香洲港乘船", tips: "海釣愛好者天堂，可包船出海" },
+                        { name: "廟灣島", desc: "原生態海島，需從野狸島/九州港乘船", trip: "overnight", visited: false, season: "summer", km: 70, address: "萬山海洋開發試驗區", hours: "全天", didiInfo: "拱北口岸→香洲港約20分鐘¥25", transport: "包船前往", tips: "原生態島嶼，設施較少，需自備物資" }
+                    ]
+                },
+                resort: {
+                    name: "度假村/溫泉",
+                    icon: "♨️",
+                    prefer: ["mom"],
+                    spots: [
+                        { name: "鳳凰灣悅榕莊", desc: "2025年10月開業！雙私人海灘、私人湯泉、遠眺港珠澳大橋", trip: "overnight", visited: false, km: 25, address: "金灣區鳳凰灣", hours: "全天（酒店）", didiInfo: "拱北口岸約40分鐘¥70", transport: "自駕/酒店接駁", tips: "開業後價格較高，建議提前訂房" },
+                        { name: "鳳凰灣悅椿酒店", desc: "悅榕莊姐妹品牌，私人露台、恆溫泳池、兒童遊樂間", trip: "overnight", visited: false, km: 25, address: "金灣區鳳凰灣", hours: "全天（酒店）", didiInfo: "拱北口岸約40分鐘¥70", transport: "自駕/酒店接駁", tips: "比悅榕莊性價比高，適合親子" },
+                        { name: "星樂度露營小鎮", desc: "露營和烤肉的好去處，房車/木屋/帳篷住宿，星奇塔無動力樂園", trip: "overnight", visited: true, revisit: true, annual: false, season: "spring,autumn", km: 10, address: "橫琴新區天羽道", hours: "全天（住宿）/ 樂園09:00-18:00", didiInfo: "拱北口岸約25分鐘¥40", transport: "自駕/打車", tips: "週末人多建議預訂，自帶燒烤食材更划算" },
+                        { name: "海泉灣度假區", desc: "溫泉+機動遊戲+萌寵樂園，一站式度假", trip: "overnight", visited: false, season: "winter", km: 35, address: "金灣區平沙鎮", hours: "溫泉10:00-24:00", didiInfo: "拱北口岸約50分鐘¥85", transport: "自駕為主", tips: "買套票更划算，溫泉+樂園一日遊" },
+                        { name: "御溫泉", desc: "園林式溫泉", trip: "overnight", visited: false, season: "autumn,winter", km: 40, address: "斗門區斗門鎮", hours: "10:00-24:00", didiInfo: "拱北口岸約55分鐘¥95", transport: "自駕為主", tips: "中式園林風格，環境清幽" }
+                    ]
+                },
+                animal: {
+                    name: "動物萌寵",
+                    icon: "🦁",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "小矮人萌寵樂園", desc: "海泉灣，童話主題，20+種動物（羊駝、梅花鹿、刺蝟），可騎馬", trip: "day", visited: false, km: 35, address: "金灣區海泉灣度假區內", hours: "09:30-18:00", didiInfo: "拱北口岸約50分鐘¥85", transport: "自駕為主", tips: "可與海泉灣溫泉一起安排" },
+                        { name: "嶺南大地百草園", desc: "斗門，1.5萬㎡無動力樂園 + 中醫藥體驗館 + 3000隻虎皮鸚鵡", trip: "day", visited: false, km: 30, address: "斗門區蓮洲鎮", hours: "09:00-18:00", didiInfo: "拱北口岸約45分鐘¥75", transport: "自駕為主", tips: "無動力樂園適合3-12歲，記得帶防曬" },
+                        { name: "家和四季生態農場", desc: "斗門，新晉親子景點，沙池、釣魚、划船、蹦床", trip: "day", visited: false, km: 32, address: "斗門區乾務鎮", hours: "09:00-18:00", didiInfo: "拱北口岸約45分鐘¥78", transport: "自駕為主", tips: "農場內可用餐，食材新鮮" }
+                    ]
+                },
+                park: {
+                    name: "主題樂園",
+                    icon: "🎢",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "長隆海洋王國", desc: "亞洲最大海洋主題樂園", trip: "day", visited: true, revisit: true, annual: true, km: 8, address: "橫琴新區富祥灣", hours: "10:00-20:00（週末延長）", didiInfo: "拱北口岸約20分鐘¥35", transport: "城軌橫琴站+接駁車/自駕", tips: "年卡超值，建議下午入園避開人流高峰" },
+                        { name: "長隆宇宙飛船", desc: "2024新開，全球最大室內樂園，15個區域", trip: "day", visited: true, revisit: true, annual: true, km: 8, address: "橫琴新區富祥灣", hours: "10:00-21:00", didiInfo: "拱北口岸約20分鐘¥35", transport: "城軌橫琴站+接駁車/自駕", tips: "室內不怕天氣，適合夏天/雨天" },
+                        { name: "國家地理探險家中心", desc: "橫琴創新方，VR/AR探險，適合4歲+，15種互動體驗", trip: "day", visited: false, km: 6, address: "橫琴新區創新方", hours: "10:00-21:00", didiInfo: "拱北口岸約18分鐘¥30", transport: "城軌橫琴站/自駕", tips: "適合4歲以上，VR項目有身高限制" },
+                        { name: "珠海太空中心", desc: "4.2萬㎡，1:1天宮太空站，10+AR太空體驗", trip: "day", visited: false, km: 15, address: "金灣區航空新城", hours: "09:30-17:30", didiInfo: "拱北口岸約30分鐘¥50", transport: "自駕/打車", tips: "航天迷必去，互動體驗豐富" },
+                        { name: "LUCKY SPACE不二的潮", desc: "斗門萬達，2024新開，¥99全日任玩，卡丁車、保齡球、攀岩", trip: "day", visited: false, km: 28, address: "斗門區井岸鎮萬達廣場", hours: "10:00-22:00", didiInfo: "拱北口岸約40分鐘¥65", transport: "自駕/打車", tips: "性價比高，適合大童和青少年" }
+                    ]
+                }
+            },
+            visited: ["景山公園", "唐家灣", "會同古村", "所有商場", "珠海漁女（不會再去）", "北山大院", "珠海香山高梅華府酒店", "香山湖", "情侶路"]
+        },
+        zhongshan: {
+            name: "中山",
+            icon: "🏙️",
+            distance: "約1小時",
+            transport: "拱北口岸包車/打車",
+            didi: "🚕 方便（市區秒叫）",
+            types: {
+                nature: {
+                    name: "大自然",
+                    icon: "🌿",
+                    prefer: ["dad"],
+                    spots: [
+                        { name: "逍遙谷", desc: "山清水秀，高山彩虹噴泉為中山一絕，飛瀑流泉", trip: "day", visited: false }
+                    ]
+                },
+                village: {
+                    name: "農村古村",
+                    icon: "🏘️",
+                    prefer: ["dad", "mom"],
+                    spots: [
+                        { name: "桂南村 + 旗溪生態農場", desc: "古天樂家鄉，國家AAA級，單車暢遊、採摘蔬果、農家菜", trip: "day", visited: false }
+                    ]
+                },
+                factory: {
+                    name: "工廠參觀",
+                    icon: "🏭",
+                    prefer: [],
+                    spots: [
+                        { name: "咀香園杏仁餅工場", desc: "國家3A級，免費DIY製餅體驗", trip: "day", visited: false },
+                        { name: "厨邦醬油文化博覽館", desc: "醬油冰淇淋，門票¥20送一瓶醬油", trip: "day", visited: false },
+                        { name: "德羿瑞翔朱古力工場", desc: "朱古力主題參觀（可與上兩個一次過參觀）", trip: "day", visited: false }
+                    ]
+                },
+                park: {
+                    name: "主題樂園",
+                    icon: "🎢",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "中山潮空間運動街區", desc: "5000㎡，¥85全天玩，蹦床、攀岩、卡丁車、滑雪機、Switch", trip: "day", visited: false },
+                        { name: "金鐘水庫樂園", desc: "20年歷史，27項設施，200米玻璃橋、摩天輪、過山車", trip: "day", visited: false },
+                        { name: "冰雪樂園", desc: "堆雪人、打雪仗、滑雪梯、冰雕（夏日消暑）", trip: "day", visited: false }
+                    ]
+                }
+            },
+            visited: ["紫馬嶺公園"]
+        },
+        guangzhou: {
+            name: "廣州",
+            icon: "🦁",
+            distance: "約2小時",
+            transport: "高鐵/城軌",
+            didi: "🚕 方便（市區秒叫）",
+            types: {
+                animal: {
+                    name: "動物園",
+                    icon: "🦁",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "廣州長隆野生動物世界", desc: "亞洲最大私立動物園，500種、20,000+隻動物", trip: "overnight", visited: true, revisit: true },
+                        { name: "廣州動物園", desc: "國家4A級，入場費僅¥20！450種、4500+隻動物，性價比極高", trip: "overnight", visited: true, revisit: true }
+                    ]
+                },
+                nature: {
+                    name: "大自然/植物",
+                    icon: "🌿",
+                    prefer: ["dad"],
+                    spots: [
+                        { name: "華南植物園", desc: "熱帶雨林溫室、科普館", trip: "overnight", visited: false, season: "spring,autumn" },
+                        { name: "流溪河國家森林公園", desc: "從化，「流溪香雪」梅花節，冬季賞梅勝地", trip: "overnight", visited: false, season: "winter" }
+                    ]
+                },
+                village: {
+                    name: "農村古村",
+                    icon: "🏘️",
+                    prefer: ["dad", "mom"],
+                    spots: [
+                        { name: "鎮湖村（相思街）", desc: "300畝金黃稻田（10-11月）", trip: "overnight", visited: false, season: "autumn" },
+                        { name: "艾米稻香小鎮", desc: "深秋稻田景觀", trip: "overnight", visited: false, season: "autumn" },
+                        { name: "羅洞工匠小鎮", desc: "石屋、木棧道、田園特色、農家菜", trip: "overnight", visited: false, season: "spring,autumn" },
+                        { name: "桂峰村", desc: "從化，秋冬杮子林4500畝", trip: "overnight", visited: false, season: "autumn,winter" }
+                    ]
+                },
+                museum: {
+                    name: "科技館/博物館",
+                    icon: "🔬",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "廣東科學中心", desc: "世界最大科學中心（健力士紀錄），12展館+5影院", trip: "overnight", visited: false },
+                        { name: "正佳自然科學博物館", desc: "近千件標本化石，中國唯一梅杜莎角龍化石", trip: "overnight", visited: false }
+                    ]
+                },
+                zhengjiaseries: {
+                    name: "正佳系列",
+                    icon: "🐧",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "正佳極地海洋世界", desc: "5.8萬㎡，22主題展區，500+種極地海洋生物", trip: "overnight", visited: false },
+                        { name: "正佳企鵝冰雪世界", desc: "-8℃模擬南極，冰雕雪屋+多種企鵝", trip: "overnight", visited: false },
+                        { name: "正佳雨林生態植物園", desc: "室內空中雨林，8展區，800+種動植物", trip: "overnight", visited: false }
+                    ]
+                },
+                park: {
+                    name: "主題樂園",
+                    icon: "🎢",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "廣州熱雪奇蹟", desc: "原融創雪世界，7.5萬㎡室內滑雪，滑雪區+娛雪區7項遊樂", trip: "overnight", visited: false, season: "summer" },
+                        { name: "廣州市兒童樂園", desc: "免費！26萬㎡，大象滑梯、迷宮、戲水設施、圖書館", trip: "overnight", visited: false, season: "spring,autumn" },
+                        { name: "長隆國際大馬戲", desc: "世界最大馬戲劇場，6000人座位，20國馬戲精英+動物表演", trip: "overnight", visited: false },
+                        { name: "長隆水上樂園", desc: "廣東最大水上遊樂設施，兒童專區（夏季）", trip: "overnight", visited: true, revisit: true, season: "summer" }
+                    ]
+                },
+                resort: {
+                    name: "度假村/溫泉",
+                    icon: "♨️",
+                    prefer: ["mom"],
+                    spots: [
+                        { name: "從化天人山水度假區", desc: "國家級「生態名片」，稻田小火車、皮划艇、圍爐煮茶", trip: "overnight", visited: false },
+                        { name: "從化碧水灣溫泉度假村", desc: "官方認證真溫泉", trip: "overnight", visited: false },
+                        { name: "增城三英溫泉度假酒店", desc: "TripAdvisor增城排名第1", trip: "overnight", visited: false },
+                        { name: "增城白水寨森林海度假區", desc: "溫泉+樂園，距廣州1小時車程", trip: "overnight", visited: false }
+                    ]
+                }
+            },
+            visited: ["長隆飛鳥樂園", "越秀公園", "長隆歡樂世界+水上樂園"]
+        },
+        foshan: {
+            name: "佛山",
+            icon: "🏯",
+            distance: "約1.5小時",
+            transport: "高鐵/自駕",
+            didi: "🚕 方便（市區秒叫）",
+            types: {
+                village: {
+                    name: "農村古村",
+                    icon: "🏘️",
+                    prefer: ["dad", "mom"],
+                    spots: [
+                        { name: "逢簡水鄉", desc: "「廣東周莊」，宋代石橋、明代古祠，遊船+散步", trip: "overnight", visited: false }
+                    ]
+                },
+                park: {
+                    name: "主題樂園",
+                    icon: "🎢",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "長鹿旅遊休博園", desc: "國家5A級，遊船+動物+機動遊戲+農耕體驗", trip: "overnight", visited: false },
+                        { name: "順德歡樂海岸PLUS", desc: "20萬㎡，40+遊樂設備，歡樂時光園區免費", trip: "overnight", visited: false },
+                        { name: "史努比繽紛世界", desc: "史努比卡通主題，適合低齡", trip: "overnight", visited: false }
+                    ]
+                },
+                animal: {
+                    name: "動物萌寵/農莊",
+                    icon: "🦁",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "阿農灣農耕文化園", desc: "460畝，農耕博物館、萌寵樂園、稻田花海", trip: "overnight", visited: false },
+                        { name: "高明盈香生態園", desc: "200萬㎡，百畝花海+開心牧場+水上樂園+24項機動遊戲", trip: "overnight", visited: false }
+                    ]
+                },
+                nature: {
+                    name: "大自然",
+                    icon: "🌿",
+                    prefer: ["dad"],
+                    spots: [
+                        { name: "西樵山", desc: "國家5A級森林公園，廣東四大名山", trip: "overnight", visited: false }
+                    ]
+                },
+                history: {
+                    name: "歷史人文",
+                    icon: "🏛️",
+                    prefer: ["mom"],
+                    spots: [
+                        { name: "南風古灶", desc: "國家4A級，陶瓷拉胚捏陶體驗", trip: "overnight", visited: false }
+                    ]
+                }
+            },
+            visited: []
+        },
+        qingyuan: {
+            name: "清遠",
+            icon: "🌊",
+            distance: "約2.5小時",
+            transport: "高鐵/自駕",
+            didi: "🚕 市區可叫，景區較難",
+            types: {
+                nature: {
+                    name: "大自然/漂流",
+                    icon: "🌿",
+                    prefer: ["dad"],
+                    spots: [
+                        { name: "古龍峽景區", desc: "12項世界紀錄，玻璃棧道1314米，峽谷漂流", trip: "overnight", visited: false, season: "summer" },
+                        { name: "玄真漂流", desc: "市區10分鐘可達，親子休閒池、小童水寨", trip: "overnight", visited: false, season: "summer" }
+                    ]
+                },
+                park: {
+                    name: "主題樂園",
+                    icon: "🎢",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "查理巧克力樂園", desc: "「廣東版迪士尼」，夢幻童話主題", trip: "overnight", visited: false },
+                        { name: "清遠長隆度假區", desc: "2025春節前開園！森林王國+長頸鹿城堡酒店", trip: "overnight", visited: false }
+                    ]
+                },
+                history: {
+                    name: "歷史人文",
+                    icon: "🏛️",
+                    prefer: ["mom"],
+                    spots: [
+                        { name: "故鄉里民俗文化村", desc: "嶺南古建築、祖輩生活展示", trip: "overnight", visited: false }
+                    ]
+                },
+                resort: {
+                    name: "度假村/溫泉",
+                    icon: "♨️",
+                    prefer: ["mom"],
+                    spots: [
+                        { name: "銀盞森林溫泉", desc: "叢林中多個泡池，藥浴池、水療池", trip: "overnight", visited: false, season: "autumn,winter" },
+                        { name: "熹樂谷溫泉", desc: "國家4A級，65個溫泉湯池", trip: "overnight", visited: false, season: "autumn,winter" },
+                        { name: "佛岡碧桂園溫泉", desc: "群山環抱，別墅依山", trip: "overnight", visited: false, season: "autumn,winter" }
+                    ]
+                }
+            },
+            visited: []
+        },
+        huizhou: {
+            name: "惠州",
+            icon: "🏖️",
+            distance: "約3小時",
+            transport: "高鐵/自駕",
+            didi: "🚕 市區可叫，景區較難",
+            types: {
+                history: {
+                    name: "歷史人文",
+                    icon: "🏛️",
+                    prefer: ["mom"],
+                    spots: [
+                        { name: "惠州西湖", desc: "國家5A級，中國三大西湖之一，蘇東坡紀念館", trip: "overnight", visited: false }
+                    ]
+                },
+                animal: {
+                    name: "農莊",
+                    icon: "🦁",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "永記生態園", desc: "種菜摘蔬果、迷你高爾夫、水上單車、馬場、動物園", trip: "overnight", visited: false }
+                    ]
+                },
+                island: {
+                    name: "海島海灘",
+                    icon: "🏝️",
+                    prefer: ["dad", "mom"],
+                    spots: [
+                        { name: "巽寮灣", desc: "沙軟、水上活動、出海捕魚體驗、海邊單車", trip: "overnight", visited: false, season: "summer" },
+                        { name: "雙月灣", desc: "雙月形海灣，海龜保護區、砲台古蹟", trip: "overnight", visited: false, season: "summer" }
+                    ]
+                },
+                resort: {
+                    name: "度假村/溫泉",
+                    icon: "♨️",
+                    prefer: ["mom"],
+                    spots: [
+                        { name: "南昆山溫德姆溫泉酒店", desc: "攀巖、滑梯、親子嬉水、透明泳池", trip: "overnight", visited: false }
+                    ]
+                }
+            },
+            visited: []
+        },
+        jiangmen: {
+            name: "江門",
+            icon: "🏰",
+            distance: "約2.5小時",
+            transport: "高鐵/自駕",
+            didi: "🚕 較難叫，建議自駕",
+            types: {
+                history: {
+                    name: "歷史人文",
+                    icon: "🏛️",
+                    prefer: ["mom"],
+                    spots: [
+                        { name: "開平碉樓（自力村、立園）", desc: "世界文化遺產，《讓子彈飛》取景地", trip: "overnight", visited: false },
+                        { name: "馬降龍古村落", desc: "清朝古村，田園風光", trip: "overnight", visited: false },
+                        { name: "江門彩虹村", desc: "繽紛彩虹塗鴉", trip: "overnight", visited: false }
+                    ]
+                },
+                nature: {
+                    name: "大自然",
+                    icon: "🌿",
+                    prefer: ["dad"],
+                    spots: [
+                        { name: "大石頭風景區", desc: "「江門小九寨溝」，12月可賞紅葉，地勢平坦", trip: "overnight", visited: false }
+                    ]
+                }
+            },
+            visited: ["赤坎古鎮（不會再去）"]
+        },
+        yangjiang: {
+            name: "陽江",
+            icon: "🏖️",
+            distance: "約3小時",
+            transport: "自駕/包車",
+            didi: "🚕 較難叫，建議自駕",
+            types: {
+                nature: {
+                    name: "大自然",
+                    icon: "🌿",
+                    prefer: ["dad"],
+                    spots: [
+                        { name: "春灣風景區", desc: "陽春，「小桂林」，龍宮岩、春灣石林、通天蠟燭", trip: "overnight", visited: false, season: "spring,autumn" },
+                        { name: "凌霄岩", desc: "陽春，溶洞奇觀", trip: "overnight", visited: false, season: "summer" }
+                    ]
+                },
+                island: {
+                    name: "海島海灘",
+                    icon: "🏝️",
+                    prefer: ["dad", "mom", "kid"],
+                    spots: [
+                        { name: "敏捷歡樂黃金海岸", desc: "海陵島，私家海灘、水晶湖無邊泳池", trip: "overnight", visited: true, revisit: false, season: "summer" },
+                        { name: "大角灣", desc: "海陵島，2.5km沙灘，水上活動", trip: "overnight", visited: true, revisit: false, season: "summer" },
+                        { name: "珍珠灣", desc: "陽東，2000m天然浴場", trip: "overnight", visited: false, season: "summer" }
+                    ]
+                },
+                resort: {
+                    name: "度假村/溫泉",
+                    icon: "♨️",
+                    prefer: ["mom"],
+                    spots: [
+                        { name: "陽江溫泉度假村", desc: "東方園林風格露天溫泉", trip: "overnight", visited: false }
+                    ]
+                }
+            },
+            visited: ["海陵島（不用再去）"]
+        },
+        hongkong: {
+            name: "香港",
+            icon: "🇭🇰",
+            distance: "約1小時",
+            transport: "港珠澳大橋/高鐵/船",
+            didi: "🚕 使用HKTaxi/Uber（的士較貴）",
+            types: {
+                park: {
+                    name: "主題樂園",
+                    icon: "🎢",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "香港迪士尼樂園", desc: "夢幻童話世界，全球最小但精緻", trip: "day", visited: true, revisit: true, annual: false },
+                        { name: "香港海洋公園", desc: "海洋+動物+機動遊戲，纜車觀景", trip: "day", visited: true, revisit: true, annual: false }
+                    ]
+                },
+                landmark: {
+                    name: "地標景點",
+                    icon: "🏙️",
+                    prefer: ["mom", "dad"],
+                    spots: [
+                        { name: "維多利亞港", desc: "世界三大夜景之一，幻彩詠香江", trip: "day", visited: true, revisit: true },
+                        { name: "星光大道", desc: "明星手印、李小龍銅像", trip: "day", visited: true, revisit: true },
+                        { name: "山頂纜車", desc: "百年歷史，俯瞰維港全景", trip: "day", visited: true, revisit: true },
+                        { name: "天星小輪", desc: "百年渡輪，維港體驗", trip: "day", visited: true, revisit: true },
+                        { name: "昂坪360", desc: "水晶纜車、天壇大佛", trip: "day", visited: true, revisit: true },
+                        { name: "香港摩天輪", desc: "中環海濱，維港景觀", trip: "day", visited: false },
+                        { name: "前九廣鐵路鐘樓", desc: "尖沙咀地標，歷史建築", trip: "day", visited: true, revisit: false }
+                    ]
+                },
+                museum: {
+                    name: "博物館",
+                    icon: "🔬",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "香港科學館", desc: "互動展品500+，適合親子", trip: "day", visited: false },
+                        { name: "香港杜莎夫人蠟像館", desc: "山頂廣場，明星蠟像", trip: "day", visited: true, revisit: false }
+                    ]
+                },
+                shopping: {
+                    name: "購物區",
+                    icon: "🛍️",
+                    prefer: ["mom"],
+                    spots: [
+                        { name: "銅鑼灣", desc: "購物天堂，時代廣場、希慎廣場", trip: "day", visited: true, revisit: true },
+                        { name: "旺角", desc: "女人街、花園街、波鞋街", trip: "day", visited: false },
+                        { name: "赤柱市集", desc: "海邊市集，西式風情", trip: "day", visited: false }
+                    ]
+                },
+                island: {
+                    name: "離島郊區",
+                    icon: "🏝️",
+                    prefer: ["dad", "mom"],
+                    spots: [
+                        { name: "大澳", desc: "水上棚屋、漁村風情、看白海豚", trip: "day", visited: false },
+                        { name: "南丫島", desc: "索罟灣、榕樹灣，行山美食", trip: "day", visited: false },
+                        { name: "長洲", desc: "太平清醮、張保仔洞、芒果糯米糍", trip: "day", visited: false },
+                        { name: "坪洲", desc: "寧靜小島，文青打卡", trip: "day", visited: false },
+                        { name: "淺水灣", desc: "半月形海灘，豪宅區", trip: "day", visited: true, revisit: false }
+                    ]
+                }
+            },
+            visited: []
+        }
+    };
+
+    // ==================== 美食資料 ====================
+    // spicy: 'none'=不辣, 'mild'=微辣, 'hot'=辣
+    // kidFriendly: true=兒童友好
+    // nearSpot: 附近景點
+    const foodData = {
+        zhuhai: {
+            name: "珠海",
+            categories: {
+                hotpot: {
+                    name: "火鍋",
+                    icon: "🍲",
+                    items: [
+                        { name: "撈王鍋物料理", desc: "胡椒豬肚雞火鍋，湯底濃郁", area: "拱北/橫琴", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "海底撈", desc: "服務一流，多分店，有兒童餐", area: "各區", spicy: "mild", kidFriendly: true, visited: false },
+                        { name: "巴奴毛肚火鍋", desc: "毛肚鮮嫩，菌湯鍋底", area: "華發商都", spicy: "mild", kidFriendly: true, visited: false },
+                        { name: "小龍坎火鍋", desc: "川味火鍋，牛油鍋底", area: "拱北", spicy: "hot", kidFriendly: false, visited: false }
+                    ]
+                },
+                farmfood: {
+                    name: "農家菜",
+                    icon: "🥬",
+                    items: [
+                        { name: "斗門農家菜", desc: "走地雞、河鮮、時令蔬菜", area: "斗門", spicy: "none", kidFriendly: true, nearSpot: "嶺南大地百草園", visited: false },
+                        { name: "會同村農家菜", desc: "古村內用餐，環境清幽", area: "唐家灣", spicy: "none", kidFriendly: true, nearSpot: "會同古村", visited: false },
+                        { name: "家和四季農莊", desc: "親子農場內用餐", area: "斗門", spicy: "none", kidFriendly: true, nearSpot: "家和四季生態農場", visited: false },
+                        { name: "綠手指農園餐廳", desc: "有機蔬菜、自家農場直供", area: "金灣平沙", spicy: "none", kidFriendly: true, nearSpot: "綠手指有機農園", visited: false },
+                        { name: "白蕉禾蟲農莊", desc: "斗門特色禾蟲、河鮮", area: "斗門白蕉", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "蓮洲農家菜", desc: "水鄉風味、基圍蝦、走地雞", area: "斗門蓮洲", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "五山梅溪農莊", desc: "山泉水豆腐、柴火走地雞", area: "香洲梅溪", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "黃楊山農家菜", desc: "黃楊山腳下，山水豆腐花", area: "斗門", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "御溫泉農莊", desc: "溫泉附近，泡溫泉後享用", area: "斗門", spicy: "none", kidFriendly: true, nearSpot: "御溫泉", visited: false },
+                        { name: "上沖農莊", desc: "舊村風味、地道農家菜", area: "香洲上沖", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "南屏農家菜", desc: "脆肉鯇專門店、本地河鮮", area: "南屏", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "橫琴蠔場農莊", desc: "新鮮橫琴蠔、海鮮大餐", area: "橫琴", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "金灣三灶農莊", desc: "海鮮+農家菜結合", area: "金灣三灶", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "蛇平飯店", desc: "本地農家菜餐廳，地道風味", area: "珠海", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                xinjiang: {
+                    name: "新疆菜",
+                    icon: "🍖",
+                    items: [
+                        { name: "胡楊林新疆菜", desc: "大盤雞、羊肉串、手抓飯", area: "拱北", spicy: "mild", kidFriendly: true, visited: false },
+                        { name: "西域食府", desc: "新疆烤肉、拉條子", area: "香洲", spicy: "mild", kidFriendly: true, visited: false }
+                    ]
+                },
+                cafe: {
+                    name: "咖啡廳",
+                    icon: "☕",
+                    items: [
+                        { name: "Manner Coffee", desc: "精品咖啡，多分店", area: "各區", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "橫琴網紅咖啡店", desc: "花海長廊附近打卡點", area: "橫琴", spicy: "none", kidFriendly: true, nearSpot: "橫琴花海長廊", visited: false }
+                    ]
+                },
+                local: {
+                    name: "當地特色",
+                    icon: "🦐",
+                    items: [
+                        { name: "十六潮大排檔", desc: "橫琴本地人推薦，海鮮新鮮實惠，環境熱鬧", area: "橫琴新區寶中路118號", spicy: "mild", kidFriendly: true, nearSpot: "橫琴花海長廊/長隆", visited: false },
+                        { name: "灣仔海鮮街", desc: "新鮮海鮮大排檔，價格實惠", area: "灣仔", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "唐家灣海鮮市場", desc: "買海鮮現場加工", area: "唐家灣", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "橫琴蠔", desc: "當地特產，肥美鮮甜", area: "橫琴", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "南屏脆肉鯇", desc: "口感爽脆，清甜可口", area: "南屏", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "斗門艾餅", desc: "傳統點心，艾草香氣", area: "斗門", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                }
+            }
+        },
+        zhongshan: {
+            name: "中山",
+            categories: {
+                hotpot: {
+                    name: "火鍋",
+                    icon: "🍲",
+                    items: [
+                        { name: "石岐乳鴿火鍋", desc: "中山特色，乳鴿鮮嫩", area: "石岐", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                farmfood: {
+                    name: "農家菜",
+                    icon: "🥬",
+                    items: [
+                        { name: "桂南村農家菜", desc: "旗溪農場直送食材", area: "桂南村", spicy: "none", kidFriendly: true, nearSpot: "桂南村 + 旗溪生態農場", visited: false },
+                        { name: "五桂山農莊", desc: "山水豆腐、走地雞", area: "五桂山", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                xinjiang: {
+                    name: "新疆菜",
+                    icon: "🍖",
+                    items: [
+                        { name: "絲路駝鈴新疆餐廳", desc: "大盤雞、烤羊排", area: "石岐", spicy: "mild", kidFriendly: true, visited: false }
+                    ]
+                },
+                cafe: {
+                    name: "咖啡廳",
+                    icon: "☕",
+                    items: [
+                        { name: "詹園咖啡館", desc: "古典園林內品咖啡", area: "詹園", spicy: "none", kidFriendly: true, nearSpot: "中山詹園", visited: false }
+                    ]
+                },
+                local: {
+                    name: "當地特色",
+                    icon: "🍜",
+                    items: [
+                        { name: "石岐乳鴿", desc: "皮脆肉嫩，中山名菜", area: "石岐", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "小欖菊花宴", desc: "菊花入饌，清香獨特", area: "小欖", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "沙溪扣肉", desc: "肥而不膩，入口即化", area: "沙溪", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "三鄉瀨粉", desc: "爽滑可口，傳統早餐", area: "三鄉", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                }
+            }
+        },
+        guangzhou: {
+            name: "廣州",
+            categories: {
+                hotpot: {
+                    name: "火鍋/打邊爐",
+                    icon: "🍲",
+                    items: [
+                        { name: "東山口打邊爐", desc: "老廣州風味", area: "東山口", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "炳勝私廚", desc: "高端粵菜火鍋", area: "天河", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                farmfood: {
+                    name: "農家菜",
+                    icon: "🥬",
+                    items: [
+                        { name: "從化溪頭村農家菜", desc: "山泉水豆腐、走地雞", area: "從化", spicy: "none", kidFriendly: true, nearSpot: "從化天人山水度假區", visited: false },
+                        { name: "增城農莊", desc: "荔枝木燒雞、絲苗米飯", area: "增城", spicy: "none", kidFriendly: true, nearSpot: "增城白水寨", visited: false }
+                    ]
+                },
+                xinjiang: {
+                    name: "新疆菜",
+                    icon: "🍖",
+                    items: [
+                        { name: "耶里夏麗新疆餐廳", desc: "連鎖新疆菜，環境好", area: "天河/越秀", spicy: "mild", kidFriendly: true, visited: false },
+                        { name: "西域胡楊", desc: "大盤雞、烤全羊", area: "海珠", spicy: "mild", kidFriendly: true, visited: false }
+                    ]
+                },
+                northwest: {
+                    name: "西北菜",
+                    icon: "🍜",
+                    items: [
+                        { name: "馬記永蘭州牛肉麵", desc: "蘭州拉麵", area: "各區", spicy: "mild", kidFriendly: true, visited: false }
+                    ]
+                },
+                cafe: {
+                    name: "咖啡廳",
+                    icon: "☕",
+                    items: [
+                        { name: "東山口文藝咖啡店群", desc: "網紅咖啡店聚集地", area: "東山口", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "長隆度假區咖啡廳", desc: "園區內休息好去處", area: "番禺", spicy: "none", kidFriendly: true, nearSpot: "長隆野生動物世界", visited: false }
+                    ]
+                },
+                local: {
+                    name: "當地特色",
+                    icon: "🥟",
+                    items: [
+                        { name: "白天鵝賓館早茶", desc: "老牌五星級酒店早茶", area: "沙面", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "陶陶居", desc: "百年老店，傳統粵式點心", area: "各區", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "白切雞", desc: "皮爽肉滑，廣州必吃", area: "各區", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "燒鵝", desc: "皮脆肉嫩，油香四溢", area: "各區", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "腸粉", desc: "銀記、布拉等老店", area: "各區", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "煲仔飯", desc: "鍋巴香脆，臘味飄香", area: "各區", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                }
+            }
+        },
+        foshan: {
+            name: "佛山",
+            categories: {
+                hotpot: {
+                    name: "火鍋/粥底火鍋",
+                    icon: "🍲",
+                    items: [
+                        { name: "德記粥底火鍋", desc: "順德老字號，粥底涮肉一絕，人均80", area: "順德大良", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "嘉順粥底火鍋", desc: "本地人推薦，粥底鮮甜，涮牛肉必試", area: "順德容桂", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "毋米粥火鍋（佛山店）", desc: "連鎖品牌，無米粥底健康清淡", area: "禪城區", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "阿強酸菜魚", desc: "酸菜魚火鍋，湯底開胃", area: "順德大良", spicy: "mild", kidFriendly: true, visited: false }
+                    ]
+                },
+                farmfood: {
+                    name: "農家菜",
+                    icon: "🥬",
+                    items: [
+                        { name: "逢簡水鄉金源農莊", desc: "水鄉河鮮、走地雞，環境一流", area: "逢簡水鄉內", spicy: "none", kidFriendly: true, nearSpot: "逢簡水鄉", visited: false },
+                        { name: "西樵山雲端農莊", desc: "山泉水煮雞、時令野菜，山景用餐", area: "西樵山腳", spicy: "none", kidFriendly: true, nearSpot: "西樵山", visited: false },
+                        { name: "聚福山莊", desc: "順德本地人聚餐熱點，走地雞必點", area: "順德北滘", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                cafe: {
+                    name: "咖啡廳",
+                    icon: "☕",
+                    items: [
+                        { name: "南風古灶陶瓷咖啡館", desc: "陶藝主題，在古窯旁喝咖啡", area: "南風古灶景區內", spicy: "none", kidFriendly: true, nearSpot: "南風古灶", visited: false }
+                    ]
+                },
+                local: {
+                    name: "順德名店",
+                    icon: "🍜",
+                    items: [
+                        { name: "鹹魚肉蟹煲（阿婆牛雜）", desc: "順德名物，鹹香惹味", area: "順德大良", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "黃但記陳村粉", desc: "百年老店，陳村粉薄如紙", area: "順德陳村", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "民信老舖雙皮奶", desc: "順德雙皮奶鼻祖，百年老店", area: "順德大良", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "仁信雙皮奶", desc: "另一家雙皮奶名店，奶香濃郁", area: "順德大良", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "歡姐倫教糕", desc: "倫教糕專門店，口感爽滑", area: "順德倫教", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "龍的酒樓", desc: "老牌順德菜，魚生、煎焗魚嘴必點", area: "順德大良", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "豬肉婆私房菜", desc: "網紅順德菜，人均100，需預約", area: "順德大良", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "紅星光發煲仔飯", desc: "煲仔飯名店，鍋巴香脆", area: "順德大良", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                }
+            }
+        },
+        yangjiang: {
+            name: "陽江",
+            categories: {
+                hotpot: {
+                    name: "火鍋",
+                    icon: "🍲",
+                    items: [
+                        { name: "海鮮火鍋", desc: "當地海鮮涮火鍋", area: "海陵島", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                farmfood: {
+                    name: "農家菜",
+                    icon: "🥬",
+                    items: [
+                        { name: "陽春農家菜", desc: "山區土雞、時令野菜", area: "陽春", spicy: "none", kidFriendly: true, nearSpot: "春灣風景區", visited: false }
+                    ]
+                },
+                local: {
+                    name: "當地特色",
+                    icon: "🦐",
+                    items: [
+                        { name: "程村蠔", desc: "陽西特產，肥美鮮甜", area: "陽西", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "豬腸碌", desc: "陽江特色小吃，米粉卷", area: "各區", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "春砂仁蒸排骨", desc: "陽春特產入饌", area: "陽春", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                }
+            }
+        },
+        qingyuan: {
+            name: "清遠",
+            categories: {
+                hotpot: {
+                    name: "火鍋",
+                    icon: "🍲",
+                    items: [
+                        { name: "清遠雞火鍋", desc: "清遠雞涮火鍋", area: "清城", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                farmfood: {
+                    name: "農家菜",
+                    icon: "🥬",
+                    items: [
+                        { name: "英德農家菜", desc: "竹筒飯、山坑魚", area: "英德", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "連州農莊", desc: "臘味、走地雞", area: "連州", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                local: {
+                    name: "當地特色",
+                    icon: "🍜",
+                    items: [
+                        { name: "清遠雞", desc: "廣東三大名雞之一，皮爽肉滑", area: "各區", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "洲心燒肉", desc: "脆皮燒肉，肥而不膩", area: "清城", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "刀切糍", desc: "傳統米食", area: "各區", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                }
+            }
+        },
+        huizhou: {
+            name: "惠州",
+            categories: {
+                hotpot: {
+                    name: "火鍋",
+                    icon: "🍲",
+                    items: [
+                        { name: "客家牛肉火鍋", desc: "新鮮牛肉涮鍋", area: "惠城", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                farmfood: {
+                    name: "農家菜",
+                    icon: "🥬",
+                    items: [
+                        { name: "南昆山農家菜", desc: "山坑螺、竹筒雞", area: "南昆山", spicy: "none", kidFriendly: true, nearSpot: "南昆山溫德姆酒店", visited: false }
+                    ]
+                },
+                local: {
+                    name: "當地特色",
+                    icon: "🦐",
+                    items: [
+                        { name: "巽寮灣海鮮", desc: "漁港直送，新鮮實惠", area: "巽寮灣", spicy: "none", kidFriendly: true, nearSpot: "巽寮灣", visited: false },
+                        { name: "雙月灣海鮮街", desc: "海邊大排檔", area: "雙月灣", spicy: "none", kidFriendly: true, nearSpot: "雙月灣", visited: false },
+                        { name: "惠州鹽焗雞", desc: "客家名菜，皮香肉滑", area: "各區", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "梅菜扣肉", desc: "惠州梅菜出名", area: "各區", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                }
+            }
+        },
+        jiangmen: {
+            name: "江門",
+            categories: {
+                farmfood: {
+                    name: "農家菜",
+                    icon: "🥬",
+                    items: [
+                        { name: "開平碉樓農家菜", desc: "碉樓附近農家菜", area: "開平", spicy: "none", kidFriendly: true, nearSpot: "開平碉樓", visited: false }
+                    ]
+                },
+                local: {
+                    name: "當地特色",
+                    icon: "🍜",
+                    items: [
+                        { name: "台山黃鱔飯", desc: "鱔香飯焦，傳統名菜", area: "台山", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "開平馬崗鵝", desc: "皮脆肉嫩", area: "開平", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "恩平瀨粉", desc: "爽滑彈牙", area: "恩平", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "外海麵", desc: "竹升麵做法", area: "外海", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                }
+            }
+        },
+        hongkong: {
+            name: "香港",
+            categories: {
+                local: {
+                    name: "必試名店",
+                    icon: "⭐",
+                    items: [
+                        { name: "九記牛腩", desc: "中環百年老店，清湯牛腩、咖喱牛腩", area: "中環", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "甘牌燒鵝", desc: "米芝蓮一星，皮脆肉嫩多汁", area: "灣仔", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "一樂燒鵝", desc: "米芝蓮一星，老字號燒味", area: "中環", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                dimsum: {
+                    name: "點心茶樓",
+                    icon: "🥟",
+                    items: [
+                        { name: "添好運", desc: "全球最便宜米芝蓮餐廳，酥皮叉燒包", area: "各區", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "蓮香樓", desc: "百年老店，傳統粵式點心", area: "中環", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "陸羽茶室", desc: "老香港味道，復古裝潢", area: "中環", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                noodles: {
+                    name: "麵食粉面",
+                    icon: "🍜",
+                    items: [
+                        { name: "麥奀記雲吞麵", desc: "百年老店，細蓉雲吞", area: "佐敦", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "何洪記粥麵專家", desc: "米芝蓮一星，鮮蝦雲吞麵", area: "銅鑼灣", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "沾仔記", desc: "招牌魚蛋粉、雲吞麵", area: "威靈頓街", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                dessert: {
+                    name: "甜品糖水",
+                    icon: "🍨",
+                    items: [
+                        { name: "義順牛奶公司", desc: "薑汁撞奶、雙皮奶", area: "佐敦/銅鑼灣", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "許留山", desc: "芒果甜品專門店", area: "各區", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "聰嫂星級甜品", desc: "楊枝甘露、芒果班戟", area: "佐敦", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                unique: {
+                    name: "港式特色（澳門少見）",
+                    icon: "🦐",
+                    items: [
+                        { name: "避風塘炒蟹", desc: "喜記、橋底辣蟹，蒜香辣味", area: "銅鑼灣", spicy: "hot", kidFriendly: false, visited: false },
+                        { name: "車仔麵", desc: "自選配料，香港街頭味", area: "各區", spicy: "both", kidFriendly: true, visited: false },
+                        { name: "煲仔飯", desc: "四季煲仔飯、坤記，鍋巴香脆", area: "各區", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "菠蘿油", desc: "金華冰廳、檀島咖啡餅店", area: "各區", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "絲襪奶茶", desc: "蘭芳園、金鳳茶餐廳", area: "中環", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "港式燒臘", desc: "再興燒臘、龍記燒味", area: "灣仔/中環", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                },
+                cafe: {
+                    name: "冰室茶餐廳",
+                    icon: "☕",
+                    items: [
+                        { name: "華嫂冰室", desc: "菠蘿油、凍檸茶", area: "北角", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "金鳳茶餐廳", desc: "絲襪奶茶、雞批", area: "灣仔", spicy: "none", kidFriendly: true, visited: false },
+                        { name: "蘭芳園", desc: "絲襪奶茶鼻祖", area: "中環", spicy: "none", kidFriendly: true, visited: false }
+                    ]
+                }
+            }
+        }
+    };
+
+    // ==================== 狀態管理 ====================
+    let currentCity = 'all';
+    let activePrefers = [];
+    let activeTypes = [];
+    let activeTrips = [];
+    let searchQuery = '';
+    let currentPage = 'home'; // home, food, map, plan
+    // 美食篩選
+    let activeFoodTypes = [];
+    let activeSpicy = [];
+    let activeKidFriendly = false;
+    // 季節篩選
+    let activeSeasons = [];
+
+    // ==================== 初始化 ====================
+    function init() {
+        renderContent();
+        setupEventListeners();
+        updateStats();
     }
-    $("strip").innerHTML=h;
-    $("strip").querySelectorAll("button.day").forEach(b=>b.addEventListener("click",()=>{when=b.dataset.d;render()}));
-  }
-  function render(){
-    if(when!=="all"&&when!=="weekend"&&!pool().some(e=>(e.days||[]).includes(when))) when="all";
-    const ren=(data.renren||[]).filter(inWhen), de=(data.dede||[]).filter(inWhen);
-    const none=when==="all"?"今期冇推介活動":"呢段時間冇推介活動";
-    $("renren").innerHTML=ren.length?ren.map(card).join(""):`<p class="empty">${none}</p>`;
-    $("dede").innerHTML=de.length?de.map(card).join(""):`<p class="empty">${when==="all"?"今期冇專為嬰兒而設的節目":none}</p>`;
-    $("ren-count").textContent=ren.length?`${ren.length}項`:"";
-    $("sec-ren").hidden=(who==="de");
-    $("sec-de").hidden=(who==="ren");
-    document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.w===who)));
-    strip();
-  }
-  function alerts(d){
-    const a=(d.urgent||[]).map(r=>`<a class="alert" href="${esc(r.url||"#")}" target="_blank" rel="noopener"><span class="ic" aria-hidden="true">⏰</span><span><b>${esc(r.title)}</b><span>${esc(r.text)}</span></span><span class="go" aria-hidden="true">›</span></a>`);
-    const r=(d.register||[]).map(x=>`<a class="alert reg" href="${esc(x.url||"#")}" target="_blank" rel="noopener"><span class="ic" aria-hidden="true">📝</span><span><b>${x.is_new?"🆕 ":""}${x.grade?esc(x.grade)+"｜":""}${esc(x.title)}</b><span>活動 ${esc(x.date)}｜報名截止 ${esc(x.deadline)}</span></span><span class="go" aria-hidden="true">›</span></a>`);
-    $("alerts").innerHTML=[...r,...a].join("");
-  }
-  function log(d){
-    const u=d.unverified||[], x=d.excluded||[], s=d.sources||[];
-    $("log-sum").textContent=`查證紀錄｜未查證 ${u.length}・已排除 ${x.length}・來源 ${s.length}`;
-    $("log-body").innerHTML=
-      `<h4>未查證</h4>${u.length?u.map(r=>`<p><b>${esc(r.title)}</b>：${esc(r.layer)}，${esc(r.reason)}${r.url?` <a href="${esc(r.url)}" target="_blank" rel="noopener">自己睇 ↗</a>`:""}</p>`).join(""):"<p>全部已核實</p>"}`+
-      `<h4>已排除（C 不推薦）</h4>${x.length?x.map(r=>`<p><b>${esc(r.title)}</b>：${esc(r.reason)}</p>`).join(""):"<p>—</p>"}`+
-      `<h4>資料來源</h4>${s.map(r=>`<p><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.label)} ↗</a></p>`).join("")}`;
-  }
-  function boot(d){
-    data=d; weekendSet=computeWeekend();
-    $("upd").innerHTML=`更新 ${esc(d.updated_label||d.updated)}<br>${esc(d.window_label||"")}`;
-    if(d.warning){$("warn").textContent=d.warning;$("warn").hidden=false}
-    alerts(d); log(d); render();
-  }
-  document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{who=b.dataset.w;try{localStorage.setItem("kidsWho",who)}catch(e){}render()}));
-  const SB="https://nikijysochwdfcqscgby.supabase.co/rest/v1/kids_events?id=eq.current&select=data",SBK="sb_publishable_CXS1oAAM1sTtfalOTFMOTA_FSZwA4gU";
-  const local=()=>fetch("data.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()});
-  fetch(SB,{cache:"no-store",headers:{apikey:SBK}}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})
-    .then(rows=>{if(!rows||!rows[0]||!rows[0].data)throw new Error("empty");return rows[0].data}).catch(local).then(boot)
-    .catch(()=>{$("renren").innerHTML='<p class="empty">資料暫時載入唔到，請稍後再試。</p>'});
-})();
-</script>
 
+    // ==================== 渲染內容 ====================
+    function renderContent() {
+        const container = document.getElementById('mainContent');
+        let html = '';
+
+        const citiesToShow = currentCity === 'all'
+            ? Object.keys(spotsData)
+            : [currentCity];
+
+        citiesToShow.forEach(cityKey => {
+            const city = spotsData[cityKey];
+            if (!city) return;
+
+            let cityHtml = '';
+            let hasVisibleSpots = false;
+
+            // 城市標題
+            cityHtml += `
+                <div class="city-section" data-city="${cityKey}">
+                    <div class="city-header">
+                        <span class="city-icon">${city.icon}</span>
+                        <span class="city-name">${city.name}</span>
+                        <span class="city-info">${city.distance} | ${city.transport}</span>
+                    </div>
+            `;
+
+            // 遍歷類型（按偏好排序：爸媽共同 > 爸爸愛 > 媽媽愛 > 小朋友愛 > 其他）
+            const typeKeys = Object.keys(city.types);
+            typeKeys.sort((a, b) => {
+                const typeA = city.types[a];
+                const typeB = city.types[b];
+
+                // 計算偏好優先級
+                const getPriority = (type) => {
+                    if (!type.prefer || type.prefer.length === 0) return 4; // 無偏好
+                    if (type.prefer.includes('dad') && type.prefer.includes('mom')) return 0; // 爸媽共同
+                    if (type.prefer.includes('dad')) return 1; // 爸爸愛
+                    if (type.prefer.includes('mom')) return 2; // 媽媽愛
+                    if (type.prefer.includes('kid')) return 3; // 小朋友愛
+                    return 4; // 其他
+                };
+
+                return getPriority(typeA) - getPriority(typeB);
+            });
+
+            typeKeys.forEach(typeKey => {
+                const type = city.types[typeKey];
+
+                // 篩選景點
+                const filteredSpots = type.spots.filter(spot => {
+                    // 搜尋篩選
+                    if (searchQuery && !spot.name.includes(searchQuery) && !spot.desc.includes(searchQuery)) {
+                        return false;
+                    }
+                    // 偏好篩選（嚴格匹配模式）
+                    if (activePrefers.length > 0) {
+                        if (!type.prefer || type.prefer.length === 0) return false;
+                        const hasPrefer = activePrefers.some(p => {
+                            // 爸媽共同：必須同時包含 dad 和 mom
+                            if (p === 'parents') return type.prefer.includes('dad') && type.prefer.includes('mom');
+                            // 爸爸愛：只匹配純爸爸（包含 dad 但不包含 mom）
+                            if (p === 'dad') return type.prefer.includes('dad') && !type.prefer.includes('mom');
+                            // 媽媽愛：只匹配純媽媽（包含 mom 但不包含 dad）
+                            if (p === 'mom') return type.prefer.includes('mom') && !type.prefer.includes('dad');
+                            // 小朋友愛：包含 kid 即可
+                            return type.prefer.includes(p);
+                        });
+                        if (!hasPrefer) return false;
+                    }
+                    // 類型篩選
+                    if (activeTypes.length > 0 && !activeTypes.includes(typeKey)) {
+                        // 特殊處理：多種類型映射
+                        const typeMapping = {
+                            nature: ['nature'],
+                            village: ['village'],
+                            resort: ['resort'],
+                            history: ['history'],
+                            animal: ['animal'],
+                            park: ['park', 'factory', 'museum', 'zhengjiaseries'],
+                            island: ['island']
+                        };
+                        let matched = false;
+                        activeTypes.forEach(at => {
+                            if (typeMapping[at] && typeMapping[at].includes(typeKey)) matched = true;
+                        });
+                        if (!matched) return false;
+                    }
+                    // 行程篩選 (OR 邏輯：滿足任一條件即顯示)
+                    if (activeTrips.length > 0) {
+                        let tripMatch = false;
+                        if (activeTrips.includes('day') && spot.trip === 'day') tripMatch = true;
+                        if (activeTrips.includes('overnight') && spot.trip === 'overnight') tripMatch = true;
+                        if (activeTrips.includes('visited') && spot.visited) tripMatch = true;
+                        if (activeTrips.includes('annual') && spot.annual) tripMatch = true;
+                        if (!tripMatch) return false;
+                    }
+                    // 季節篩選
+                    if (activeSeasons.length > 0) {
+                        if (!spot.season) return true; // 無季節限制的景點始終顯示
+                        const spotSeasons = spot.season.split(',');
+                        const hasMatchingSeason = activeSeasons.some(s => spotSeasons.includes(s));
+                        if (!hasMatchingSeason) return false;
+                    }
+                    return true;
+                });
+
+                // 排序優化：年卡優先、未去過優先
+                filteredSpots.sort((a, b) => {
+                    // 1. 年卡優先
+                    if (a.annual && !b.annual) return -1;
+                    if (!a.annual && b.annual) return 1;
+                    // 2. 未去過優先
+                    if (!a.visited && b.visited) return -1;
+                    if (a.visited && !b.visited) return 1;
+                    // 3. 會再去的優先於不會再去的
+                    if (a.visited && b.visited) {
+                        if (a.revisit === true && b.revisit !== true) return -1;
+                        if (a.revisit !== true && b.revisit === true) return 1;
+                        if (a.revisit !== false && b.revisit === false) return -1;
+                        if (a.revisit === false && b.revisit !== false) return 1;
+                    }
+                    return 0;
+                });
+
+                if (filteredSpots.length === 0) return;
+
+                // 計算實際會顯示的卡片數量（排除會被 visited 跳過的）
+                const visibleCardCount = filteredSpots.filter(spot => {
+                    if (spot.visited) {
+                        return activeTrips.includes('annual') && spot.annual;
+                    }
+                    return true;
+                }).length;
+
+                if (visibleCardCount === 0 && !(activeTrips.includes('visited'))) return;
+                if (visibleCardCount > 0) hasVisibleSpots = true;
+
+                // 偏好標籤
+                let preferHtml = '';
+                if (type.prefer && type.prefer.length > 0) {
+                    if (type.prefer.includes('dad') && type.prefer.includes('mom')) {
+                        preferHtml = '<span class="type-prefer parents">👨👩 爸媽共同</span>';
+                    } else if (type.prefer.includes('dad')) {
+                        preferHtml = '<span class="type-prefer dad">👨 爸爸愛</span>';
+                    } else if (type.prefer.includes('mom')) {
+                        preferHtml = '<span class="type-prefer mom">👩 媽媽愛</span>';
+                    } else if (type.prefer.includes('kid')) {
+                        preferHtml = '<span class="type-prefer kid">👶 小朋友愛</span>';
+                    }
+                }
+
+                cityHtml += `
+                    <div class="type-section">
+                        <div class="type-header">
+                            <span class="type-icon">${type.icon}</span>
+                            <span class="type-name">${type.name}</span>
+                            ${preferHtml}
+                        </div>
+                        <div class="spots-grid">
+                `;
+
+                filteredSpots.forEach(spot => {
+                    // 已去過的景點通常不顯示卡片（在底部列表顯示）
+                    // 但當選擇「年卡」篩選時，年卡景點即使已去過也要顯示卡片
+                    if (spot.visited) {
+                        if (!(activeTrips.includes('annual') && spot.annual)) {
+                            return;
+                        }
+                    }
+
+                    let badgesHtml = '';
+                    if (spot.annual) badgesHtml += '<span class="spot-badge annual">⭐ 年卡</span>';
+                    if (spot.trip === 'day') {
+                        badgesHtml += '<span class="spot-badge day">☀️ 一日遊</span>';
+                    } else {
+                        badgesHtml += '<span class="spot-badge overnight">🌙 兩天一夜</span>';
+                    }
+
+                    // 生成景點偏好標籤（繼承自類型）
+                    let spotPreferHtml = '';
+                    if (type.prefer && type.prefer.length > 0) {
+                        if (type.prefer.includes('dad') && type.prefer.includes('mom')) {
+                            spotPreferHtml = '<span class="spot-prefer parents">👨👩 爸媽共同</span>';
+                        } else if (type.prefer.includes('dad')) {
+                            spotPreferHtml = '<span class="spot-prefer dad">👨 爸爸愛</span>';
+                        } else if (type.prefer.includes('mom')) {
+                            spotPreferHtml = '<span class="spot-prefer mom">👩 媽媽愛</span>';
+                        } else if (type.prefer.includes('kid')) {
+                            spotPreferHtml = '<span class="spot-prefer kid">👶 小朋友愛</span>';
+                        }
+                    }
+
+                    // 季節標籤
+                    let seasonHtml = '';
+                    const seasonMap = { spring: '🌸', summer: '🌞', autumn: '🍂', winter: '❄️' };
+                    if (spot.season) {
+                        const seasons = typeof spot.season === 'string' ? spot.season.split(',') : spot.season;
+                        if (seasons.length > 0 && seasons.length < 4) {
+                            seasonHtml = seasons.map(s => `<span class="spot-season ${s.trim()}">${seasonMap[s.trim()] || s}</span>`).join('');
+                        }
+                    }
+
+                    // 導航按鈕
+                    const navBtn = `<a href="https://uri.amap.com/search?keyword=${encodeURIComponent(spot.name)}" target="_blank" class="nav-btn" title="高德地圖導航"><i class="fas fa-map-marker-alt"></i></a>`;
+
+                    // 距離、地址、營業時間、交通、滴滴、Tips
+                    // 距離顏色：<15km = 綠色(近) | 15-40km = 橙色(中) | >40km = 紅色(遠)
+                    const kmClass = spot.km ? (spot.km < 15 ? 'km-near' : (spot.km < 40 ? 'km-mid' : 'km-far')) : '';
+                    const kmHtml = spot.km ? `<div class="spot-info-row ${kmClass}"><i class="fas fa-route"></i> 距灣仔口岸 <strong>${spot.km}km</strong></div>` : '';
+                    const addressHtml = spot.address ? `<div class="spot-info-row"><i class="fas fa-map-pin"></i> ${spot.address}</div>` : '';
+                    const hoursHtml = spot.hours ? `<div class="spot-info-row"><i class="fas fa-clock"></i> ${spot.hours}</div>` : '';
+                    const transportHtml = spot.transport ? `<div class="spot-info-row"><i class="fas fa-bus"></i> ${spot.transport}</div>` : '';
+                    const didiHtml = spot.didiInfo ? `<div class="spot-info-row didi"><i class="fas fa-taxi"></i> ${spot.didiInfo}</div>` : '';
+                    const tipsHtml = spot.tips ? `<div class="spot-tips"><i class="fas fa-lightbulb"></i> <strong>Tips：</strong>${spot.tips}</div>` : '';
+
+                    // 卡片邊框顏色（根據偏好類型）
+                    let cardBorderClass = '';
+                    if (type.prefer && type.prefer.length > 0) {
+                        if (type.prefer.includes('dad') && type.prefer.includes('mom')) cardBorderClass = 'border-parents';
+                        else if (type.prefer.includes('dad')) cardBorderClass = 'border-dad';
+                        else if (type.prefer.includes('mom')) cardBorderClass = 'border-mom';
+                        else if (type.prefer.includes('kid')) cardBorderClass = 'border-kid';
+                    }
+
+                    cityHtml += `
+                        <div class="spot-card ${cardBorderClass}">
+                            <div class="spot-header">
+                                <div class="spot-tags-top">${spotPreferHtml}${seasonHtml}</div>
+                                <span class="spot-name">${spot.name}</span>
+                                ${spot.address ? `<div class="spot-address">${spot.address}</div>` : ''}
+                            </div>
+                            <div class="spot-body">
+                                <p class="spot-desc">${spot.desc}</p>
+                                <div class="spot-info-grid">
+                                    ${kmHtml}
+                                    ${hoursHtml}
+                                    ${transportHtml}
+                                    ${didiHtml}
+                                </div>
+                                ${tipsHtml}
+                            </div>
+                            <div class="spot-footer">
+                                <div class="spot-badges">${badgesHtml}</div>
+                                <div class="spot-actions">
+                                    <a href="javascript:void(0)" onclick="openAmapNav('${(spot.address || spot.name).replace(/'/g, "\\'")}')" class="spot-action-btn primary" title="導航">
+                                        <i class="fas fa-location-arrow"></i>
+                                        <span>導航</span>
+                                    </a>
+                                    <a href="javascript:void(0)" onclick="openXiaohongshu('${spot.name.replace(/'/g, "\\'")}')" class="spot-action-btn" title="小紅書">
+                                        <i class="fas fa-book-open"></i>
+                                        <span>攻略</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                cityHtml += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            // 收集已去過的景點（從 spots 中），需要考慮偏好篩選
+            let visitedWillRevisit = [];  // 會再去
+            let visitedNoRevisit = [];    // 不會再去
+            let visitedNormal = [];       // 一般已去過
+
+            Object.entries(city.types).forEach(([typeKey, type]) => {
+                // 檢查偏好篩選（嚴格匹配模式）
+                if (activePrefers.length > 0) {
+                    if (!type.prefer || type.prefer.length === 0) return;
+                    const hasPrefer = activePrefers.some(p => {
+                        if (p === 'parents') return type.prefer.includes('dad') && type.prefer.includes('mom');
+                        if (p === 'dad') return type.prefer.includes('dad') && !type.prefer.includes('mom');
+                        if (p === 'mom') return type.prefer.includes('mom') && !type.prefer.includes('dad');
+                        return type.prefer.includes(p);
+                    });
+                    if (!hasPrefer) return;
+                }
+                // 檢查類型篩選
+                if (activeTypes.length > 0) {
+                    const typeMapping = {
+                        nature: ['nature'],
+                        village: ['village'],
+                        resort: ['resort'],
+                        history: ['history'],
+                        animal: ['animal'],
+                        park: ['park', 'factory', 'museum', 'zhengjiaseries'],
+                        island: ['island']
+                    };
+                    let matched = activeTypes.includes(typeKey);
+                    if (!matched) {
+                        activeTypes.forEach(at => {
+                            if (typeMapping[at] && typeMapping[at].includes(typeKey)) matched = true;
+                        });
+                    }
+                    if (!matched) return;
+                }
+
+                type.spots.forEach(spot => {
+                    // 搜尋篩選
+                    if (searchQuery && !spot.name.includes(searchQuery) && !spot.desc.includes(searchQuery)) {
+                        return;
+                    }
+                    // 季節篩選
+                    if (activeSeasons.length > 0 && spot.season) {
+                        const spotSeasons = spot.season.split(',');
+                        const hasMatchingSeason = activeSeasons.some(s => spotSeasons.includes(s));
+                        if (!hasMatchingSeason) return;
+                    }
+
+                    if (spot.visited) {
+                        if (spot.revisit === true) {
+                            visitedWillRevisit.push(spot.name);
+                        } else if (spot.revisit === false) {
+                            visitedNoRevisit.push(spot.name);
+                        } else {
+                            visitedNormal.push(spot.name);
+                        }
+                    }
+                });
+            });
+
+            // 添加 city.visited 中的記錄
+            if (city.visited) {
+                city.visited.forEach(v => {
+                    if (v.includes('不用再去') || v.includes('不會再去')) {
+                        visitedNoRevisit.push(v.replace(/（.*）/g, ''));
+                    } else {
+                        visitedNormal.push(v);
+                    }
+                });
+            }
+
+            // 已去過區塊
+            if ((visitedNoRevisit.length > 0 || visitedNormal.length > 0 || visitedWillRevisit.length > 0) &&
+                (activeTrips.length === 0 || activeTrips.includes('visited'))) {
+                cityHtml += `<div class="visited-section">`;
+
+                if (visitedNoRevisit.length > 0) {
+                    cityHtml += `
+                        <div class="visited-header" style="color: #999;">
+                            <i class="fas fa-times-circle"></i>
+                            已去過（不會再去）
+                        </div>
+                        <div class="visited-list">
+                            ${visitedNoRevisit.map(v => `<span class="visited-item" style="text-decoration: line-through;">${v}</span>`).join('')}
+                        </div>
+                    `;
+                }
+
+                if (visitedNormal.length > 0) {
+                    cityHtml += `
+                        <div class="visited-header" style="color: var(--primary-dark);">
+                            <i class="fas fa-check-circle"></i>
+                            已去過
+                        </div>
+                        <div class="visited-list">
+                            ${visitedNormal.map(v => `<span class="visited-item visited-normal">${v}</span>`).join('')}
+                        </div>
+                    `;
+                }
+
+                if (visitedWillRevisit.length > 0) {
+                    cityHtml += `
+                        <div class="visited-header" style="color: var(--success);">
+                            <i class="fas fa-redo"></i>
+                            已去過（會再去）💚
+                        </div>
+                        <div class="visited-list">
+                            ${visitedWillRevisit.map(v => `<span class="visited-item visited-revisit">${v}</span>`).join('')}
+                        </div>
+                    `;
+                }
+
+                cityHtml += `</div>`;
+            }
+
+            cityHtml += '</div>';
+
+            // 只有在有可見景點時才顯示城市區塊
+            // 如果有偏好/類型篩選，city.visited 不應該導致城市顯示（因為無法對這些記錄進行偏好篩選）
+            const hasActiveFilters = activePrefers.length > 0 || activeTypes.length > 0 || searchQuery;
+            if (hasVisibleSpots || (!hasActiveFilters && city.visited && city.visited.length > 0) ||
+                (visitedWillRevisit.length > 0 || visitedNoRevisit.length > 0 || visitedNormal.length > 0)) {
+                html += cityHtml;
+            }
+        });
+
+        if (!html) {
+            html = `
+                <div class="empty-state">
+                    <i class="fas fa-search"></i>
+                    <h3>沒有找到符合條件的景點</h3>
+                    <p>試試調整篩選條件</p>
+                </div>
+            `;
+        }
+
+        container.innerHTML = html;
+    }
+
+    // ==================== 更新統計 ====================
+    function updateStats() {
+        let total = 0, visited = 0;
+
+        Object.values(spotsData).forEach(city => {
+            Object.values(city.types).forEach(type => {
+                type.spots.forEach(spot => {
+                    total++;
+                    if (spot.visited) visited++;
+                });
+            });
+            if (city.visited) total += city.visited.length;
+            if (city.visited) visited += city.visited.length;
+        });
+
+        document.getElementById('totalSpots').textContent = total;
+        document.getElementById('visitedSpots').textContent = visited;
+        document.getElementById('toVisitSpots').textContent = total - visited;
+    }
+
+    // ==================== 事件監聽 ====================
+    function setupEventListeners() {
+        // 城市切換
+        document.querySelectorAll('.city-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.city-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentCity = tab.dataset.city;
+                renderContent();
+            });
+        });
+
+        // 偏好篩選
+        document.querySelectorAll('.filter-tag[data-prefer]').forEach(tag => {
+            tag.addEventListener('click', () => {
+                tag.classList.toggle('active');
+                const prefer = tag.dataset.prefer;
+                if (tag.classList.contains('active')) {
+                    activePrefers.push(prefer);
+                } else {
+                    activePrefers = activePrefers.filter(p => p !== prefer);
+                }
+                renderContent();
+            });
+        });
+
+        // 類型篩選
+        document.querySelectorAll('.filter-tag[data-type]').forEach(tag => {
+            tag.addEventListener('click', () => {
+                tag.classList.toggle('active');
+                const type = tag.dataset.type;
+                if (tag.classList.contains('active')) {
+                    activeTypes.push(type);
+                } else {
+                    activeTypes = activeTypes.filter(t => t !== type);
+                }
+                renderContent();
+            });
+        });
+
+        // 行程篩選
+        document.querySelectorAll('.filter-tag[data-trip]').forEach(tag => {
+            tag.addEventListener('click', () => {
+                tag.classList.toggle('active');
+                const trip = tag.dataset.trip;
+                if (tag.classList.contains('active')) {
+                    activeTrips.push(trip);
+                } else {
+                    activeTrips = activeTrips.filter(t => t !== trip);
+                }
+                renderContent();
+            });
+        });
+
+        // 搜尋 (根據當前頁面渲染)
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value.trim();
+            if (currentPage === 'food') {
+                renderFoodPage();
+            } else {
+                renderContent();
+            }
+        });
+
+        // 回到頂部
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                btn.classList.add('show');
+            } else {
+                btn.classList.remove('show');
+            }
+        });
+
+        // 底部導航
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = item.dataset.page;
+                switchPage(page);
+            });
+        });
+
+        // 美食類型篩選
+        document.querySelectorAll('.filter-tag[data-foodtype]').forEach(tag => {
+            tag.addEventListener('click', () => {
+                tag.classList.toggle('active');
+                const foodtype = tag.dataset.foodtype;
+                if (tag.classList.contains('active')) {
+                    activeFoodTypes.push(foodtype);
+                } else {
+                    activeFoodTypes = activeFoodTypes.filter(t => t !== foodtype);
+                }
+                renderFoodPage();
+            });
+        });
+
+        // 辣度篩選
+        document.querySelectorAll('.filter-tag[data-spicy]').forEach(tag => {
+            tag.addEventListener('click', () => {
+                tag.classList.toggle('active');
+                const spicy = tag.dataset.spicy;
+                if (tag.classList.contains('active')) {
+                    activeSpicy.push(spicy);
+                } else {
+                    activeSpicy = activeSpicy.filter(s => s !== spicy);
+                }
+                renderFoodPage();
+            });
+        });
+
+        // 兒童友好篩選
+        document.querySelectorAll('.filter-tag[data-kidfriendly]').forEach(tag => {
+            tag.addEventListener('click', () => {
+                tag.classList.toggle('active');
+                activeKidFriendly = tag.classList.contains('active');
+                renderFoodPage();
+            });
+        });
+
+        // 季節篩選
+        document.querySelectorAll('.filter-tag[data-season]').forEach(tag => {
+            tag.addEventListener('click', () => {
+                tag.classList.toggle('active');
+                const season = tag.dataset.season;
+                if (tag.classList.contains('active')) {
+                    activeSeasons.push(season);
+                } else {
+                    activeSeasons = activeSeasons.filter(s => s !== season);
+                }
+                renderContent();
+            });
+        });
+    }
+
+    function doSearch() {
+        searchQuery = document.getElementById('searchInput').value.trim();
+        if (currentPage === 'food') {
+            renderFoodPage();
+        } else {
+            renderContent();
+        }
+    }
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ==================== 清空篩選 ====================
+    function clearFilter(type) {
+        if (type === 'prefer') {
+            activePrefers = [];
+            document.querySelectorAll('.filter-tag[data-prefer]').forEach(t => t.classList.remove('active'));
+        } else if (type === 'type') {
+            activeTypes = [];
+            document.querySelectorAll('.filter-tag[data-type]').forEach(t => t.classList.remove('active'));
+        } else if (type === 'trip') {
+            activeTrips = [];
+            document.querySelectorAll('.filter-tag[data-trip]').forEach(t => t.classList.remove('active'));
+        } else if (type === 'foodtype') {
+            activeFoodTypes = [];
+            document.querySelectorAll('.filter-tag[data-foodtype]').forEach(t => t.classList.remove('active'));
+        } else if (type === 'foodfilter') {
+            activeSpicy = [];
+            activeKidFriendly = false;
+            document.querySelectorAll('.filter-tag[data-spicy]').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.filter-tag[data-kidfriendly]').forEach(t => t.classList.remove('active'));
+        } else if (type === 'season') {
+            activeSeasons = [];
+            document.querySelectorAll('.filter-tag[data-season]').forEach(t => t.classList.remove('active'));
+        }
+
+        if (currentPage === 'home') {
+            renderContent();
+        } else if (currentPage === 'food') {
+            renderFoodPage();
+        }
+    }
+
+    // ==================== 美食頁面渲染 ====================
+    function renderFoodPage() {
+        const container = document.getElementById('mainContent');
+        let html = '';
+
+        const citiesToShow = currentCity === 'all'
+            ? Object.keys(foodData)
+            : [currentCity];
+
+        citiesToShow.forEach(cityKey => {
+            const city = foodData[cityKey];
+            if (!city) return;
+
+            const cityInfo = spotsData[cityKey];
+            let cityHasItems = false;
+
+            let cityHtml = `
+                <div class="city-section" data-city="${cityKey}">
+                    <div class="city-header">
+                        <span class="city-icon">${cityInfo?.icon || '🍽️'}</span>
+                        <span class="city-name">${city.name} 美食</span>
+                        <span class="city-info">${cityInfo?.distance || ''}</span>
+                    </div>
+            `;
+
+            // 遍歷美食類別
+            Object.keys(city.categories).forEach(catKey => {
+                const category = city.categories[catKey];
+
+                // 類型篩選
+                if (activeFoodTypes.length > 0 && !activeFoodTypes.includes(catKey)) {
+                    return;
+                }
+
+                // 篩選項目
+                const filteredItems = category.items.filter(item => {
+                    // 搜尋篩選
+                    if (searchQuery && !item.name.includes(searchQuery) && !item.desc.includes(searchQuery)) {
+                        return false;
+                    }
+                    // 辣度篩選
+                    if (activeSpicy.length > 0 && !activeSpicy.includes(item.spicy)) {
+                        return false;
+                    }
+                    // 兒童友好篩選
+                    if (activeKidFriendly && !item.kidFriendly) {
+                        return false;
+                    }
+                    return true;
+                });
+
+                if (filteredItems.length === 0) return;
+                cityHasItems = true;
+
+                cityHtml += `
+                    <div class="type-section">
+                        <div class="type-header">
+                            <span class="type-icon">${category.icon}</span>
+                            <span class="type-name">${category.name}</span>
+                        </div>
+                        <div class="spots-grid">
+                `;
+
+                filteredItems.forEach(item => {
+                    // 辣度和兒童友好標籤
+                    let tagHtml = '';
+                    if (item.spicy === 'none') tagHtml += '<span class="spot-tag" style="background:#E8F5E0;color:#4A7C3F;">😊 不辣</span>';
+                    else if (item.spicy === 'mild') tagHtml += '<span class="spot-tag" style="background:#FFF3E0;color:#E65100;">🌶️ 可辣可不辣</span>';
+                    else if (item.spicy === 'hot') tagHtml += '<span class="spot-tag" style="background:#FFEBEE;color:#C62828;">🔥 辣</span>';
+                    if (item.kidFriendly) tagHtml += '<span class="spot-tag" style="background:#E3F2FD;color:#1565C0;">👶 兒童友好</span>';
+
+                    // 附近景點
+                    let nearSpotHtml = '';
+                    if (item.nearSpot) {
+                        nearSpotHtml = `<span class="spot-tag" style="background:#FCE4EC;color:#C2185B;">📍 近 ${item.nearSpot}</span>`;
+                    }
+
+                    // 美食卡片邊框顏色（兒童友好=黃色邊框）
+                    const foodBorderClass = item.kidFriendly ? 'border-kid' : '';
+
+                    cityHtml += `
+                        <div class="spot-card ${item.visited ? 'visited' : ''} ${foodBorderClass}">
+                            <div class="spot-header">
+                                <span class="spot-name">${item.name}</span>
+                                <div class="spot-badges">
+                                    ${item.visited ? '<span class="spot-badge visited">✅ 已吃</span>' : ''}
+                                </div>
+                            </div>
+                            <div class="spot-body">
+                                <p class="spot-desc">${item.desc}</p>
+                                <div class="spot-tags">${tagHtml}${nearSpotHtml}</div>
+                                <div class="spot-info-grid" style="margin-top:10px;">
+                                    <div class="spot-info-row"><i class="fas fa-map-pin"></i> ${item.area}</div>
+                                </div>
+                            </div>
+                            <div class="spot-footer">
+                                <div class="spot-badges"></div>
+                                <div class="spot-actions">
+                                    <a href="javascript:void(0)" onclick="openAmapNav('${(item.name + ' ' + item.area).replace(/'/g, "\\'")}')" class="spot-action-btn primary" title="導航">
+                                        <i class="fas fa-location-arrow"></i>
+                                        <span>導航</span>
+                                    </a>
+                                    <a href="javascript:void(0)" onclick="openXiaohongshu('${item.name.replace(/'/g, "\\'")}')" class="spot-action-btn" title="小紅書">
+                                        <i class="fas fa-book-open"></i>
+                                        <span>攻略</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                cityHtml += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            cityHtml += '</div>';
+
+            if (cityHasItems) {
+                html += cityHtml;
+            }
+        });
+
+        if (!html) {
+            html = `
+                <div class="empty-state">
+                    <i class="fas fa-utensils"></i>
+                    <h3>沒有找到美食</h3>
+                    <p>試試調整篩選條件</p>
+                </div>
+            `;
+        }
+
+        container.innerHTML = html;
+    }
+
+    // ==================== 頁面切換 ====================
+    function switchPage(page) {
+        currentPage = page;
+
+        // 更新導航欄狀態
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+            if (item.dataset.page === page) {
+                item.classList.add('active');
+            }
+        });
+
+        // 更新篩選欄顯示
+        const spotFilters = document.getElementById('spotFilters');
+        const foodFilters = document.getElementById('foodFilters');
+
+        if (page === 'food') {
+            spotFilters.style.display = 'none';
+            foodFilters.style.display = 'block';
+        } else if (page === 'home') {
+            spotFilters.style.display = 'block';
+            foodFilters.style.display = 'none';
+        } else {
+            spotFilters.style.display = 'none';
+            foodFilters.style.display = 'none';
+        }
+
+        // 渲染對應頁面
+        if (page === 'home') {
+            renderContent();
+        } else if (page === 'food') {
+            renderFoodPage();
+        } else if (page === 'route') {
+            renderRoutePage();
+        }
+
+        scrollToTop();
+    }
+
+    // ==================== 快速查找頁面 ====================
+    function renderRoutePage() {
+        const container = document.getElementById('mainContent');
+
+        // 收集所有景點作為目的地選項
+        let allSpots = [];
+        Object.keys(spotsData).forEach(cityKey => {
+            const city = spotsData[cityKey];
+            Object.values(city.types).forEach(type => {
+                type.spots.forEach(spot => {
+                    allSpots.push({ name: spot.name, city: city.name });
+                });
+            });
+        });
+
+        // 起點選項
+        const origins = [
+            { name: "澳門（關閘）", value: "澳門關閘" },
+            { name: "港珠澳大橋（澳門口岸）", value: "港珠澳大橋澳門口岸" },
+            { name: "珠海（拱北口岸）", value: "珠海拱北口岸" },
+            { name: "珠海（橫琴口岸）", value: "珠海橫琴口岸" },
+            { name: "珠海（灣仔口岸）", value: "珠海灣仔口岸" },
+            { name: "香港（西九龍站）", value: "香港西九龍站" },
+            { name: "香港（尖沙咀）", value: "香港尖沙咀" },
+            { name: "廣州（廣州南站）", value: "廣州南站" }
+        ];
+
+        container.innerHTML = `
+            <div style="padding: 20px;">
+                <h2 style="margin-bottom: 20px; color: var(--charcoal-fabric);">
+                    <i class="fas fa-route"></i> 快速查找
+                </h2>
+                <p style="color: #666; margin-bottom: 20px;">使用高德地圖查找路線，支持自訂起點和終點</p>
+
+                <!-- 地圖區域 -->
+                <div id="routeMap" style="width: 100%; height: 250px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);"></div>
+
+                <!-- 自訂輸入區 -->
+                <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 15px;">
+                    <h3 style="font-size: 1rem; color: var(--charcoal-fabric); margin-bottom: 15px;">
+                        <i class="fas fa-edit" style="color: var(--primary-dark);"></i> 自訂導航
+                    </h3>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--charcoal-fabric);">
+                            <i class="fas fa-map-pin" style="color: var(--success);"></i> 起點（輸入地址或地名）
+                        </label>
+                        <input type="text" id="customOrigin" placeholder="例如：拱北口岸、珠海長隆、廣州塔..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--charcoal-fabric);">
+                            <i class="fas fa-flag-checkered" style="color: var(--burnt-orange);"></i> 終點（輸入地址或地名）
+                        </label>
+                        <input type="text" id="customDestination" placeholder="例如：長隆海洋王國、中山詹園、佛山祖廟..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
+                    </div>
+                    <button onclick="openCustomAmapRoute()" style="width: 100%; padding: 12px; background: var(--primary-gradient); color: var(--header-bg); border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <i class="fas fa-external-link-alt"></i> 使用自訂地點導航
+                    </button>
+                </div>
+
+                <!-- 快速選擇區 -->
+                <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <h3 style="font-size: 1rem; color: var(--charcoal-fabric); margin-bottom: 15px;">
+                        <i class="fas fa-list" style="color: var(--primary-dark);"></i> 快速選擇
+                    </h3>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--charcoal-fabric);">
+                            <i class="fas fa-map-pin" style="color: var(--success);"></i> 起點
+                        </label>
+                        <select id="routeOrigin" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
+                            ${origins.map(o => `<option value="${o.value}">${o.name}</option>`).join('')}
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--charcoal-fabric);">
+                            <i class="fas fa-flag-checkered" style="color: var(--burnt-orange);"></i> 目的地
+                        </label>
+                        <select id="routeDestination" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
+                            ${allSpots.map(s => `<option value="${s.name}">${s.name}（${s.city}）</option>`).join('')}
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--charcoal-fabric);">
+                            <i class="fas fa-car"></i> 出行方式
+                        </label>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <label style="display: flex; align-items: center; gap: 5px; padding: 8px 15px; background: var(--bg-cream); border-radius: 20px; cursor: pointer;">
+                                <input type="radio" name="travelMode" value="car" checked> 🚗 自駕
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 5px; padding: 8px 15px; background: var(--bg-cream); border-radius: 20px; cursor: pointer;">
+                                <input type="radio" name="travelMode" value="bus"> 🚌 公交
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 5px; padding: 8px 15px; background: var(--bg-cream); border-radius: 20px; cursor: pointer;">
+                                <input type="radio" name="travelMode" value="walk"> 🚶 步行
+                            </label>
+                        </div>
+                    </div>
+
+                    <button onclick="openAmapRoute()" style="width: 100%; padding: 15px; background: var(--burnt-orange); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <i class="fas fa-directions"></i> 打開高德地圖查看路線
+                    </button>
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background: #E3F2FD; border-radius: 8px;">
+                    <p style="color: #1565C0; font-size: 0.9rem;">
+                        <i class="fas fa-info-circle"></i> 提示：點擊按鈕後會自動跳轉到高德地圖App或網頁版，顯示詳細路線、預計時間和路況信息。
+                    </p>
+                </div>
+            </div>
+        `;
+
+        // 初始化 Leaflet 地圖
+        initRouteMap();
+    }
+
+    // 初始化路線地圖
+    function initRouteMap() {
+        // 澳門/珠海區域中心點
+        const map = L.map('routeMap').setView([22.25, 113.55], 9);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        // 主要景點標記
+        const markers = [
+            { lat: 22.2227, lng: 113.5521, name: "澳門", icon: "🎰" },
+            { lat: 22.2710, lng: 113.5767, name: "拱北口岸", icon: "🚪" },
+            { lat: 22.1266, lng: 113.5414, name: "長隆海洋王國", icon: "🐬" },
+            { lat: 22.5431, lng: 113.2530, name: "廣州長隆", icon: "🦁" },
+            { lat: 22.5129, lng: 113.3887, name: "佛山", icon: "🏯" },
+            { lat: 22.5218, lng: 113.3926, name: "中山", icon: "🏙️" }
+        ];
+
+        markers.forEach(m => {
+            L.marker([m.lat, m.lng])
+                .addTo(map)
+                .bindPopup(`<b>${m.icon} ${m.name}</b>`);
+        });
+    }
+
+    // 打開高德地圖路線（下拉選擇）
+    function openAmapRoute() {
+        const origin = document.getElementById('routeOrigin').value;
+        const destination = document.getElementById('routeDestination').value;
+        const travelMode = document.querySelector('input[name="travelMode"]:checked').value;
+
+        // 高德地圖路線規劃URI
+        // t: 0=自駕, 1=公交, 2=步行
+        const modeMap = { car: 0, bus: 1, walk: 2 };
+        const url = `https://uri.amap.com/navigation?from=0,0,${encodeURIComponent(origin)}&to=0,0,${encodeURIComponent(destination)}&mode=${modeMap[travelMode]}&callnative=1`;
+
+        window.open(url, '_blank');
+    }
+
+    // 打開高德地圖路線（自訂輸入）
+    function openCustomAmapRoute() {
+        const origin = document.getElementById('customOrigin').value.trim();
+        const destination = document.getElementById('customDestination').value.trim();
+
+        if (!origin || !destination) {
+            alert('請輸入起點和終點');
+            return;
+        }
+
+        // 高德地圖路線規劃URI（默認自駕）
+        const url = `https://uri.amap.com/navigation?from=0,0,${encodeURIComponent(origin)}&to=0,0,${encodeURIComponent(destination)}&mode=0&callnative=1`;
+
+        window.open(url, '_blank');
+    }
+
+    // 打開高德地圖導航（iOS 優化）
+    function openAmapNav(destination) {
+        // iOS 高德地圖 URI Scheme - 導航到目的地
+        const appUrl = `iosamap://navi?sourceApplication=webapp&poiname=${encodeURIComponent(destination)}&dev=0&style=2`;
+        const webUrl = `https://uri.amap.com/navigation?to=0,0,${encodeURIComponent(destination)}&mode=car&callnative=1`;
+
+        let hidden = false;
+        const startTime = Date.now();
+
+        // 監聽頁面可見性變化（App 打開時頁面會隱藏）
+        const visibilityHandler = () => {
+            if (document.hidden) {
+                hidden = true;
+            }
+        };
+        document.addEventListener('visibilitychange', visibilityHandler);
+
+        // 嘗試打開 App
+        window.location.href = appUrl;
+
+        // 1.5秒後檢查：如果頁面沒有被隱藏過，說明 App 沒有打開
+        setTimeout(() => {
+            document.removeEventListener('visibilitychange', visibilityHandler);
+            if (!hidden && Date.now() - startTime < 2000) {
+                // App 沒有打開，跳轉到網頁版
+                window.location.href = webUrl;
+            }
+        }, 1500);
+    }
+
+    // 打開小紅書搜索（iOS 優化）
+    function openXiaohongshu(keyword) {
+        // iOS 小紅書 URI Scheme
+        const appUrl = `xhsdiscover://search?keyword=${encodeURIComponent(keyword)}`;
+        const webUrl = `https://www.xiaohongshu.com/search_result?keyword=${encodeURIComponent(keyword)}&source=web_search_result_notes`;
+
+        let hidden = false;
+        const startTime = Date.now();
+
+        const visibilityHandler = () => {
+            if (document.hidden) {
+                hidden = true;
+            }
+        };
+        document.addEventListener('visibilitychange', visibilityHandler);
+
+        // 嘗試打開 App
+        window.location.href = appUrl;
+
+        // 1.5秒後檢查
+        setTimeout(() => {
+            document.removeEventListener('visibilitychange', visibilityHandler);
+            if (!hidden && Date.now() - startTime < 2000) {
+                // App 沒有打開，跳轉到網頁版
+                window.open(webUrl, '_blank');
+            }
+        }, 1500);
+    }
+
+    // 初始化
+    init();
+    </script>
+</body>
 </html>
