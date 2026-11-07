@@ -205,7 +205,7 @@ footer{font-size:12px;color:var(--muted);text-align:center}
     return h?`<div class="who">${h}</div>`:"";
   }
   function card(e){
-    const img=e.image?`<img class="bgimg" src="${esc(e.image)}" alt="" aria-hidden="true"><img class="fg" src="${esc(e.image)}" alt="${esc(e.title)} 海報" loading="lazy">`:`<div class="noimg" aria-hidden="true">${CATI[e.category]||"✨"}</div>`;
+    const img=e.image?`<img class="bgimg" src="${esc(e.image)}" alt="" aria-hidden="true"><img class="fg" src="${esc(e.image)}" alt="${esc(e.title)} 海報" loading="lazy" onerror="this.parentNode.querySelectorAll('img').forEach(i=>i.remove())">`:`<div class="noimg" aria-hidden="true">${CATI[e.category]||"✨"}</div>`;
     const g=e.grade==="A"?`<div class="grade A"><b>A</b>值得專程去</div>`:e.grade==="B"?`<div class="grade"><b>B</b>可以順道去</div>`:"";
     const flags=[e.status==="new"?'<span class="flag">新</span>':"",e.status==="updated"?'<span class="flag upd">更新</span>':"",e.status==="closing"?'<span class="flag sold">即將截止</span>':"",e.sold_out?'<span class="flag sold">已售罄</span>':""].join("");
     const tags=(e.tags||[]).filter(t=>t!=="演出").map(t=>`<span>${TAGI[t]||""} ${esc(t)}</span>`).join("");
@@ -281,7 +281,10 @@ footer{font-size:12px;color:var(--muted);text-align:center}
     alerts(d); log(d); render();
   }
   document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{who=b.dataset.w;try{localStorage.setItem("kidsWho",who)}catch(e){}render()}));
-  fetch("data.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}).then(boot)
+  const SB="https://nikijysochwdfcqscgby.supabase.co/rest/v1/kids_events?id=eq.current&select=data",SBK="sb_publishable_CXS1oAAM1sTtfalOTFMOTA_FSZwA4gU";
+  const local=()=>fetch("data.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()});
+  fetch(SB,{cache:"no-store",headers:{apikey:SBK}}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})
+    .then(rows=>{if(!rows||!rows[0]||!rows[0].data)throw new Error("empty");return rows[0].data}).catch(local).then(boot)
     .catch(()=>{$("renren").innerHTML='<p class="empty">資料暫時載入唔到，請稍後再試。</p>'});
 })();
 </script>
