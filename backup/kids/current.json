@@ -1,0 +1,1224 @@
+{
+ "dede": [
+  {
+   "id": "massage",
+   "age": "育有0–3歲幼兒家庭（主辦海報）",
+   "fee": "MOP 20／親子",
+   "reg": "需報名",
+   "days": [
+    "2026-11-24"
+   ],
+   "dede": true,
+   "tags": [
+    "親手做"
+   ],
+   "dates": "11月24日（二）",
+   "grade": "A",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-poster-mf-1019b-massage-566x800.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://moefriends.com/product/poster-mf-1019b-massage/",
+     "label": "萌友詳情（主辦海報）"
+    }
+   ],
+   "quota": "20組（2大1小或1大1小）",
+   "times": "18:30–19:30",
+   "title": "嬰幼兒按摩工作坊",
+   "venue": "婦聯樂滿家庭服務中心（氹仔湖畔大廈A區二樓C2）",
+   "status": "new",
+   "booking": "掃海報二維碼報名，報名至11月22日；查詢 2850 0160（倪姑娘）",
+   "summary": "跟導師學幫BB按摩，舒緩脹氣、幫助入睡。",
+   "weekend": false,
+   "category": "工作坊",
+   "reg_note": "11/22截止",
+   "sold_out": false,
+   "age_range": "0–3歲",
+   "dede_note": "德德當天約12週，在0–3歲對象內，由家長幫他按摩；可2大1小報名，帶毛巾及尿片，室內可放BB車",
+   "dede_level": "play",
+   "grade_basis": "主辦海報寫明對象為育有0–3歲幼兒家庭，由國際認可嬰兒按摩導師教家長親手幫BB按摩",
+   "quota_short": "20組",
+   "reliability": "aggregator",
+   "renren_note": "",
+   "venue_short": "氹仔湖畔",
+   "image_caption": "主辦方海報",
+   "reliability_note": "萌友轉載婦聯樂滿中心海報（社工局資助）"
+  }
+ ],
+ "note": "",
+ "renren": [
+  {
+   "id": "nature",
+   "age": "3至12歲小朋友及家長（環保局報名頁）",
+   "fee": "免費",
+   "reg": "需報名",
+   "days": [
+    "2026-11-14"
+   ],
+   "dede": false,
+   "tags": [
+    "高互動",
+    "親手做",
+    "接觸其他小朋友"
+   ],
+   "dates": "11月14日（六）",
+   "grade": "A",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F11%2Fmf-poster-s666-dspa-nature-640x800.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://apps.dspa.gov.mo/cepzweb/cenov_tc.aspx?pageNo=2",
+     "label": "環保局報名頁"
+    },
+    {
+     "url": "https://moefriends.com/product/poster-s666-dspa-nature/",
+     "label": "萌友詳情"
+    }
+   ],
+   "quota": "每場10組（1小童＋1成人）；11月13日環保局報名頁顯示上午餘7組、下午餘8組",
+   "times": "10:00 或 15:00（約2.5小時）",
+   "title": "親子「自然學堂」工作坊",
+   "venue": "路氹城生態保護區（一號門集合）",
+   "status": "updated",
+   "booking": "10月28日起先到先得，環保局網頁或致電 2876 2626 報名，未列截止日（額滿即止）；活動前一日短訊確認",
+   "summary": "跟導賞員走到觀鳥屋、採集植物，再親手製作植物浮游瓶。",
+   "weekend": true,
+   "category": "工作坊",
+   "reg_note": "額滿即止",
+   "sold_out": false,
+   "age_range": "3–12歲",
+   "dede_note": "官方每組只限1小童＋1成人，德德（當天11週）不是參加者；如同行需另一位大人在外照顧。郊外需防曬防蚊",
+   "dede_level": "",
+   "grade_basis": "環保局寫明導賞員帶小朋友走自然研習徑到觀鳥屋，就地採集植物，回自然教室親手製作植物浮游瓶；每場僅10組親子",
+   "quota_short": "上午餘7・下午餘8",
+   "reliability": "official",
+   "renren_note": "推薦參加：3歲起的親子場，要動手採集和製作，並與其他小朋友分組同行",
+   "venue_short": "路氹生態區",
+   "image_caption": "示意圖（萌友製作，非官方海報）",
+   "reliability_note": "環保局路氹城生態保護區報名頁（11月13日核對餘額）"
+  },
+  {
+   "id": "yaman",
+   "age": "官方未列年齡限制（旅遊局活動頁）",
+   "fee": "免費",
+   "reg": "免報名",
+   "days": [
+    "2026-11-14",
+    "2026-11-15",
+    "2026-11-20",
+    "2026-11-21",
+    "2026-11-22"
+   ],
+   "dede": true,
+   "tags": [
+    "車車",
+    "演出",
+    "高互動",
+    "親手做",
+    "接觸其他小朋友"
+   ],
+   "dates": "11月14–15日、20–22日",
+   "grade": "A",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F11%2Fmf-att-mgto14146-1203x800.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://www.macaotourism.gov.mo/zh-hant/events/whatson/14146",
+     "label": "旅遊局活動頁"
+    },
+    {
+     "url": "https://www.macau.grandprix.gov.mo/zh-hant/news/event/1881",
+     "label": "大賽車新聞稿"
+    },
+    {
+     "url": "https://moefriends.com/product/mgto-14146/",
+     "label": "萌友詳情"
+    }
+   ],
+   "quota": "官方未公布",
+   "times": "六日16:00–21:00；20日（五）18:00–21:00",
+   "title": "藝遊雅文周末藝文派對（含大賽車互動）",
+   "venue": "南灣．雅文湖畔（南灣湖景大馬路）",
+   "status": "same",
+   "booking": "免費入場，毋須報名（旅遊局活動頁寫明免費入場）；手作攤位安排以現場為準",
+   "summary": "湖邊看舞獅雜技，玩賽車模擬器和大賽車小遊戲。",
+   "weekend": true,
+   "category": "嘉年華",
+   "reg_note": "現場參加",
+   "sold_out": false,
+   "age_range": "未列年齡",
+   "dede_note": "戶外免費開放場地，可推BB車；傍晚舞台音量較大，建議帶耳罩並避開人多時段",
+   "dede_level": "enter",
+   "grade_basis": "文化局：街舞、雜技、舞獅演出及非遺手作攤位；大賽車組委會另在同場設大賽車互動體驗遊戲及賽車模擬器（11月13–15日、20–22日）",
+   "quota_short": "未公布",
+   "reliability": "official",
+   "renren_note": "推薦參加：有賽車模擬器和車車主題遊戲，演出可近距離看，攤位可動手",
+   "venue_short": "南灣雅文湖畔",
+   "image_caption": "往期現場照（文化局）",
+   "reliability_note": "旅遊局活動頁（文化局資料）＋大賽車組委會11月6日新聞稿"
+  },
+  {
+   "id": "senses",
+   "age": "3–6歲兒童及家長（主辦海報）",
+   "fee": "每家庭 MOP 80",
+   "reg": "需報名",
+   "days": [
+    "2026-11-15"
+   ],
+   "dede": false,
+   "tags": [
+    "高互動",
+    "接觸其他小朋友"
+   ],
+   "dates": "11月15日（日）",
+   "grade": "A",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-poster-fbd-2026-10-27-23-566x800.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://skhssco.org.mo:7910/activity/Listinfo?id=ATPC26621",
+     "label": "報名系統"
+    },
+    {
+     "url": "https://www.facebook.com/TPCFZ/photos/1617139487110970",
+     "label": "主辦方海報"
+    },
+    {
+     "url": "https://moefriends.com/product/poster-fbd-2026-10-27-23/",
+     "label": "萌友詳情"
+    }
+   ],
+   "quota": "8對親子",
+   "times": "10:30 – 12:30",
+   "title": "親子慢遊五感大自然：戶外體驗",
+   "venue": "黑沙水庫郊野公園（10:30 入口集合）",
+   "status": "same",
+   "booking": "網上報名（活動編號 ATPC26621）或親臨聖公會氹仔中心報名繳費，查詢 2882 5109；主辦未列截止日（額滿即止）；須填戶外活動聲明書",
+   "summary": "拿著五感任務卡在郊野公園尋寶，說出自己的感受。",
+   "weekend": true,
+   "category": "主題活動",
+   "reg_note": "額滿即止",
+   "sold_out": false,
+   "age_range": "3–6歲",
+   "dede_note": "官方對象3–6歲，德德（當天11週）不在對象內；郊野公園需防蚊防曬",
+   "dede_level": "",
+   "grade_basis": "主辦海報寫明專為3–6歲設計，以五感任務卡在郊野公園尋寶，每場僅8對親子",
+   "quota_short": "8對親子",
+   "reliability": "social",
+   "renren_note": "推薦參加：專為3–6歲設計，8對親子小班，容易和其他小朋友玩在一起",
+   "venue_short": "黑沙水庫",
+   "image_caption": "主辦方海報",
+   "reliability_note": "主辦方（聖公會氹仔中心）Facebook 海報；報名系統11月13日無法連線，未能核對餘額"
+  },
+  {
+   "id": "bbsports",
+   "age": "嘉年華0–6歲；親子定向3–6歲（主辦海報）",
+   "fee": "嘉年華免費｜親子定向 MOP 100／對",
+   "reg": "需報名",
+   "days": [
+    "2026-11-21"
+   ],
+   "dede": true,
+   "tags": [
+    "車車",
+    "高互動",
+    "接觸其他小朋友",
+    "親手做"
+   ],
+   "dates": "11月21日（六）",
+   "grade": "A",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F11%2Fmf-poster-fbw-2026-11-07-01-566x800.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://www.facebook.com/agom.fckc/photos/1140820845009534",
+     "label": "主辦方海報"
+    },
+    {
+     "url": "https://moefriends.com/product/poster-fbw-2026-11-07-01/",
+     "label": "萌友詳情"
+    }
+   ],
+   "quota": "親子定向20對；嘉年華未列",
+   "times": "親子定向 10:30–13:00｜嘉年華 14:30–17:00",
+   "title": "全能BB運動會暨嘉年華",
+   "venue": "工聯筷子基家庭及社區綜合服務中心（筷子基社屋快富樓3樓B）及筷子基休憩區",
+   "status": "same",
+   "booking": "親臨中心報名，查詢 2833 3902；嘉年華指定體驗及親子工作坊需預先報名，主辦未列截止日",
+   "summary": "玩車車區、感統體驗和工作坊，上午還有親子定向。",
+   "weekend": false,
+   "category": "嘉年華",
+   "reg_note": "親臨中心報名",
+   "sold_out": false,
+   "age_range": "0–6歲",
+   "dede_note": "可隨行（主辦寫明嘉年華0–6歲）：德德當天12週，只宜隨行；戶外休憩區人多，注意日曬；參加親子定向需另一位大人照顧德德",
+   "dede_level": "enter",
+   "grade_basis": "主辦海報寫明嘉年華設車車玩樂區、感統體驗、籽樂工房及親子工作坊；上午另有3–6歲親子定向任務",
+   "quota_short": "定向20對",
+   "reliability": "social",
+   "renren_note": "推薦參加：有車車玩樂區，定向和攤位都為3–6歲設計，可以和其他小朋友一起玩",
+   "venue_short": "筷子基",
+   "image_caption": "主辦方海報",
+   "reliability_note": "主辦方（工聯筷子基中心）Facebook 海報"
+  },
+  {
+   "id": "fieldfarm",
+   "age": "親子家庭（主辦未列年齡）",
+   "fee": "每人 MOP 30",
+   "reg": "需報名",
+   "days": [
+    "2026-11-21"
+   ],
+   "dede": true,
+   "tags": [
+    "高互動",
+    "親手做",
+    "接觸其他小朋友"
+   ],
+   "dates": "11月21日（六）",
+   "grade": "A",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-poster-fbd-2026-10-27-19-566x800.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://www.facebook.com/happyfamily.ugamm/photos/1535372741953454",
+     "label": "主辦方帖文"
+    },
+    {
+     "url": "https://moefriends.com/product/poster-fbd-2026-10-27-19/",
+     "label": "萌友詳情"
+    }
+   ],
+   "quota": "40人",
+   "times": "14:15 – 17:30",
+   "title": "樂在田野間：親子農耕體驗",
+   "venue": "澳門都市農場",
+   "status": "same",
+   "booking": "電話 2822 7556／2822 7505（肖姑娘）報名，先報先得，額滿即止",
+   "summary": "親手下田種菜、收成，和其他家庭一起當小農夫。",
+   "weekend": false,
+   "category": "主題活動",
+   "reg_note": "電話報名",
+   "sold_out": false,
+   "age_range": "未列年齡",
+   "dede_note": "可隨行（主辦寫明親子家庭）：按人收費，嬰兒是否計費需向主辦查詢；農場泥地不易推嬰兒車，建議用揹帶，注意防曬防蚊",
+   "dede_level": "enter",
+   "grade_basis": "主辦寫明透過農耕體驗及親子互動親近大自然，海報列明下田種植及收成",
+   "quota_short": "40人",
+   "reliability": "social",
+   "renren_note": "推薦參加：要親手下田，還有其他家庭一起；主辦未列最低年齡",
+   "venue_short": "都市農場",
+   "image_caption": "主辦方海報",
+   "reliability_note": "主辦方（街總樂駿中心）Facebook 帖文及海報"
+  },
+  {
+   "id": "lion",
+   "age": "3–12歲兒童及家長（主辦海報）",
+   "fee": "MOP 20／一對親子",
+   "reg": "需報名",
+   "days": [
+    "2026-11-22"
+   ],
+   "dede": false,
+   "tags": [
+    "演出",
+    "音樂",
+    "親手做",
+    "高互動"
+   ],
+   "dates": "11月22日（日）",
+   "grade": "A",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F11%2Fmf-poster-fbw-2026-11-07-03-566x800.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://www.facebook.com/TPCFZ/photos/1630881355736783",
+     "label": "主辦方帖文"
+    },
+    {
+     "url": "https://skhssco.org.mo:7910/activity/activityList/tpc",
+     "label": "報名系統"
+    },
+    {
+     "url": "https://moefriends.com/product/poster-fbw-2026-11-07-03/",
+     "label": "萌友詳情"
+    }
+   ],
+   "quota": "15對親子",
+   "times": "15:00 – 17:00",
+   "title": "舞獅文化體驗（親子工作坊）",
+   "venue": "黑沙環慕拉士大馬路南方工業大廈第二期一樓（集合）",
+   "status": "same",
+   "booking": "11月8日起掃海報二維碼網上報名或親臨聖公會氹仔中心，額滿即止（活動編號 ATPC26613），查詢 2882 5109",
+   "summary": "近距離觀賞舞獅和鼓樂，再與家長合力完成作品。",
+   "weekend": false,
+   "category": "文化體驗",
+   "reg_note": "額滿即止",
+   "sold_out": false,
+   "age_range": "3–12歲",
+   "dede_note": "官方對象3–12歲，現場有大聲敲擊環節，不適合12週嬰兒",
+   "dede_level": "",
+   "grade_basis": "主辦海報寫明近距離觀看獅承班鼓樂及舞獅表演，再由親子合力完成工作坊作品",
+   "quota_short": "15對親子",
+   "reliability": "social",
+   "renren_note": "推薦參加：3歲起可報名，看完真舞獅再動手做，15對親子小班",
+   "venue_short": "黑沙環",
+   "image_caption": "主辦方海報",
+   "reliability_note": "主辦方（聖公會氹仔中心）Facebook 帖文及海報"
+  },
+  {
+   "id": "percussion",
+   "age": "官方未列年齡（音樂節官網）",
+   "fee": "免費",
+   "reg": "免報名",
+   "days": [
+    "2026-11-13",
+    "2026-11-14",
+    "2026-11-15",
+    "2026-11-16",
+    "2026-11-17",
+    "2026-11-18",
+    "2026-11-19",
+    "2026-11-20",
+    "2026-11-21",
+    "2026-11-22"
+   ],
+   "dede": true,
+   "tags": [
+    "音樂",
+    "高互動"
+   ],
+   "dates": "即日至11月22日（每日）",
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Figallery.icm.gov.mo%2Fimage%2FNW--200445--1920.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://www.icm.gov.mo/fimm/38/cn/event/4836",
+     "label": "音樂節官網"
+    }
+   ],
+   "quota": "官方未公布",
+   "times": "10:00–20:00",
+   "title": "街頭環保打擊樂（宋玉生公園）",
+   "venue": "宋玉生公園（新口岸）",
+   "status": "new",
+   "booking": "戶外裝置，官網未設報名，開放時間內到場即可",
+   "summary": "用鼓棒或雙手敲打回收物料做成的樂器，試出不同節奏。",
+   "weekend": true,
+   "category": "主題活動",
+   "reg_note": "開放時間到場",
+   "sold_out": false,
+   "age_range": "未列年齡",
+   "dede_note": "戶外公園可推BB車；敲擊聲較大，建議在旁邊稍遠位置等候",
+   "dede_level": "enter",
+   "grade_basis": "文化局寫明以回收物料製成打擊樂器，公眾可拿鼓棒或用雙手敲打、試不同節奏；屬自助裝置，沒有樂手帶領",
+   "quota_short": "未公布",
+   "reliability": "official",
+   "renren_note": "推薦參加：可以自己動手敲敲打打，隨時去、不用排期，平日也開放",
+   "venue_short": "宋玉生公園",
+   "image_caption": "音樂節宣傳圖（文化局）",
+   "reliability_note": "第38屆澳門國際音樂節官網「全城享樂活動」"
+  },
+  {
+   "id": "wasteplay",
+   "age": "公眾（親子），未列年齡（主辦海報）",
+   "fee": "官方未公布",
+   "reg": "免報名",
+   "days": [
+    "2026-11-13",
+    "2026-11-14",
+    "2026-11-15",
+    "2026-11-17",
+    "2026-11-18",
+    "2026-11-19",
+    "2026-11-20",
+    "2026-11-21",
+    "2026-11-22",
+    "2026-11-24",
+    "2026-11-25",
+    "2026-11-26"
+   ],
+   "dede": true,
+   "tags": [
+    "高互動",
+    "接觸其他小朋友"
+   ],
+   "dates": "即日至2027年1月14日（逢星期一休息）",
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-poster-mf-1023-wasteplay-566x800.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://www.facebook.com/61585099435943/posts/122149208391169981",
+     "label": "主辦方帖文"
+    },
+    {
+     "url": "https://moefriends.com/product/poster-mf-1023-wasteplay/",
+     "label": "萌友詳情"
+    }
+   ],
+   "quota": "官方未公布",
+   "times": "10:00–13:00、14:00–19:00",
+   "title": "玩轉廢品遊樂場（環保加Fun站慕拉士）",
+   "venue": "環保加Fun站（慕拉士）：慕拉士大馬路望廈社屋望信樓第1座地下G",
+   "status": "new",
+   "booking": "主辦海報寫開放時間內到場；查詢 2883 7947",
+   "summary": "在紙皮迷宮、樹屋和滑梯之間爬上爬落，玩蛋托拼圖。",
+   "weekend": true,
+   "category": "主題活動",
+   "reg_note": "開放時間到場",
+   "sold_out": false,
+   "age_range": "未列年齡",
+   "dede_note": "主辦寫明親子對象；室內小空間，BB車可能要停在門外，建議用揹帶",
+   "dede_level": "enter",
+   "grade_basis": "主辦海報列明以紙皮、罐、蛋托、樽蓋砌成迷宮、樹屋、滑梯、陀螺盤、蛋托拼圖，小朋友可親身玩；場地屬社區環保站，規模較小",
+   "quota_short": "未公布",
+   "reliability": "aggregator",
+   "renren_note": "推薦參加：要自己爬、鑽、玩，常有其他小朋友同場，平日日間也可去",
+   "venue_short": "慕拉士",
+   "image_caption": "主辦方海報",
+   "reliability_note": "萌友轉載主辦方海報及 Facebook 帖文；開放安排未能在主辦方原帖核實"
+  },
+  {
+   "id": "gpcars",
+   "age": "官方未列年齡限制（大賽車官網）",
+   "fee": "免費",
+   "reg": "免報名",
+   "days": [
+    "2026-11-14",
+    "2026-11-15"
+   ],
+   "dede": true,
+   "tags": [
+    "車車"
+   ],
+   "dates": "11月14日（六）–15日（日）",
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fwww.macau.grandprix.gov.mo%2Fuploads%2Fattachment%2F2018-10%2Faecd39902bdafa102fc939652c00318f.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://www.macau.grandprix.gov.mo/zh-hant/promotion/73rd_opening_ceremony_and_car_show",
+     "label": "大賽車官網"
+    }
+   ],
+   "quota": "官方未公布",
+   "times": "14日15:00–21:00；15日10:00–17:00",
+   "title": "第73屆大賽車開幕禮暨車展",
+   "venue": "塔石廣場",
+   "status": "same",
+   "booking": "免費參觀，毋須報名；14日15:00同場舉行開幕禮",
+   "summary": "近距離看本屆真正參賽的賽車和電單車。",
+   "weekend": true,
+   "category": "主題活動",
+   "reg_note": "現場參觀",
+   "sold_out": false,
+   "age_range": "未列年齡",
+   "dede_note": "戶外廣場免費開放，可推BB車；14日下午開幕禮人多，建議15日上午去",
+   "dede_level": "enter",
+   "grade_basis": "組委會寫明展出多部本屆參賽戰車，市民可近距離觀賞；以觀看為主，沒有官方公布的兒童互動環節",
+   "quota_short": "未公布",
+   "reliability": "official",
+   "renren_note": "可入場：以看車為主，適合愛車的仁仁順道去，可與雅文湖畔的賽車遊戲同日安排",
+   "venue_short": "塔石廣場",
+   "image_caption": "大賽車標誌（官網），非活動海報",
+   "reliability_note": "大賽車官網推廣活動頁"
+  },
+  {
+   "id": "justice",
+   "age": "對象公眾（親子），官方未列年齡（主辦方海報）",
+   "fee": "免費",
+   "reg": "免報名",
+   "days": [
+    "2026-11-14",
+    "2026-11-21",
+    "2026-11-22"
+   ],
+   "dede": true,
+   "tags": [
+    "演出"
+   ],
+   "dates": "11月14日、21日、22日（另12月12–13日）",
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-poster-mf-1021-justice-643x800.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://www.facebook.com/thefunnyoldtreetheatre/photos/122205943976485858",
+     "label": "主辦方 Facebook"
+    },
+    {
+     "url": "https://moefriends.com/product/poster-mf-1021-justice/",
+     "label": "萌友詳情"
+    }
+   ],
+   "quota": "官方未公布",
+   "times": "每日16:00、17:00兩場",
+   "title": "說故事劇場《正義使者：晃晃星人之卷》",
+   "venue": "14日青洲坊空地；21日氹仔嘉模墟；22日康公廟前地",
+   "status": "same",
+   "booking": "毋須報名，到場觀賞（主辦方海報）",
+   "summary": "看演員只用身體動作演出外星怪物和超人的繪本故事。",
+   "weekend": true,
+   "category": "演出",
+   "reg_note": "到場觀賞",
+   "sold_out": false,
+   "age_range": "未列年齡",
+   "dede_note": "戶外前地免費觀賞，可推BB車；16:00仍有日曬，注意遮陽",
+   "dede_level": "enter",
+   "grade_basis": "怪老樹劇團以肢體說故事改編宮西達也繪本，戶外演出，每場30分鐘；互動程度未公布",
+   "quota_short": "未公布",
+   "reliability": "social",
+   "renren_note": "推薦參加：繪本故事改編，30分鐘長度適合4歲專注力，可與其他小朋友一起坐著看",
+   "venue_short": "各區廣場",
+   "image_caption": "主辦方海報",
+   "reliability_note": "主辦方 Facebook 海報（萌友整理）"
+  },
+  {
+   "id": "xinghai",
+   "age": "官方未列年齡（音樂節官網）",
+   "fee": "免費",
+   "reg": "免報名",
+   "days": [
+    "2026-11-14",
+    "2026-11-15"
+   ],
+   "dede": true,
+   "tags": [
+    "演出",
+    "音樂"
+   ],
+   "dates": "11月14日（六）、15日（日）",
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Figallery.icm.gov.mo%2Fimage%2FNW--200615--1920.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://www.icm.gov.mo/fimm/38/cn/event/4835",
+     "label": "音樂節官網"
+    },
+    {
+     "url": "https://www.dartmacau.com/blank-1/ao-men-guo-ji-yin-le-jie-wen-hua-duo-dian-xing-fu-duo-dian-ting-jian-xing-hai-ao-men-zhi-zi-xian-xing-hai-de-yin-le-qi-h",
+     "label": "吸點演出資料"
+    }
+   ],
+   "quota": "官方未公布",
+   "times": "15:00、17:00 兩場（各45分鐘）",
+   "title": "聽見星海：冼星海音樂奇幻之旅（戶外劇場）",
+   "venue": "14日白鴿巢公園；15日綠楊花園休憩區",
+   "status": "new",
+   "booking": "戶外免費演出，官網未設報名或購票安排",
+   "summary": "公園裡看演員用戲劇和現場樂器講音樂家的故事。",
+   "weekend": true,
+   "category": "演出",
+   "reg_note": "到場觀賞",
+   "sold_out": false,
+   "age_range": "未列年齡",
+   "dede_note": "戶外公園免費觀賞，可推BB車；現場樂器音量需留意，17:00場較不曬",
+   "dede_level": "enter",
+   "grade_basis": "文化局寫明以趣味戲劇加現場音樂演奏講述冼星海故事，帶領大小朋友認識其音樂人生；題材偏歷史人物，對4歲吸引力一般",
+   "quota_short": "未公布",
+   "reliability": "official",
+   "renren_note": "可入場：有真人演出和現場樂器，但以說故事為主、互動未公布",
+   "venue_short": "白鴿巢／綠楊",
+   "image_caption": "音樂節宣傳圖（文化局）",
+   "reliability_note": "第38屆澳門國際音樂節官網「全城享樂活動」"
+  },
+  {
+   "id": "startline",
+   "age": "官方寫適合親子及朋友，未列年齡（享澳門活動網）",
+   "fee": "免費",
+   "reg": "免報名",
+   "days": [
+    "2026-11-19",
+    "2026-11-20",
+    "2026-11-21",
+    "2026-11-22"
+   ],
+   "dede": true,
+   "tags": [
+    "車車",
+    "高互動"
+   ],
+   "dates": "11月19日（四）–22日（日）",
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F11%2Fmf-att-enjoymacao3136.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://www.enjoymacao.mo/zh/detail?id=3136",
+     "label": "享澳門活動網"
+    },
+    {
+     "url": "https://moefriends.com/product/enjoymacao-3136/",
+     "label": "萌友詳情"
+    }
+   ],
+   "quota": "官方未公布",
+   "times": "10:00–18:00",
+   "title": "快人一「拍」：東望洋起跑挑戰",
+   "venue": "澳門大賽車博物館",
+   "status": "new",
+   "booking": "免費入場，到博物館即可參加；每人每輪兩次機會",
+   "summary": "看紅燈全熄就拍掣起跑，和爸媽比誰反應快。",
+   "weekend": false,
+   "category": "主題活動",
+   "reg_note": "現場參加",
+   "sold_out": false,
+   "age_range": "未列年齡",
+   "dede_note": "室內博物館，官方未列嬰兒限制；大賽車期間人多，避開下午較好",
+   "dede_level": "enter",
+   "grade_basis": "旅遊局寫明大賽車博物館期間限定互動遊戲：紅燈全熄即按掣比反應，可兩至三人同時比賽；遊戲本身簡單，但館內有真賽車可看",
+   "quota_short": "未公布",
+   "reliability": "official",
+   "renren_note": "推薦參加：車車主題，要自己按掣和大人比賽，玩完可看館內賽車",
+   "venue_short": "大賽車博物館",
+   "image_caption": "主辦方宣傳圖",
+   "reliability_note": "享澳門活動網（文化局）＋旅遊局活動資料"
+  },
+  {
+   "id": "birds",
+   "age": "3至80歲澳門居民，18歲以下須家長陪同（一戶通）",
+   "fee": "MOP 5（3–12歲免費）",
+   "reg": "需報名",
+   "days": [
+    "2026-11-21",
+    "2026-11-22"
+   ],
+   "dede": false,
+   "tags": [
+    "動物",
+    "接觸其他小朋友"
+   ],
+   "dates": "11月21日（六）或22日（日）",
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-cover-4825.webp&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://activity.mo.gov.mo/activity-h5/activity-detail-web?activityId=2806314343&deptCode=9518",
+     "label": "一戶通 21日場"
+    },
+    {
+     "url": "https://moefriends.com/product/onestop-2806314343/",
+     "label": "萌友詳情"
+    }
+   ],
+   "quota": "每場20人",
+   "times": "15:30 – 17:30",
+   "title": "遷鳥千尋：濕地觀鳥",
+   "venue": "氹仔龍環葡韻（集合：氹仔嘉模泳池門口）",
+   "status": "same",
+   "booking": "一戶通先到先得，報名期10月20日至11月18日；只限澳門居民；除主辦取消外不設退款",
+   "summary": "聽講解後到濕地看雀鳥，學用望遠鏡觀察。",
+   "weekend": false,
+   "category": "主題活動",
+   "reg_note": "11/18截止",
+   "sold_out": false,
+   "age_range": "3歲以上",
+   "dede_note": "官方對象3歲起，德德（當天12週）不符報名資格；戶外濕地需防曬防蚊",
+   "dede_level": "",
+   "grade_basis": "市政署寫明有講座及觀鳥導賞，近距離觀賞濕地鳥類並學習觀察技巧；以講解為主，4歲吸引力一般",
+   "quota_short": "每場20人",
+   "reliability": "official",
+   "renren_note": "可入場：3歲起可報，有動物主題，但以導賞講解為主",
+   "venue_short": "龍環葡韻",
+   "image_caption": "示意圖（萌友製作）",
+   "reliability_note": "一戶通活動資料（萌友轉載市政署原文）"
+  },
+  {
+   "id": "icecream",
+   "age": "3至12歲（一戶通）",
+   "fee": "MOP 50",
+   "reg": "已截止・可候補",
+   "days": [
+    "2026-11-21"
+   ],
+   "dede": false,
+   "tags": [
+    "親手做"
+   ],
+   "dates": "11月21日（六）",
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-att-onestop2817940292-1176x800.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://activity.mo.gov.mo/activity-h5/activity-detail-web?activityId=2817940292&deptCode=650",
+     "label": "一戶通活動頁"
+    },
+    {
+     "url": "https://moefriends.com/product/onestop-2817940292/",
+     "label": "萌友詳情"
+    }
+   ],
+   "quota": "官方未公布",
+   "times": "13:30–14:30",
+   "title": "塔石藝墟：手繪雪糕紋花盆與多肉植藝（親子班）",
+   "venue": "澳門塔石廣場",
+   "status": "new",
+   "booking": "抽籤報名期10月22日至30日，報名已截止；每場開始前30分鐘派現場候補輪候籌，有中籤者逾時未到即由候補補上；親子班只可一名18歲以上大人陪同；需攜帶身份證；查詢 8399 6289",
+   "summary": "親子在雪糕筒造型花盆上彩繪，再種一盆多肉植物帶回家。",
+   "weekend": false,
+   "category": "工作坊",
+   "reg_note": "開場前30分鐘派籌",
+   "sold_out": false,
+   "age_range": "3–12歲",
+   "dede_note": "親子班只限一名大人陪同，需另一位大人在場外照顧德德；戶外廣場可推BB車等候",
+   "dede_level": "",
+   "grade_basis": "文化局手作坊，親子彩繪雪糕紋花盆並種多肉植物，3歲起可參加；內容屬A級，但抽籤已截止，只能現場候補",
+   "quota_short": "未公布",
+   "reliability": "official",
+   "renren_note": "推薦參加：3歲起適齡，要親手畫和種；可與同日16:00薑餅人碟一起排候補",
+   "venue_short": "塔石廣場",
+   "image_caption": "文化局示意圖",
+   "reliability_note": "一戶通文化局資料（萌友轉載）"
+  },
+  {
+   "id": "tapseac",
+   "age": "4至12歲（一戶通）",
+   "fee": "MOP 50",
+   "reg": "已截止・可候補",
+   "days": [
+    "2026-11-21"
+   ],
+   "dede": false,
+   "tags": [
+    "親手做"
+   ],
+   "dates": "11月21日（六）",
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-att-onestop2818299489-1067x800.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://activity.mo.gov.mo/activity-h5/activity-detail-web?activityId=2818299489&deptCode=650",
+     "label": "一戶通活動頁"
+    },
+    {
+     "url": "https://moefriends.com/product/onestop-2818299489/",
+     "label": "萌友詳情"
+    }
+   ],
+   "quota": "12組",
+   "times": "16:00–18:30",
+   "title": "塔石藝墟：陶藝彩繪薑餅人碟（親子班）",
+   "venue": "澳門塔石廣場",
+   "status": "same",
+   "booking": "抽籤報名期10月22日至30日，報名已截止；每場開始前30分鐘派現場候補輪候籌，有中籤者逾時未到即由候補補上；親子班只可一名18歲以上大人陪同；需攜帶身份證",
+   "summary": "親子一起在陶瓷碟上彩繪薑餅人。",
+   "weekend": false,
+   "category": "工作坊",
+   "reg_note": "開場前30分鐘派籌",
+   "sold_out": false,
+   "age_range": "4–12歲",
+   "dede_note": "官方對象4歲起，且只限一名大人陪同，需另一位大人在場外照顧德德",
+   "dede_level": "",
+   "grade_basis": "文化局手作坊，親子一起彩繪陶藝碟；內容屬A級，但抽籤已截止，只能現場候補",
+   "quota_short": "12組",
+   "reliability": "official",
+   "renren_note": "推薦參加：仁仁剛好達到最低年齡，要親手畫，候補成功機會不確定",
+   "venue_short": "塔石廣場",
+   "image_caption": "文化局示意圖",
+   "reliability_note": "一戶通文化局資料（萌友轉載）"
+  },
+  {
+   "id": "puppet",
+   "age": "3至12歲，須兒童及家長一同參與（一戶通）",
+   "fee": "MOP 10",
+   "reg": "需報名",
+   "days": [
+    "2026-11-22"
+   ],
+   "dede": false,
+   "tags": [
+    "演出"
+   ],
+   "dates": "11月22日（日）",
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-att-onestop2914761728-1282x800.jpg&w=640&q=72&output=jpg",
+   "links": [
+    {
+     "url": "https://activity.mo.gov.mo/activity-h5/activity-detail-web?activityId=2914761728&deptCode=9506",
+     "label": "一戶通"
+    },
+    {
+     "url": "https://moefriends.com/product/onestop-2914761728/",
+     "label": "萌友詳情"
+    }
+   ],
+   "quota": "40人",
+   "times": "15:30 – 16:30",
+   "title": "好公民布偶劇場：守護幸福社區",
+   "venue": "澳門公民教育資源中心（祐漢小販大樓四樓）",
+   "status": "same",
+   "booking": "一戶通先到先得，報名期11月3日至20日；不設退款；人數不足一半會提前一天取消",
+   "summary": "看布偶演出社區小故事，跟角色一起找回小狗阿旺。",
+   "weekend": false,
+   "category": "演出",
+   "reg_note": "11/20截止",
+   "sold_out": false,
+   "age_range": "3–12歲",
+   "dede_note": "官方對象3–12歲，室內場地未列嬰兒入場安排（未知）",
+   "dede_level": "",
+   "grade_basis": "市政署寫明為布偶劇場，講述和仔、愛愛搬入社區後闖禍、寵物阿旺走失再補救的故事，兒童須與家長一同參與",
+   "quota_short": "40人",
+   "reliability": "official",
+   "renren_note": "推薦參加：3歲起的親子布偶劇，故事簡單，有其他小朋友一起看",
+   "venue_short": "祐漢",
+   "image_caption": "主辦方圖片",
+   "reliability_note": "一戶通活動資料（萌友轉載市政署原文）"
+  }
+ ],
+ "urgent": [
+  {
+   "url": "https://apps.dspa.gov.mo/cepzweb/cenov_tc.aspx?pageNo=2",
+   "text": "明天舉行，上午餘7組、下午餘8組。",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F11%2Fmf-poster-s666-dspa-nature-640x800.jpg&w=640&q=72&output=jpg",
+   "title": "親子「自然學堂」11月14日"
+  },
+  {
+   "url": "https://skhssco.org.mo:7910/activity/Listinfo?id=ATPC26621",
+   "text": "僅8對親子，週日舉行。",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-poster-fbd-2026-10-27-23-566x800.jpg&w=640&q=72&output=jpg",
+   "title": "親子慢遊五感大自然 11月15日"
+  },
+  {
+   "url": "https://activity.mo.gov.mo/activity-h5/activity-detail-web?activityId=2817940292&deptCode=650",
+   "text": "抽籤已截止，只可在開場前30分鐘排隊候補。",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-att-onestop2817940292-1176x800.jpg&w=640&q=72&output=jpg",
+   "title": "塔石藝墟雪糕紋花盆 11月21日"
+  },
+  {
+   "url": "https://activity.mo.gov.mo/activity-h5/activity-detail-web?activityId=2818299489&deptCode=650",
+   "text": "抽籤已截止，只可在開場前30分鐘排隊候補。",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-att-onestop2818299489-1067x800.jpg&w=640&q=72&output=jpg",
+   "title": "塔石藝墟薑餅人碟 11月21日"
+  },
+  {
+   "url": "https://www.facebook.com/sinmeng2002/photos/1435329588758934",
+   "text": "11月16日公布錄取，需在此前報名。",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F11%2Fmf-poster-fbw-2026-11-07-05-566x800.jpg&w=640&q=72&output=jpg",
+   "title": "神香製作體驗工作坊"
+  }
+ ],
+ "sources": [
+  {
+   "url": "https://moefriends.com/audience/family/",
+   "label": "萌友 親子活動"
+  },
+  {
+   "url": "https://moefriends.com/events/2026-11/",
+   "label": "萌友 2026年11月"
+  },
+  {
+   "url": "https://www.dartmacau.com/upcomingshowmacau",
+   "label": "吸點 DART 即將舉行演出"
+  },
+  {
+   "url": "https://www.icm.gov.mo/hush/2026/cn",
+   "label": "文化局 hush! 2026"
+  },
+  {
+   "url": "https://www.om-macau.org/event/our-babies-first-concert/",
+   "label": "澳門樂團 寶寶的第一場音樂會"
+  },
+  {
+   "url": "https://www.macaotourism.gov.mo/zh-hant/events/calendar",
+   "label": "旅遊局 節日盛事表"
+  },
+  {
+   "url": "https://portal.dsedj.gov.mo/actregspace/gensystem/actreg/actreg/ActReg_view_page_2.jsp?search_id=38153&langsel=C",
+   "label": "教青局 家長學堂活動報名"
+  },
+  {
+   "url": "https://www.library.gov.mo/zh-hant/promotion-events/events/detail/202610-12-RPG",
+   "label": "公共圖書館 書香伴成長"
+  },
+  {
+   "url": "https://www.macau.grandprix.gov.mo/zh-hant/promotion",
+   "label": "大賽車官網 推廣活動"
+  },
+  {
+   "url": "https://www.macaotourism.gov.mo/zh-hant/events/whatson/14146",
+   "label": "旅遊局 藝遊雅文"
+  },
+  {
+   "url": "https://www.icm.gov.mo/fimm/38/cn",
+   "label": "第38屆澳門國際音樂節 全城享樂活動"
+  },
+  {
+   "url": "https://www.enjoymacao.mo/",
+   "label": "享澳門活動網"
+  },
+  {
+   "url": "https://apps.dspa.gov.mo/cepzweb/cenov_tc.aspx?pageNo=2",
+   "label": "環保局 路氹城生態保護區報名頁"
+  }
+ ],
+ "updated": "2026-11-13",
+ "warning": "",
+ "excluded": [
+  {
+   "title": "金像農場同樂日（11月14–15日）",
+   "reason": "一戶通報名已於11月11日截止，沒有候補安排"
+  },
+  {
+   "title": "《流體KABO》彩繪工作坊＋看電影（11月29日）",
+   "reason": "報名已於11月10日截止"
+  },
+  {
+   "title": "香徑藥谷生態遊／郊遊活動（11月14–15日）",
+   "reason": "一戶通報名已截止，沒有候補安排"
+  },
+  {
+   "title": "書香伴成長11月場",
+   "reason": "抽籤已於10月28日截止，沒有候補安排"
+  },
+  {
+   "title": "跨代共融：流體KABO公仔（11月15日）",
+   "reason": "各場活動前3日截止，已過報名期"
+  },
+  {
+   "title": "《明月浮島》（文化中心）",
+   "reason": "官方寫明適合13歲以上，6歲以下不得入場"
+  },
+  {
+   "title": "互動立體書劇場《情緒奇遇記》（11月21日）",
+   "reason": "對象K2至小二，仁仁年齡未到"
+  },
+  {
+   "title": "Pet Ville 寵物村（11月13–15日）",
+   "reason": "以寵物用品攤位及講座為主，兒童參與內容未公布"
+  },
+  {
+   "title": "脈動新口岸車迷狂歡派對／樂遊新口岸嘉年華",
+   "reason": "以運動用品銷售及商戶優惠為主，親子遊戲內容未列明"
+  },
+  {
+   "title": "光復圍文旅體驗節／荷蘭園巡禮",
+   "reason": "以市集、導賞為主，沒有列明兒童參與環節"
+  },
+  {
+   "title": "「麥麥」體驗館",
+   "reason": "常設展館，見面會及工作坊沒有公布日期"
+  },
+  {
+   "title": "精叻爸媽齊湊（明愛）",
+   "reason": "家長育兒課程，已於10月開班"
+  },
+  {
+   "title": "幼錢入心理財小專員（11月21日）",
+   "reason": "B級，以講解金錢概念為主，名額8人、MOP 80"
+  },
+  {
+   "title": "美食繪本烘焙讀書會（11月21–22日）",
+   "reason": "B級，MOP 298，以共讀及做薄餅為主"
+  },
+  {
+   "title": "節日快閃工作坊（聖誕篇）",
+   "reason": "大部分班別為7–12歲，4–6歲班只有冰箱貼一項，MOP 180"
+  },
+  {
+   "title": "親子外展「植物的奧秘」（11月29日）",
+   "reason": "對象18–48個月，仁仁年齡已到上限"
+  },
+  {
+   "title": "嬰幼繪本氹氹轉（圖書館）",
+   "reason": "最小6個月起，德德年齡未到"
+  },
+  {
+   "title": "寶寶的第一場音樂會（11月21–22日）",
+   "reason": "全部售罄"
+  },
+  {
+   "title": "小小動物學家工作坊／兩棲爬蟲館導賞／蝶舞花間",
+   "reason": "官方對象5歲起，仁仁年齡未到"
+  },
+  {
+   "title": "hush! 沙灘音樂會（11月14–15日）",
+   "reason": "B級，音樂會音量大，兒童環節有限"
+  }
+ ],
+ "register": [
+  {
+   "age": "親子（未列年齡）",
+   "url": "https://www.facebook.com/sinmeng2002/photos/1435329588758934",
+   "date": "11月29日（日）15:00–16:30",
+   "days": [
+    "2026-11-29"
+   ],
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F11%2Fmf-poster-fbw-2026-11-07-05-566x800.jpg&w=640&q=72&output=jpg",
+   "title": "神香製作體驗工作坊（親子場）",
+   "is_new": true,
+   "method": "Google表格報名或 2876 1805 郭小姐，每場20人；11月16日通知錄取；費用官方未公布",
+   "deadline": "11月16日前"
+  },
+  {
+   "age": "2–10歲",
+   "url": "https://forms.cloud.microsoft/r/isjXdw2qJY",
+   "date": "11月28日（六）14:30–17:00",
+   "days": [
+    "2026-11-28"
+   ],
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-poster-fbw-2026-10-31-37-566x800.jpg&w=640&q=72&output=jpg",
+   "title": "ÜCARE兒童健康發展日（工作坊／體驗站）",
+   "is_new": false,
+   "method": "網上表格預約，2835 3722；攤位遊戲毋須報名",
+   "deadline": "11月18日 12:00"
+  },
+  {
+   "age": "玩偶4–6歲；劇場4–8歲",
+   "url": "https://portal.dsedj.gov.mo/actregspace/gensystem/actreg/actreg/ActReg_view_page_2.jsp?search_id=38155&langsel=C",
+   "date": "11月28日（六）",
+   "days": [
+    "2026-11-28"
+   ],
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-cover-4533.webp&w=640&q=72&output=jpg",
+   "title": "教青局：扯線玩偶工作坊／石頭湯故事劇場",
+   "is_new": false,
+   "method": "教青局網上登記或 2884 1284，抽籤，免費",
+   "deadline": "11月22日"
+  },
+  {
+   "age": "4–12歲＋家長",
+   "url": "https://activity.mo.gov.mo/activity-h5/activity-detail-web?activityId=2957639539&deptCode=9787",
+   "date": "11月28日（六）11:00–12:30",
+   "days": [
+    "2026-11-28"
+   ],
+   "grade": "A",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F11%2Fmf-att-onestop2957639539-800x800.jpg&w=640&q=72&output=jpg",
+   "title": "繪本《火雞的感恩節》＋手作坊",
+   "is_new": false,
+   "method": "一戶通抽籤，15名，免費",
+   "deadline": "11月23日"
+  },
+  {
+   "age": "3至80歲澳門居民（3–12歲免費）",
+   "url": "https://activity.mo.gov.mo/activity-h5/activity-detail-web?activityId=2806349701&deptCode=9518",
+   "date": "11月29日（日）16:00–17:30",
+   "days": [
+    "2026-11-29"
+   ],
+   "grade": "A",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-cover-4831.webp&w=640&q=72&output=jpg",
+   "title": "石排灣生態全接觸（爬蟲館＋觀鳥園＋蝴蝶園）",
+   "is_new": false,
+   "method": "一戶通，先到先得，18人",
+   "deadline": "11月25日"
+  },
+  {
+   "age": "4至7歲",
+   "url": "https://www.library.gov.mo/zh-hant/promotion-events/events/detail/202610-12-RPG",
+   "date": "12月5日起各區圖書館",
+   "days": [
+    "2026-12-05",
+    "2026-12-12",
+    "2026-12-19"
+   ],
+   "grade": "A",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F09%2Fmf-att-library202610-12-rpg-566x800.jpg&w=640&q=72&output=jpg",
+   "title": "書香伴成長12月場（繪本劇場）",
+   "is_new": false,
+   "method": "一戶通抽籤，每場10對親子，免費",
+   "deadline": "11月25日"
+  },
+  {
+   "age": "3至80歲澳門居民（3–12歲免費）",
+   "url": "https://activity.mo.gov.mo/activity-h5/activity-detail-web?activityId=2805651412&deptCode=9518",
+   "date": "11月28日（六）10:00–12:00",
+   "days": [
+    "2026-11-28"
+   ],
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-att-onestop2805651412-972x800.jpg&w=640&q=72&output=jpg",
+   "title": "市政署郊遊：黑沙水庫家樂徑",
+   "is_new": false,
+   "method": "一戶通，先到先得，40人，專車接送",
+   "deadline": "11月25日"
+  },
+  {
+   "age": "4至6歲",
+   "url": "https://portal.dsedj.gov.mo/actregspace/gensystem/actreg/actreg/ActReg_view_page_2.jsp?search_id=38153&langsel=C",
+   "date": "12月5日（六）16:30–18:00",
+   "days": [
+    "2026-12-05"
+   ],
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-cover-4529.webp&w=640&q=72&output=jpg",
+   "title": "教青局：情緒小管家＋環保劍球工作坊",
+   "is_new": false,
+   "method": "教青局網上登記或 2884 1284，抽籤，12名，免費",
+   "deadline": "11月29日"
+  },
+  {
+   "age": "4至8歲",
+   "url": "https://portal.dsedj.gov.mo/actregspace/gensystem/actreg/actreg/ActReg_view_page_2.jsp?search_id=38150&langsel=C",
+   "date": "12月13日（日）15:15–16:15",
+   "days": [
+    "2026-12-13"
+   ],
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-cover-4538.webp&w=640&q=72&output=jpg",
+   "title": "教青局：石頭湯故事劇場（氹仔場）",
+   "is_new": false,
+   "method": "教青局網上登記或 2884 1284，抽籤，15名，免費",
+   "deadline": "12月6日"
+  },
+  {
+   "age": "2–12歲",
+   "url": "https://moefriends.com/product/poster-faom-fckc-xmas-party/",
+   "date": "12月5日（六）11:00–16:00",
+   "days": [
+    "2026-12-05"
+   ],
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-poster-faom-fckc-xmas-party.jpg&w=640&q=72&output=jpg",
+   "title": "家滿「FUN」聖誕派對",
+   "is_new": true,
+   "method": "致電工聯筷子基中心 2823 3902，100人；有主題遊戲、聖誕午餐及抽獎；地點及費用待公布",
+   "deadline": "額滿即止"
+  },
+  {
+   "age": "親子（一大一小）",
+   "url": "https://moefriends.com/product/poster-mf-1019-jukzi-a/",
+   "date": "11月29日（日）14:00–16:00",
+   "days": [
+    "2026-11-29"
+   ],
+   "grade": "B",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-poster-mf-1019-jukzi-a-566x800.jpg&w=640&q=72&output=jpg",
+   "title": "《恐怖的頭髮》親子面繪魔法",
+   "is_new": true,
+   "method": "掃海報二維碼或鞠智微信報名，MOP 250／一大一小；共讀繪本後由家長幫孩子畫獅子、大象面繪",
+   "deadline": "未公布"
+  },
+  {
+   "age": "親子（一大一小）",
+   "url": "https://moefriends.com/product/poster-mf-1019-jukzi-b/",
+   "date": "12月13日（日）14:00 或 16:30",
+   "days": [
+    "2026-12-13"
+   ],
+   "grade": "A",
+   "image": "https://wsrv.nl/?url=https%3A%2F%2Fmoefriends.com%2Fwp-content%2Fuploads%2F2026%2F10%2Fmf-poster-mf-1019-jukzi-b-566x800.jpg&w=640&q=72&output=jpg",
+   "title": "《恐怖的頭髮》親子互動劇場（聖誕音樂舞會）",
+   "is_new": false,
+   "method": "掃海報二維碼／微信，MOP 280",
+   "deadline": "未公布"
+  }
+ ],
+ "unverified": [
+  {
+   "url": "https://moefriends.com/product/poster-macaowater-ilhaverde-openday-20261114/",
+   "layer": "已查萌友詳情；澳門自來水官網及搜尋均未找到報名公告",
+   "title": "青洲水廠開放日「秋日洲遊」（11月14日）",
+   "reason": "有水質檢驗、手作坊、攤位遊戲，但報名方法及年齡仍未能核實"
+  },
+  {
+   "url": "https://skhssco.org.mo:7910/activity/Listinfo?id=ATPC26621",
+   "layer": "主辦方報名系統11月13日連線被重設",
+   "title": "親子慢遊五感大自然餘額",
+   "reason": "未能核對剩餘名額，報名前請致電 2882 5109"
+  },
+  {
+   "url": "https://moefriends.com/product/poster-mf-1023-wasteplay/",
+   "layer": "萌友轉載主辦海報；Facebook 原帖未能讀取",
+   "title": "玩轉廢品遊樂場開放安排",
+   "reason": "萌友同時標示「需預先報名」與「開放時間內到場」，出發前請致電 2883 7947"
+  }
+ ],
+ "window_end": "2026-11-26",
+ "window_label": "11月13日 – 11月26日",
+ "window_start": "2026-11-13",
+ "updated_label": "2026年11月13日（五）"
+}
