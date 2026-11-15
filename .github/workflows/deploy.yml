@@ -1,28 +1,30 @@
-name: Deploy site to GitHub Pages
+name: Build trips
 
-# 靜態頁(首頁、macau、tw、kids)+ 行程程式(trip/)+ 分享預覽頁(t/<slug>/)一齊部署。
-# 注意:要喺 repo Settings → Pages → Source 揀「GitHub Actions」呢個工作流程先會生效。
+# 建置行程程式(trip/)同分享預覽頁(t/<slug>/),將結果直接提交返 main,由 GitHub Pages(分支發佈)一齊發佈。
+# 咁就唔使改 Pages 設定,亦唔會有「兩個部署互相覆蓋」嘅問題。
 on:
   push:
     branches: [main]
+    paths: ['trip-app/**', '.github/workflows/deploy.yml']
   workflow_dispatch:
   # 每 15 分鐘睇一次行程有冇改過,有改先重新建置(行程改動時 Supabase Edge Function trip-sync 亦會即時觸發)
   schedule:
     - cron: '*/15 * * * *'
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
+
+concurrency:
+  group: build-trips
+  cancel-in-progress: false
 
 jobs:
-  check:
+  build:
     runs-on: ubuntu-latest
-    outputs:
-      build: ${{ steps.c.outputs.build }}
     steps:
       - uses: actions/checkout@v4
       - id: c
+        name: 檢查行程有冇改過
         run: |
           if [ "$GITHUB_EVENT_NAME" != "schedule" ]; then echo "build=true" >> "$GITHUB_OUTPUT"; exit 0; fi
           URL=$(grep -oP "SUPABASE_URL\s*=\s*'\K[^']+" trip-app/src/supabase.js)
@@ -31,44 +33,29 @@ jobs:
           OLD=$(curl -fsS "https://build-0.github.io/macau.familytravel/share-manifest.json" | jq -r .hash 2>/dev/null) || OLD="none"
           echo "live=$OLD now=$NEW"
           if [ -n "$NEW" ] && [ "$NEW" != "$OLD" ]; then echo "build=true" >> "$GITHUB_OUTPUT"; else echo "build=false" >> "$GITHUB_OUTPUT"; fi
-
-  build:
-    needs: check
-    if: needs.check.outputs.build == 'true'
-    runs-on: ubuntu-latest
-    concurrency:
-      group: pages-build
-      cancel-in-progress: false
-    steps:
-      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
+        if: steps.c.outputs.build == 'true'
         with:
           node-version: 20
           cache: npm
           cache-dependency-path: trip-app/package-lock.json
       - name: 建置行程程式
+        if: steps.c.outputs.build == 'true'
         working-directory: trip-app
         run: npm ci && npm run build
-      - name: 組合整個網站
+      - name: 生成 trip/ 同 t/(分享預覽頁 + 鏡像相片)
+        if: steps.c.outputs.build == 'true'
         run: |
-          mkdir site
-          cp index.html site/
-          cp -r macau tw kids site/
-          cp -r trip-app/dist site/trip
-      - name: 生成分享預覽頁 + 鏡像相片
-        working-directory: trip-app
-        run: OUT=../site node scripts/gen-share.mjs
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          rm -rf trip t share-manifest.json share-report.json
+          cp -r trip-app/dist trip
+          (cd trip-app && OUT=.. node scripts/gen-share.mjs)
+      - name: 提交建置結果
+        if: steps.c.outputs.build == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A trip t share-manifest.json share-report.json
+          if git diff --cached --quiet; then echo "冇變化"; exit 0; fi
+          git commit -m "自動建置行程頁與分享預覽頁"
+          git pull --rebase -q
+          git push
