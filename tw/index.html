@@ -1,0 +1,2783 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>我們這一家 - 全家玩轉寶島</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* 修復 Leaflet 地圖瓦片網格線問題 */
+        .leaflet-tile-container img {
+            outline: none !important;
+            border: none !important;
+        }
+        .leaflet-tile {
+            outline: none !important;
+            border: none !important;
+        }
+
+        :root {
+            --primary: #E17055;
+            --secondary: #00B894;
+            --accent: #FDCB6E;
+            --purple: #6C5CE7;
+            --blue: #0984E3;
+            --pink: #FD79A8;
+            --dark: #2D3436;
+            --light: #F8F9FA;
+            --north: #74B9FF;
+            --central: #55EFC4;
+            --south: #FF7675;
+            --east: #A29BFE;
+            --island: #FD79A8;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: var(--light);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--pink) 50%, var(--purple) 100%);
+            padding: 20px;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .stat-item strong { font-size: 1.1rem; }
+
+        /* 手機版 Header 搜尋框 - 桌面版隱藏 */
+        .header-search-mobile {
+            display: none;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            min-height: calc(100vh - 80px);
+        }
+
+        @media (max-width: 1200px) {
+            .main-container { grid-template-columns: 1fr; }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+            max-height: calc(100vh - 80px);
+            position: sticky;
+            top: 80px;
+        }
+
+        .region-nav {
+            display: flex;
+            border-bottom: 2px solid #eee;
+        }
+
+        .region-tab {
+            flex: 1;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .region-tab:hover { background: var(--light); }
+        .region-tab.active { border-bottom-color: var(--primary); color: var(--primary); }
+        .region-tab[data-region="north"] { color: var(--north); }
+        .region-tab[data-region="central"] { color: var(--central); }
+        .region-tab[data-region="south"] { color: var(--south); }
+        .region-tab[data-region="east"] { color: var(--east); }
+        .region-tab[data-region="island"] { color: var(--island); }
+        .region-tab.active[data-region="north"] { border-bottom-color: var(--north); }
+        .region-tab.active[data-region="central"] { border-bottom-color: var(--central); }
+        .region-tab.active[data-region="south"] { border-bottom-color: var(--south); }
+        .region-tab.active[data-region="east"] { border-bottom-color: var(--east); }
+        .region-tab.active[data-region="island"] { border-bottom-color: var(--island); }
+
+        .city-list {
+            padding: 15px;
+        }
+
+        .city-btn {
+            width: 100%;
+            padding: 12px 15px;
+            background: var(--light);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-family: inherit;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .city-btn:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .city-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .city-btn .progress {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .city-btn.active .progress { color: rgba(255,255,255,0.8); }
+
+        /* Content Area */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Map */
+        .map-container {
+            height: 350px;
+            position: relative;
+        }
+
+        #map { height: 100%; width: 100%; }
+
+        .map-legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 500;
+            font-size: 0.8rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px 0;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* 搜尋和路線規劃容器 - 電腦版並排 */
+        .search-route-container {
+            display: flex;
+            gap: 0;
+        }
+
+        /* Google Search */
+        .search-box {
+            flex: 1;
+            padding: 15px 20px;
+            background: white;
+            border-bottom: 1px solid #eee;
+            border-right: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #eee;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .search-btn {
+            padding: 12px 25px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-btn:hover { background: #c0392b; }
+
+        /* Route Planner */
+        .route-planner {
+            flex: 1;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #E8F6F3 0%, #fff 100%);
+            border-bottom: 1px solid #eee;
+        }
+
+        .route-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .route-title i { color: var(--secondary); margin-right: 5px; }
+
+        .route-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .route-input {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .route-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .route-arrow {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .route-btn {
+            padding: 10px 20px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .route-btn:hover { background: #00A383; }
+
+        /* 電腦版隱藏收合按鈕 */
+        .route-collapse-btn { display: none; }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            background: white;
+            padding: 0 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .category-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #888;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .category-tab:hover { color: var(--dark); }
+        .category-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .filter-divider {
+            width: 1px;
+            height: 30px;
+            background: #ddd;
+            margin: 0 10px;
+            align-self: center;
+        }
+
+        .filter-toggle {
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: #888;
+            background: #f5f5f5;
+            border-radius: 20px;
+            transition: all 0.3s;
+            margin: auto 0;
+        }
+
+        .filter-toggle:hover { background: #eee; }
+        .filter-toggle.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .city-shortcuts {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: auto;
+            padding: 0 15px;
+        }
+
+        .city-shortcut-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            background: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .city-shortcut-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .city-shortcut-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .city-shortcut-btn[data-region="north"] { border-color: var(--north); }
+        .city-shortcut-btn[data-region="central"] { border-color: var(--central); }
+        .city-shortcut-btn[data-region="south"] { border-color: var(--south); }
+        .city-shortcut-btn[data-region="east"] { border-color: var(--east); }
+        .city-shortcut-btn[data-region="island"] { border-color: var(--island); }
+
+        .city-shortcut-btn.active[data-region="north"] { background: var(--north); }
+        .city-shortcut-btn.active[data-region="central"] { background: var(--central); }
+        .city-shortcut-btn.active[data-region="south"] { background: var(--south); }
+        .city-shortcut-btn.active[data-region="east"] { background: var(--east); }
+        .city-shortcut-btn.active[data-region="island"] { background: var(--island); }
+
+        /* Cards Container */
+        .cards-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: var(--light);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .card.completed { opacity: 0.6; }
+
+        .card.completed::before {
+            content: '✓ 已完成';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--secondary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            z-index: 10;
+        }
+
+        .card-header {
+            padding: 15px;
+            color: white;
+            position: relative;
+        }
+
+        .card-header.spot { background: linear-gradient(135deg, var(--purple) 0%, var(--blue) 100%); }
+        .card-header.food { background: linear-gradient(135deg, var(--primary) 0%, var(--pink) 100%); }
+        .card-header.gift { background: linear-gradient(135deg, var(--accent) 0%, #F39C12 100%); color: var(--dark); }
+
+        .card-badges {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .badge.kid { background: #55EFC4; color: var(--dark); }
+        .badge.pregnant { background: #FD79A8; color: white; }
+        .badge.musteat { background: #E17055; color: white; }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .card-subtitle {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .card-body { padding: 15px; }
+
+        .info-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .info-item i {
+            width: 18px;
+            color: var(--primary);
+        }
+
+        .info-item .label {
+            color: #888;
+            min-width: 50px;
+        }
+
+        /* Backup Section */
+        .backup-section {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed #eee;
+        }
+
+        .backup-title {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .backup-item {
+            background: var(--light);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .backup-item strong { color: var(--dark); }
+
+        /* Card Actions */
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            padding: 0 15px 15px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .check-btn {
+            background: #DFE6E9;
+            color: #666;
+        }
+
+        .check-btn:hover, .check-btn.checked {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .map-btn {
+            background: var(--blue);
+            color: white;
+        }
+
+        .map-btn:hover { background: #0770C2; }
+
+        .google-btn {
+            background: #4285F4;
+            color: white;
+        }
+
+        .google-btn:hover { background: #3367D6; }
+
+        .nearby-btn {
+            background: #9B59B6;
+            color: white;
+        }
+        .nearby-btn:hover { background: #8E44AD; }
+
+        .weather-btn {
+            background: #3498DB;
+            color: white;
+        }
+        .weather-btn:hover { background: #2980B9; }
+
+        /* 附近推薦彈窗 */
+        .nearby-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .nearby-modal.show { display: flex; }
+        .nearby-content {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .nearby-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .nearby-title { font-size: 1.1rem; font-weight: bold; }
+        .nearby-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+        .nearby-item {
+            padding: 12px;
+            border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nearby-item:last-child { border-bottom: none; }
+        .nearby-item-info { flex: 1; }
+        .nearby-item-name { font-weight: 600; }
+        .nearby-item-type { font-size: 0.85rem; color: #888; }
+        .nearby-item-distance {
+            background: var(--secondary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Completed Records */
+        .completed-section {
+            background: white;
+            margin: 20px;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .completed-section h3 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .completed-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .completed-group {
+            background: linear-gradient(135deg, #F8F9FA 0%, #fff 100%);
+            padding: 12px 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .completed-label {
+            font-weight: 600;
+            color: var(--dark);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .completed-items {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .completed-tag {
+            background: var(--light);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .completed-tag i { color: var(--secondary); }
+
+        /* Transport Info */
+        .transport-box {
+            background: linear-gradient(135deg, #E8F6F3 0%, #fff 100%);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 12px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .transport-box h4 {
+            font-size: 0.85rem;
+            color: var(--dark);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .transport-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .transport-option {
+            background: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Leaflet Popup */
+        .leaflet-popup-content { margin: 10px 15px; }
+        .popup-title { font-weight: 700; font-size: 1rem; margin-bottom: 5px; }
+        .popup-type { color: #888; font-size: 0.85rem; }
+
+        /* Custom Marker */
+        .custom-marker {
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .marker-spot { background: var(--purple); }
+        .marker-food { background: var(--primary); }
+        .marker-gift { background: var(--accent); }
+        .marker-city { background: var(--dark); }
+
+        /* Tea Section Special */
+        .tea-highlight {
+            background: linear-gradient(135deg, #D5F5E3 0%, #fff 100%);
+            border: 2px solid #27AE60;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            /* 防止超出螢幕 */
+            html, body {
+                overflow-x: hidden;
+                width: 100%;
+                max-width: 100vw;
+            }
+            .main-container {
+                width: 100%;
+                max-width: 100vw;
+                overflow-x: hidden;
+            }
+
+            /* 取消固定定位，讓它們跟著滾動 */
+            .header {
+                position: relative;
+                padding: 15px;
+                width: 100%;
+                max-width: 100vw;
+                margin: 0;
+                box-sizing: border-box;
+            }
+            .header h1 { font-size: 1rem; flex-shrink: 0; }
+            .header-stats { display: none; }
+
+            /* 手機版 Header 搜尋框 */
+            .header-search-mobile {
+                display: flex;
+                flex: 1;
+                max-width: 200px;
+                margin-left: auto;
+            }
+            .header-search-input {
+                flex: 1;
+                padding: 8px 12px;
+                border: none;
+                border-radius: 20px 0 0 20px;
+                font-size: 0.85rem;
+                font-family: inherit;
+                min-width: 0;
+            }
+            .header-search-input:focus { outline: none; }
+            .header-search-btn {
+                padding: 8px 12px;
+                background: rgba(255,255,255,0.3);
+                border: none;
+                border-radius: 0 20px 20px 0;
+                color: white;
+                cursor: pointer;
+                font-size: 0.9rem;
+            }
+            .header-search-btn:hover { background: rgba(255,255,255,0.4); }
+
+            /* 隱藏原本的搜尋框 */
+            .search-box { display: none; }
+            .sidebar {
+                position: relative;
+                top: 0;
+                width: 100%;
+                max-width: 100vw;
+                box-sizing: border-box;
+                max-height: none;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+            .region-nav { position: relative; }
+
+            .map-container { display: none; }
+            .map-toggle-btn { display: flex !important; }
+            .map-container.show { display: block; height: 300px; }
+            .cards-grid {
+                grid-template-columns: 1fr;
+                width: 100%;
+                max-width: 100vw;
+                box-sizing: border-box;
+            }
+            .cards-container {
+                width: 100%;
+                max-width: 100vw;
+                box-sizing: border-box;
+                padding: 10px;
+            }
+
+            /* 篩選欄加入背景色 */
+            .category-tabs {
+                flex-wrap: wrap;
+                padding: 12px;
+                gap: 8px;
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                border-bottom: 2px solid #dee2e6;
+                width: 100%;
+                max-width: 100vw;
+                box-sizing: border-box;
+                overflow-x: hidden;
+            }
+            .category-tab {
+                padding: 10px 15px;
+                font-size: 0.85rem;
+                background: white;
+                border-radius: 20px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .category-tab.active {
+                background: var(--primary);
+                color: white;
+                border-bottom-color: transparent;
+            }
+            .filter-toggle {
+                padding: 8px 14px;
+                font-size: 0.8rem;
+                background: white;
+                border: 1px solid #ddd;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .filter-toggle.active {
+                background: var(--secondary);
+                color: white;
+                border-color: var(--secondary);
+            }
+            .filter-divider { display: none; }
+            .city-shortcuts { width: 100%; justify-content: center; margin-top: 10px; }
+
+            /* 手機版路線規劃可收合 */
+            .route-planner { padding: 0; }
+            .route-planner .route-title { display: none; }
+            .route-planner .route-inputs {
+                display: none;
+                flex-direction: column;
+                padding: 10px;
+            }
+            .route-planner.expanded .route-inputs { display: flex; }
+            .route-input { width: 100%; }
+            .route-arrow { display: none; }
+
+            /* 手機版路線收合按鈕 */
+            .route-collapse-btn {
+                display: flex !important;
+                width: 100%;
+                padding: 12px;
+                background: linear-gradient(135deg, #E8F6F3 0%, #d4efea 100%);
+                border: none;
+                border-bottom: 1px solid #ddd;
+                cursor: pointer;
+                font-family: inherit;
+                font-size: 0.9rem;
+                color: var(--dark);
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+            .route-collapse-btn i { color: var(--secondary); }
+            .route-collapse-btn:hover { background: #d4efea; }
+
+            /* 確保卡片不溢出 */
+            .card {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        /* 手機版地圖切換按鈕 */
+        .map-toggle-btn {
+            display: none;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--secondary) 0%, #00A383 100%);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .map-toggle-btn:hover { opacity: 0.9; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+        /* 回到頂部按鈕 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        /* Marker Cluster 自定義樣式 */
+        .marker-cluster-small {
+            background-color: rgba(110, 204, 57, 0.6);
+        }
+        .marker-cluster-small div {
+            background-color: rgba(110, 204, 57, 0.8);
+        }
+        .marker-cluster-medium {
+            background-color: rgba(240, 194, 12, 0.6);
+        }
+        .marker-cluster-medium div {
+            background-color: rgba(240, 194, 12, 0.8);
+        }
+        .marker-cluster-large {
+            background-color: rgba(225, 112, 85, 0.6);
+        }
+        .marker-cluster-large div {
+            background-color: rgba(225, 112, 85, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1>我們這一家 <span style="font-size: 0.9rem; font-weight: 400; margin-left: 8px;">- 全家玩轉寶島</span></h1>
+            <!-- 手機版搜尋框 -->
+            <div class="header-search-mobile">
+                <input type="text" class="header-search-input" id="headerSearchInput" placeholder="搜尋...">
+                <button class="header-search-btn" onclick="googleSearchMobile()">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="header-stats">
+                <div class="stat-item">📍 景點 <strong id="spotDone">0</strong>/<strong id="spotTotal">0</strong></div>
+                <div class="stat-item">🍜 美食 <strong id="foodDone">0</strong>/<strong id="foodTotal">0</strong></div>
+                <div class="stat-item">🎁 伴手禮 <strong id="giftDone">0</strong>/<strong id="giftTotal">0</strong></div>
+                <div class="stat-item">👶 親子友善</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="region-nav">
+                <div class="region-tab active" data-region="north">北部</div>
+                <div class="region-tab" data-region="central">中部</div>
+                <div class="region-tab" data-region="south">南部</div>
+                <div class="region-tab" data-region="east">東部</div>
+                <div class="region-tab" data-region="island">離島</div>
+            </div>
+            <div class="city-list" id="cityList"></div>
+        </aside>
+
+        <main class="content-area">
+            <!-- 手機版地圖切換按鈕 -->
+            <button class="map-toggle-btn" id="mapToggleBtn" onclick="toggleMap()">
+                <i class="fas fa-map-marked-alt"></i> <span id="mapToggleText">顯示地圖</span>
+            </button>
+            <div class="map-container" id="mapContainer">
+                <div id="map"></div>
+                <div class="map-legend">
+                    <div class="legend-item"><div class="legend-dot" style="background: var(--purple);"></div> 景點</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: var(--primary);"></div> 美食</div>
+                    <div class="legend-item"><div class="legend-dot" style="background: var(--accent);"></div> 伴手禮</div>
+                </div>
+            </div>
+
+            <!-- 搜尋和路線規劃容器 -->
+            <div class="search-route-container">
+                <div class="search-box">
+                    <input type="text" class="search-input" id="searchInput" placeholder="搜尋景點、美食、店家...（按 Enter 用 Google 搜尋）">
+                    <button class="search-btn" onclick="googleSearch()">
+                        <i class="fab fa-google"></i> Google 搜尋
+                    </button>
+                </div>
+
+                <div class="route-planner" id="routePlanner">
+                    <button class="route-collapse-btn" onclick="toggleRoutePlanner()">
+                        <i class="fas fa-route"></i> 景點到景點交通規劃 <i class="fas fa-chevron-down" id="routeCollapseIcon"></i>
+                    </button>
+                    <div class="route-title"><i class="fas fa-route"></i> 景點到景點交通規劃</div>
+                    <div class="route-inputs">
+                        <input type="text" class="route-input" id="routeFrom" placeholder="起點（如：西門町）">
+                        <span class="route-arrow">→</span>
+                        <input type="text" class="route-input" id="routeTo" placeholder="終點（如：十分老街）">
+                        <button class="route-btn" onclick="planRoute()">
+                            <i class="fab fa-google"></i> Google Maps 路線
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-tabs">
+                <div class="category-tab active" data-category="all">全部</div>
+                <div class="category-tab" data-category="spot">📍 景點</div>
+                <div class="category-tab" data-category="food">🍜 美食</div>
+                <div class="category-tab" data-category="gift">🎁 伴手禮</div>
+                <div class="filter-divider"></div>
+                <div class="filter-toggle" id="filterKid" onclick="toggleFilter('kid')">👶 親子友善</div>
+                <div class="filter-toggle" id="filterPregnant" onclick="toggleFilter('pregnant')">🤰 孕婦OK</div>
+                <div class="city-shortcuts" id="cityShortcuts">
+                    <!-- 城市縮寫按鈕由 JS 動態生成 -->
+                </div>
+            </div>
+
+            <div class="cards-container">
+                <div class="cards-grid" id="cardsGrid"></div>
+
+                <div class="completed-section">
+                    <h3><i class="fas fa-check-circle" style="color: var(--secondary);"></i> 已完成記錄</h3>
+                    <div class="completed-list" id="completedList"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 回到頂部按鈕 -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- 附近推薦彈窗 -->
+    <div class="nearby-modal" id="nearbyModal" onclick="closeNearbyModal(event)">
+        <div class="nearby-content" onclick="event.stopPropagation()">
+            <div class="nearby-header">
+                <div class="nearby-title">📍 5公里內推薦</div>
+                <button class="nearby-close" onclick="closeNearbyModal()">&times;</button>
+            </div>
+            <div id="nearbyList"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script>
+    // ==================== 資料庫 ====================
+
+    // 用戶已完成記錄
+    const userCompleted = {
+        spots: ['日月潭', '九份', '台北101', '國立故宮博物院', '野柳地質公園', '淡水老街', '漁人碼頭', '陽明山國家公園', '士林夜市', '寧夏夜市', '國立臺灣科學教育館', '臺灣博物館古生物館', '北投溫泉區', '西門町', '中正紀念堂', '淡水紅毛城'],
+        foods: ['金峰滷肉飯', '芒果冰', '無老鍋', '東山鴨頭', '十全排骨', '四神湯', '鍋燒意麵', '蛋餅', '老天祿滷味'],
+        gifts: [
+            { name: '王德傳茶莊', note: '好喝！會再買' },
+            { name: '小潘蛋糕坊', note: '' },
+            { name: '天仁茗茶', note: '不錯的口糧茶' },
+            { name: '曾拌麵', note: '' },
+            { name: '快車肉乾', note: '香脆！會再買' },
+            { name: '池上米', note: '' }
+        ]
+    };
+
+    // 城市資料（含縮寫）
+    const cities = {
+        // 北部
+        taipei: { name: '台北市', short: '北', region: 'north', lat: 25.0330, lng: 121.5654 },
+        newtaipei: { name: '新北市', short: '新', region: 'north', lat: 25.0169, lng: 121.4628 },
+        keelung: { name: '基隆市', short: '基', region: 'north', lat: 25.1276, lng: 121.7392 },
+        taoyuan: { name: '桃園市', short: '桃', region: 'north', lat: 24.9936, lng: 121.3010 },
+        hsinchu: { name: '新竹', short: '竹', region: 'north', lat: 24.8138, lng: 120.9675 },
+        // 中部
+        miaoli: { name: '苗栗縣', short: '苗', region: 'central', lat: 24.5602, lng: 120.8214 },
+        taichung: { name: '台中市', short: '中', region: 'central', lat: 24.1477, lng: 120.6736 },
+        changhua: { name: '彰化縣', short: '彰', region: 'central', lat: 24.0518, lng: 120.5161 },
+        nantou: { name: '南投縣', short: '投', region: 'central', lat: 23.9609, lng: 120.9718 },
+        yunlin: { name: '雲林縣', short: '雲', region: 'central', lat: 23.7092, lng: 120.4313 },
+        // 南部
+        chiayi: { name: '嘉義', short: '嘉', region: 'south', lat: 23.4801, lng: 120.4491 },
+        tainan: { name: '台南市', short: '南', region: 'south', lat: 22.9998, lng: 120.2269 },
+        kaohsiung: { name: '高雄市', short: '高', region: 'south', lat: 22.6273, lng: 120.3014 },
+        pingtung: { name: '屏東縣', short: '屏', region: 'south', lat: 22.5519, lng: 120.5487 },
+        // 東部
+        yilan: { name: '宜蘭縣', short: '宜', region: 'east', lat: 24.7021, lng: 121.7378 },
+        hualien: { name: '花蓮縣', short: '花', region: 'east', lat: 23.9871, lng: 121.6016 },
+        taitung: { name: '台東縣', short: '東', region: 'east', lat: 22.7583, lng: 121.1444 },
+        // 離島
+        penghu: { name: '澎湖縣', short: '澎', region: 'island', lat: 23.5711, lng: 119.5793 },
+        kinmen: { name: '金門縣', short: '金', region: 'island', lat: 24.4493, lng: 118.3767 },
+        matsu: { name: '連江縣', short: '馬', region: 'island', lat: 26.1505, lng: 119.9499 }
+    };
+
+    // 景點資料（超完整版）
+    const spots = [
+        // ===== 台北市 =====
+        { id: 's1', city: 'taipei', name: '大稻埕/迪化街', type: '文青老街', lat: 25.0556, lng: 121.5097, kid: true, pregnant: true,
+          address: '台北市大同區迪化街一段', hours: '店家約 10:00-18:00',
+          desc: '百年老街區，充滿文創小店、南北貨、布行',
+          mustDo: '逛永樂市場、迪化街老屋、碼頭看夕陽',
+          transport: ['捷運北門站', '捷運大橋頭站'],
+          tips: '週末下午最熱鬧，傍晚去碼頭看夕陽超美' },
+        { id: 's3', city: 'taipei', name: '華山1914文創園區', type: '文創園區', lat: 25.0440, lng: 121.5294, kid: true, pregnant: true,
+          address: '台北市中正區八德路一段1號', hours: '園區 06:00-22:00',
+          desc: '舊酒廠改建，展覽、市集、餐廳聚集',
+          mustDo: '看展覽、週末市集、草地野餐',
+          transport: ['捷運忠孝新生站', '捷運善導寺站'],
+          tips: '假日常有市集，大草地適合小朋友跑跳' },
+        { id: 's5', city: 'taipei', name: '北投溫泉區', type: '溫泉體驗', lat: 25.1366, lng: 121.5067, kid: true, pregnant: false,
+          address: '台北市北投區', hours: '依各湯屋',
+          desc: '日式溫泉鄉，適合全家泡湯',
+          mustDo: '北投溫泉博物館、地熱谷、泡湯',
+          transport: ['捷運新北投站'],
+          tips: '孕婦不宜泡溫泉。推薦瀧乃湯（平價）或大地酒店（高級）' },
+        { id: 's6', city: 'taipei', name: '象山步道', type: '自然步道', lat: 25.0275, lng: 121.5750, kid: false, pregnant: false,
+          address: '台北市信義區', hours: '全天',
+          desc: '俯瞰台北101最佳位置',
+          mustDo: '看夜景、拍101、健行',
+          transport: ['捷運象山站'],
+          tips: '來回約1.5小時，階梯多不適合孕婦和幼童' },
+        { id: 's7', city: 'taipei', name: '台北市立動物園', type: '親子景點', lat: 24.9986, lng: 121.5810, kid: true, pregnant: true,
+          address: '台北市文山區新光路二段30號', hours: '09:00-17:00（週一休館部分區域）',
+          desc: '亞洲最大動物園，小朋友最愛',
+          mustDo: '看大貓熊、坐纜車、非洲動物區',
+          transport: ['捷運動物園站'],
+          tips: '建議搭貓空纜車上山，走路下山。園區很大要穿好走的鞋' },
+        { id: 's8', city: 'taipei', name: '貓空纜車', type: '親子體驗', lat: 24.9686, lng: 121.5870, kid: true, pregnant: true,
+          address: '台北市文山區', hours: '09:00-21:00（週一公休）',
+          desc: '搭纜車看台北風景，終點可喝茶',
+          mustDo: '搭水晶車廂、山上喝茶看夜景',
+          transport: ['捷運動物園站'],
+          tips: '水晶車廂（透明底）要排久一點但超值得！' },
+        { id: 's9', city: 'taipei', name: '中正紀念堂', type: '歷史地標', lat: 25.0348, lng: 121.5219, kid: true, pregnant: true,
+          address: '台北市中正區中山南路21號', hours: '09:00-18:00',
+          desc: '台北地標，可看衛兵交接',
+          mustDo: '看衛兵交接（整點）、廣場散步',
+          transport: ['捷運中正紀念堂站'],
+          tips: '衛兵交接每整點一次，提早10分鐘卡位' },
+        { id: 's10', city: 'taipei', name: '饒河街夜市', type: '夜市', lat: 25.0509, lng: 121.5775, kid: true, pregnant: true,
+          address: '台北市松山區饒河街', hours: '17:00-00:00',
+          desc: '在地人愛逛的夜市，美食多',
+          mustDo: '胡椒餅、藥燉排骨、麻辣臭豆腐',
+          transport: ['捷運松山站'],
+          tips: '比士林夜市更道地，觀光客較少' },
+        { id: 's11', city: 'taipei', name: '西門町', type: '商圈', lat: 25.0421, lng: 121.5081, kid: true, pregnant: true,
+          address: '台北市萬華區', hours: '全天（店家約11:00起）',
+          desc: '年輕人聚集地，購物吃美食',
+          mustDo: '逛街、看電影、吃阿宗麵線',
+          transport: ['捷運西門站'],
+          tips: '適合逛街購物，晚上比較熱鬧' },
+
+        // ===== 基隆市 =====
+        { id: 's51', city: 'keelung', name: '基隆廟口夜市', type: '夜市', lat: 25.1279, lng: 121.7418, kid: true, pregnant: true,
+          address: '基隆市仁愛區愛四路', hours: '11:00-02:00',
+          desc: '百年老夜市，海鮮小吃天堂',
+          mustDo: '營養三明治、天婦羅、泡泡冰、鼎邊趖',
+          transport: ['基隆火車站步行5分鐘'],
+          tips: '建議下午去，有些攤位中午就開了' },
+        { id: 's52', city: 'keelung', name: '正濱漁港彩色街屋', type: '打卡景點', lat: 25.1489, lng: 121.7614, kid: true, pregnant: true,
+          address: '基隆市中正區正濱路', hours: '全天',
+          desc: '台版威尼斯彩色屋，IG熱門',
+          mustDo: '拍彩色屋、吃阿根納造船廠旁美食',
+          transport: ['公車101/103'],
+          tips: '順路可去阿根納造船廠遺址拍照' },
+        { id: 's53', city: 'keelung', name: '基隆塔', type: '觀景台', lat: 25.1283, lng: 121.7445, kid: true, pregnant: true,
+          address: '基隆市仁愛區信二路299號', hours: '09:00-21:00',
+          desc: '2024新地標，360度觀景',
+          mustDo: '搭透明電梯、看港口夜景',
+          transport: ['基隆火車站步行10分鐘'],
+          tips: '傍晚去看夕陽+夜景最美' },
+        { id: 's54', city: 'keelung', name: '潮境公園', type: '親子景點', lat: 25.1408, lng: 121.8022, kid: true, pregnant: true,
+          address: '基隆市中正區北寧路369巷', hours: '全天',
+          desc: '海科館旁，大掃把裝置藝術',
+          mustDo: '拍飛天掃把、潮間帶觀察、海科館',
+          transport: ['公車103'],
+          tips: '可順便逛國立海洋科技博物館' },
+
+        // ===== 新北市 =====
+        { id: 's68', city: 'newtaipei', name: '老梅綠石槽', type: '季節秘境', lat: 25.2872, lng: 121.5386, kid: true, pregnant: true,
+          address: '新北市石門區老梅里', hours: '全天（3-5月最美）',
+          desc: '季節限定綠色海岸奇景',
+          mustDo: '拍綠石槽、看海、吃石門肉粽',
+          transport: ['包車', '淡水客運'],
+          tips: '3-5月藻類最綠，退潮時最美' },
+        { id: 's69', city: 'newtaipei', name: '淡水紅毛城', type: '古蹟', lat: 25.1756, lng: 121.4331, kid: true, pregnant: true,
+          address: '新北市淡水區中正路28巷1號', hours: '09:30-17:00（週一休）',
+          desc: '荷蘭時期古堡，400年歷史',
+          mustDo: '看古堡、英國領事館、河畔風景',
+          transport: ['捷運淡水站轉公車'],
+          tips: '可順遊真理大學和小白宮' },
+        { id: 's13', city: 'newtaipei', name: '九份老街', type: '老街', lat: 25.1091, lng: 121.8445, kid: true, pregnant: true,
+          address: '新北市瑞芳區基山街', hours: '店家約 10:00-20:00',
+          desc: '神隱少女場景，山城老街',
+          mustDo: '吃芋圓、看海景、拍夜景',
+          transport: ['1062客運直達', '瑞芳轉公車'],
+          tips: '傍晚去最美，但人會很多。平日去比較好逛' },
+        { id: 's14', city: 'newtaipei', name: '十分老街', type: '老街體驗', lat: 25.0423, lng: 121.7767, kid: true, pregnant: true,
+          address: '新北市平溪區十分街', hours: '全天',
+          desc: '放天燈、鐵道穿越老街',
+          mustDo: '放天燈祈福、看火車經過、十分瀑布',
+          transport: ['平溪線火車'],
+          tips: '建議安排平溪線一日遊，搭配猴硐、平溪' },
+        { id: 's16', city: 'newtaipei', name: '淡水老街', type: '老街', lat: 25.1697, lng: 121.4404, kid: true, pregnant: true,
+          address: '新北市淡水區中正路', hours: '全天',
+          desc: '河畔老街，看夕陽絕佳地點',
+          mustDo: '吃阿給、鐵蛋、看夕陽',
+          transport: ['捷運淡水站'],
+          tips: '黃昏時分最美，可搭渡輪去漁人碼頭' },
+        { id: 's17', city: 'newtaipei', name: '野柳地質公園', type: '自然奇觀', lat: 25.2062, lng: 121.6907, kid: true, pregnant: true,
+          address: '新北市萬里區野柳里港東路167-1號', hours: '08:00-17:00',
+          desc: '世界級地質奇觀，女王頭',
+          mustDo: '看女王頭、俏皮公主、各種奇岩',
+          transport: ['國光客運1815'],
+          tips: '平日去比較不用人擠人拍照' },
+        { id: 's18', city: 'newtaipei', name: '烏來溫泉', type: '溫泉', lat: 24.8659, lng: 121.5517, kid: true, pregnant: false,
+          address: '新北市烏來區', hours: '依各湯屋',
+          desc: '泰雅族溫泉鄉，可看瀑布',
+          mustDo: '泡溫泉、看烏來瀑布、搭台車',
+          transport: ['新店轉公車849'],
+          tips: '可順便體驗泰雅族原住民文化' },
+        { id: 's19', city: 'newtaipei', name: '鶯歌老街', type: '老街', lat: 24.9536, lng: 121.3522, kid: true, pregnant: true,
+          address: '新北市鶯歌區', hours: '店家約 10:00-18:00',
+          desc: '陶瓷之都，適合親子DIY',
+          mustDo: '陶瓷DIY、逛陶瓷博物館',
+          transport: ['台鐵鶯歌站'],
+          tips: '可以讓小朋友體驗捏陶' },
+        { id: 's20', city: 'newtaipei', name: '三峽老街', type: '老街', lat: 24.9344, lng: 121.3711, kid: true, pregnant: true,
+          address: '新北市三峽區民權街', hours: '店家約 10:00-18:00',
+          desc: '巴洛克建築老街',
+          mustDo: '吃金牛角、逛老街、看祖師廟',
+          transport: ['公車275/705'],
+          tips: '可和鶯歌安排一起玩' },
+
+        // ===== 桃園市 =====
+        { id: 's55', city: 'taoyuan', name: '大溪老街', type: '老街', lat: 24.8817, lng: 121.2867, kid: true, pregnant: true,
+          address: '桃園市大溪區和平路', hours: '店家約 10:00-18:00',
+          desc: '巴洛克老街，豆干之鄉',
+          mustDo: '吃黃日香豆干、逛老屋、木藝博物館',
+          transport: ['包車', '桃園客運'],
+          tips: '週末人潮多，可順遊大溪橋' },
+        { id: 's56', city: 'taoyuan', name: 'Xpark水族館', type: '親子景點', lat: 25.0149, lng: 121.2175, kid: true, pregnant: true,
+          address: '桃園市中壢區春德路105號', hours: '10:00-21:00',
+          desc: '日本橫濱八景島監修，夢幻水族館',
+          mustDo: '看企鵝、水母區、大水槽',
+          transport: ['機捷A18站'],
+          tips: '網路預約，平日去人少' },
+        { id: 's57', city: 'taoyuan', name: '拉拉山', type: '自然秘境', lat: 24.7000, lng: 121.4200, kid: true, pregnant: true,
+          address: '桃園市復興區', hours: '全天',
+          desc: '神木群、水蜜桃產地',
+          mustDo: '看神木群、吃水蜜桃（夏季）',
+          transport: ['包車最佳'],
+          tips: '6-8月水蜜桃季最棒' },
+        { id: 's70', city: 'taoyuan', name: '小人國主題樂園', type: '親子樂園', lat: 24.8306, lng: 121.1575, kid: true, pregnant: true,
+          address: '桃園市龍潭區高原路891號', hours: '09:00-16:30',
+          desc: '世界建築迷你模型+遊樂設施',
+          mustDo: '看迷你世界、玩遊樂設施、水樂園',
+          transport: ['包車', '桃園客運'],
+          tips: '夏天有水樂園，記得帶泳衣' },
+
+        // ===== 新竹 =====
+        { id: 's71', city: 'hsinchu', name: '六福村主題遊樂園', type: '親子樂園', lat: 24.8603, lng: 121.0492, kid: true, pregnant: false,
+          address: '新竹縣關西鎮仁安里拱子溝60號', hours: '09:00-17:00',
+          desc: '台灣最大遊樂園，六福村動物園',
+          mustDo: '笑傲飛鷹、急流泛舟、看動物',
+          transport: ['包車', '新竹客運'],
+          tips: '刺激設施較多，孕婦不宜。有動物園區小朋友會愛' },
+        { id: 's72', city: 'hsinchu', name: '新竹漁港', type: '海鮮美食', lat: 24.8422, lng: 120.9278, kid: true, pregnant: true,
+          address: '新竹市北區南寮里', hours: '全天',
+          desc: '吃海鮮、放風箏、看夕陽',
+          mustDo: '吃海鮮、17公里海岸線騎車',
+          transport: ['包車', 'Uber'],
+          tips: '傍晚去看夕陽超美' },
+
+        // ===== 苗栗縣 =====
+        { id: 's73', city: 'miaoli', name: '勝興車站', type: '鐵道景點', lat: 24.4031, lng: 120.7761, kid: true, pregnant: true,
+          address: '苗栗縣三義鄉勝興村14鄰勝興89號', hours: '全天',
+          desc: '台灣西部縱貫鐵路最高點',
+          mustDo: '走舊鐵道、龍騰斷橋、舊山線鐵道自行車',
+          transport: ['包車最佳'],
+          tips: '可預約舊山線鐵道自行車超有趣' },
+        { id: 's74', city: 'miaoli', name: '觀霧國家森林遊樂區', type: '森林秘境', lat: 24.5061, lng: 121.1186, kid: true, pregnant: true,
+          address: '苗栗縣泰安鄉', hours: '08:00-17:00',
+          desc: '雲霧繚繞的高山森林',
+          mustDo: '雲霧步道、看雲海、檜木巨木群',
+          transport: ['包車最佳'],
+          tips: '建議住一晚看雲海日出' },
+        { id: 's75', city: 'miaoli', name: '哈比丘茶樹森林', type: '打卡秘境', lat: 24.4389, lng: 120.8922, kid: true, pregnant: true,
+          address: '苗栗縣銅鑼鄉盛隆村盛隆15鄰160號', hours: '09:30-17:00（週三休）',
+          desc: '魔戒哈比人小屋+茶園風景',
+          mustDo: '拍哈比屋、看茶園、餵小動物',
+          transport: ['包車'],
+          tips: '網美打卡熱點，平日去人少' },
+        { id: 's76', city: 'miaoli', name: '貓裏喵親子公園', type: '親子公園', lat: 24.5658, lng: 120.8150, kid: true, pregnant: true,
+          address: '苗栗縣苗栗市玉清路351號', hours: '全天',
+          desc: '超大貓咪造型溜滑梯',
+          mustDo: '玩巨型溜滑梯、沙坑、攀爬設施',
+          transport: ['包車', 'Uber'],
+          tips: '免費超大公園，小朋友超愛' },
+
+        // ===== 台中市 =====
+        { id: 's21', city: 'taichung', name: '高美濕地', type: '自然景觀', lat: 24.3125, lng: 120.5498, kid: true, pregnant: true,
+          address: '台中市清水區高美路', hours: '全天（看夕陽）',
+          desc: '全台最美夕陽，天空之鏡',
+          mustDo: '踩水看夕陽、風車大道',
+          transport: ['包車最佳', 'Uber'],
+          tips: '一定要查好退潮時間！漲潮去沒得玩' },
+        { id: 's22', city: 'taichung', name: '審計新村', type: '文創園區', lat: 24.1404, lng: 120.6631, kid: true, pregnant: true,
+          address: '台中市西區民生路368巷', hours: '約 11:00-21:00',
+          desc: '老宿舍變身文創市集',
+          mustDo: '逛文創小店、拍照、吃小點',
+          transport: ['Uber', '公車'],
+          tips: '週末有市集，平日人少好拍' },
+        { id: 's23', city: 'taichung', name: '彩虹眷村', type: '打卡景點', lat: 24.1343, lng: 120.6084, kid: true, pregnant: true,
+          address: '台中市南屯區春安路56巷', hours: '08:00-18:00',
+          desc: '彩虹爺爺的塗鴉村',
+          mustDo: '拍照打卡',
+          transport: ['Uber', '公車'],
+          tips: '很小，30分鐘就逛完，順路去就好' },
+        { id: 's24', city: 'taichung', name: '台中國家歌劇院', type: '建築', lat: 24.1627, lng: 120.6403, kid: true, pregnant: true,
+          address: '台中市西屯區惠來路二段101號', hours: '11:30-21:00',
+          desc: '世界級建築，伊東豊雄設計',
+          mustDo: '看建築、逛選品店、喝咖啡',
+          transport: ['Uber', '公車'],
+          tips: '建築超美，頂樓空中花園必去' },
+        { id: 's25', city: 'taichung', name: '逢甲夜市', type: '夜市', lat: 24.1789, lng: 120.6458, kid: true, pregnant: true,
+          address: '台中市西屯區文華路', hours: '17:00-01:00',
+          desc: '台中最大夜市，創意小吃多',
+          mustDo: '大腸包小腸、日船章魚燒',
+          transport: ['Uber'],
+          tips: '晚上8-10點最熱鬧' },
+        { id: 's26', city: 'taichung', name: '宮原眼科', type: '伴手禮/冰淇淋', lat: 24.1381, lng: 120.6848, kid: true, pregnant: true,
+          address: '台中市中區中山路20號', hours: '10:00-22:00',
+          desc: '日治眼科改建，復古華麗',
+          mustDo: '吃冰淇淋、買伴手禮、拍建築',
+          transport: ['台中車站步行5分鐘'],
+          tips: '建築本身就值得看！' },
+
+        // ===== 彰化縣 =====
+        { id: 's59', city: 'changhua', name: '鹿港老街', type: '老街', lat: 24.0564, lng: 120.4313, kid: true, pregnant: true,
+          address: '彰化縣鹿港鎮', hours: '店家約 10:00-18:00',
+          desc: '一府二鹿三艋舺，古蹟遍布',
+          mustDo: '天后宮、摸乳巷、九曲巷、吃蚵仔煎',
+          transport: ['包車', '彰化客運'],
+          tips: '巷弄很多值得慢慢探索' },
+        { id: 's60', city: 'changhua', name: '彰化八卦山大佛', type: '地標', lat: 24.0781, lng: 120.5506, kid: true, pregnant: true,
+          address: '彰化市卦山路8-1號', hours: '全天',
+          desc: '彰化地標，22公尺大佛',
+          mustDo: '看大佛、天空步道、看夜景',
+          transport: ['彰化火車站步行20分鐘', '計程車'],
+          tips: '傍晚去可看夕陽+夜景' },
+        { id: 's61', city: 'changhua', name: '扇形車庫', type: '鐵道迷', lat: 24.0812, lng: 120.5380, kid: true, pregnant: true,
+          address: '彰化市彰美路一段1號', hours: '週二-日 13:00-16:00',
+          desc: '全台唯一扇形火車庫',
+          mustDo: '看火車轉盤、拍復古火車頭',
+          transport: ['彰化火車站步行10分鐘'],
+          tips: '免費參觀，小朋友愛火車必來' },
+        { id: 's62', city: 'changhua', name: '田尾公路花園', type: '花卉', lat: 23.8889, lng: 120.5247, kid: true, pregnant: true,
+          address: '彰化縣田尾鄉', hours: '依各店家',
+          desc: '全台最大花卉產地',
+          mustDo: '租腳踏車逛花田、買多肉植物',
+          transport: ['包車'],
+          tips: '適合拍照，可以買盆栽帶回' },
+
+        // ===== 雲林縣 =====
+        { id: 's77', city: 'yunlin', name: '劍湖山世界主題樂園', type: '親子樂園', lat: 23.6431, lng: 120.5286, kid: true, pregnant: false,
+          address: '雲林縣古坑鄉永光村大湖口67號', hours: '09:00-17:00',
+          desc: '中南部最大遊樂園',
+          mustDo: '摩天輪、雲霄飛車、水樂園',
+          transport: ['包車', '斗六轉公車'],
+          tips: '刺激設施孕婦不宜。夏天有水樂園' },
+        { id: 's78', city: 'yunlin', name: '澄霖沉香味道森林館', type: '打卡景點', lat: 23.7333, lng: 120.3817, kid: true, pregnant: true,
+          address: '雲林縣虎尾鎮惠來75-6號', hours: '08:00-18:00',
+          desc: '台版兼六園，日式庭園秘境',
+          mustDo: '拍落羽松、日式庭園、買沉香產品',
+          transport: ['包車'],
+          tips: '免費入園，落羽松季節最美' },
+
+        // ===== 南投縣 =====
+        { id: 's27', city: 'nantou', name: '日月潭', type: '自然風景', lat: 23.8653, lng: 120.9175, kid: true, pregnant: true,
+          address: '南投縣魚池鄉', hours: '全天',
+          desc: '台灣之心，湖光山色絕美',
+          mustDo: '環湖自行車道、搭船遊湖、向山遊客中心',
+          transport: ['高鐵台中站轉客運', '包車'],
+          tips: '環湖自行車道是全球十大最美！向山遊客中心建築超美' },
+        { id: 's28', city: 'nantou', name: '清境農場', type: '農場', lat: 24.0595, lng: 121.1618, kid: true, pregnant: true,
+          address: '南投縣仁愛鄉大同村仁和路170號', hours: '08:00-17:00',
+          desc: '霧上桃源，青青草原看綿羊',
+          mustDo: '看綿羊秀、走天空步道、住一晚看星星',
+          transport: ['包車最佳'],
+          tips: '建議住一晚，晚上看星星超美' },
+        { id: 's29', city: 'nantou', name: '溪頭自然教育園區', type: '森林', lat: 23.6731, lng: 120.7977, kid: true, pregnant: true,
+          address: '南投縣鹿谷鄉森林巷9號', hours: '07:00-17:00',
+          desc: '森林浴，妖怪村旁邊',
+          mustDo: '走森林步道、看神木、妖怪村逛逛',
+          transport: ['包車', '客運'],
+          tips: '空氣超好，帶小朋友走走很舒服' },
+
+        // ===== 嘉義 =====
+        { id: 's79', city: 'chiayi', name: '嘉義市文化路觀光夜市', type: '夜市', lat: 23.4801, lng: 120.4502, kid: true, pregnant: true,
+          address: '嘉義市東區文化路', hours: '17:00-02:00',
+          desc: '嘉義最大夜市，美食集中地',
+          mustDo: '雞肉飯、林聰明砂鍋魚頭、阿娥豆花',
+          transport: ['嘉義火車站步行10分鐘'],
+          tips: '人潮多但值得逛' },
+        { id: 's80', city: 'chiayi', name: '森林之歌', type: '打卡地標', lat: 23.4758, lng: 120.4342, kid: true, pregnant: true,
+          address: '嘉義市東區文化路林森西路', hours: '全天',
+          desc: '阿里山意象公共藝術',
+          mustDo: '拍照打卡、晚上看燈光',
+          transport: ['嘉義火車站步行'],
+          tips: '晚上點燈後更美' },
+        { id: 's81', city: 'chiayi', name: '嘉大昆蟲館', type: '親子景點', lat: 23.4708, lng: 120.4864, kid: true, pregnant: true,
+          address: '嘉義市東區學府路300號', hours: '09:30-17:00（週一休）',
+          desc: '亞洲最大蝴蝶溫室',
+          mustDo: '看蝴蝶飛舞、昆蟲標本、DIY',
+          transport: ['公車', 'Uber'],
+          tips: '小朋友超愛的昆蟲世界' },
+        { id: 's82', city: 'chiayi', name: 'KHTOY絨毛玩偶旗艦館', type: '親子景點', lat: 23.4550, lng: 120.3200, kid: true, pregnant: true,
+          address: '嘉義縣太保市故宮大道888號', hours: '10:00-18:00',
+          desc: '亞洲最大絨毛玩偶觀光工廠',
+          mustDo: '拍巨型玩偶、DIY體驗、購買玩偶',
+          transport: ['包車', 'Uber'],
+          tips: '門票可抵消費，小朋友超愛' },
+
+        // ===== 台南市 =====
+        { id: 's30', city: 'tainan', name: '神農街', type: '老街', lat: 22.9969, lng: 120.1961, kid: true, pregnant: true,
+          address: '台南市中西區神農街', hours: '全天（夜晚有燈籠）',
+          desc: '古老街巷變身文青聖地',
+          mustDo: '拍老屋、逛小店、晚上看燈籠',
+          transport: ['步行', 'Uber'],
+          tips: '晚上比白天更有氣氛' },
+        { id: 's31', city: 'tainan', name: '安平古堡', type: '古蹟', lat: 23.0014, lng: 120.1604, kid: true, pregnant: true,
+          address: '台南市安平區國勝路82號', hours: '08:30-17:30',
+          desc: '荷蘭時期城堡遺址',
+          mustDo: '登瞭望台、安平樹屋、老街吃蝦捲',
+          transport: ['Uber', '公車'],
+          tips: '附近的安平樹屋超酷必去' },
+        { id: 's32', city: 'tainan', name: '奇美博物館', type: '博物館', lat: 22.9349, lng: 120.2268, kid: true, pregnant: true,
+          address: '台南市仁德區文華路二段66號', hours: '09:30-17:30（週一休）',
+          desc: '西洋藝術殿堂，建築本身就是藝術品',
+          mustDo: '看收藏、拍建築、逛花園',
+          transport: ['高鐵台南站轉公車', 'Uber'],
+          tips: '需預約！提前上網訂票' },
+        { id: 's33', city: 'tainan', name: '林百貨', type: '歷史建築', lat: 22.9914, lng: 120.2027, kid: true, pregnant: true,
+          address: '台南市中西區忠義路二段63號', hours: '10:30-21:30',
+          desc: '日治時期百貨，台南必訪地標',
+          mustDo: '逛文創商品、看古蹟電梯、頂樓神社',
+          transport: ['步行'],
+          tips: '頂樓的神社遺跡很特別' },
+        { id: 's34', city: 'tainan', name: '四草綠色隧道', type: '自然', lat: 23.0266, lng: 120.1306, kid: true, pregnant: true,
+          address: '台南市安南區大眾路360號', hours: '08:30-17:00',
+          desc: '台版亞馬遜，竹筏遊紅樹林',
+          mustDo: '搭竹筏遊綠色隧道',
+          transport: ['Uber'],
+          tips: '要先買票，假日常常客滿要早點去' },
+
+        // ===== 高雄市 =====
+        { id: 's35', city: 'kaohsiung', name: '駁二藝術特區', type: '藝術園區', lat: 22.6205, lng: 120.2814, kid: true, pregnant: true,
+          address: '高雄市鹽埕區大勇路1號', hours: '10:00-21:00',
+          desc: '舊倉庫群變身藝術園區',
+          mustDo: '看展覽、搭輕軌、大港橋',
+          transport: ['輕軌駁二大義站', '輕軌駁二蓬萊站'],
+          tips: '輕軌本身就很美，可以繞一圈' },
+        { id: 's36', city: 'kaohsiung', name: '旗津', type: '海島', lat: 22.5905, lng: 120.2622, kid: true, pregnant: true,
+          address: '高雄市旗津區', hours: '全天',
+          desc: '搭渡輪、騎車、吃海鮮',
+          mustDo: '搭渡輪、租腳踏車環島、旗後燈塔',
+          transport: ['渡輪（西子灣/鼓山）'],
+          tips: '渡輪可以帶機車/腳踏車上去' },
+        { id: 's37', city: 'kaohsiung', name: '蓮池潭', type: '風景區', lat: 22.6816, lng: 120.2953, kid: true, pregnant: true,
+          address: '高雄市左營區', hours: '全天',
+          desc: '龍虎塔、孔廟，經典地標',
+          mustDo: '走龍虎塔、孔廟、環湖步道',
+          transport: ['Uber', '公車'],
+          tips: '進龍虎塔要從龍嘴進虎嘴出才吉利' },
+        { id: 's38', city: 'kaohsiung', name: '美麗島站', type: '捷運站', lat: 22.6316, lng: 120.3016, kid: true, pregnant: true,
+          address: '高雄市新興區', hours: '全天',
+          desc: '世界第二美捷運站，光之穹頂',
+          mustDo: '拍光之穹頂',
+          transport: ['捷運美麗島站'],
+          tips: '順路經過就好，拍個照' },
+        { id: 's39', city: 'kaohsiung', name: '瑞豐夜市', type: '夜市', lat: 22.6671, lng: 120.3034, kid: true, pregnant: true,
+          address: '高雄市左營區裕誠路', hours: '18:00-01:00（週一二休）',
+          desc: '高雄在地人愛逛的夜市',
+          mustDo: '萬國牛排、烤肉之家',
+          transport: ['Uber'],
+          tips: '比六合夜市更在地、更好吃' },
+
+        // ===== 屏東縣 =====
+        { id: 's83', city: 'pingtung', name: '墾丁國家公園', type: '國家公園', lat: 21.9450, lng: 120.7825, kid: true, pregnant: true,
+          address: '屏東縣恆春鎮', hours: '全天',
+          desc: '台灣最南端，陽光沙灘海洋',
+          mustDo: '南灣玩水、白沙灣、後壁湖吃海鮮',
+          transport: ['包車最佳', '高鐵左營轉客運'],
+          tips: '建議住2-3晚慢慢玩' },
+        { id: 's84', city: 'pingtung', name: '鵝鑾鼻燈塔', type: '地標', lat: 21.9019, lng: 120.8519, kid: true, pregnant: true,
+          address: '屏東縣恆春鎮鵝鑾里鵝鑾路301號', hours: '09:00-17:00',
+          desc: '台灣最南點燈塔',
+          mustDo: '看燈塔、走步道、拍最南點地標',
+          transport: ['包車', '墾丁街車'],
+          tips: '日落時分最美' },
+        { id: 's85', city: 'pingtung', name: '看海美術館', type: '藝術館', lat: 22.4689, lng: 120.4428, kid: true, pregnant: true,
+          address: '屏東縣枋山鄉枋山村中山路三段9號', hours: '10:00-18:00（週二休）',
+          desc: '海邊純白建築，網美打卡新地標',
+          mustDo: '看展覽、拍照、看海',
+          transport: ['包車'],
+          tips: '免費入場，旁邊有愛琴海餐廳' },
+        { id: 's86', city: 'pingtung', name: '林後四林平地森林園區', type: '親子景點', lat: 22.5800, lng: 120.5836, kid: true, pregnant: true,
+          address: '屏東縣潮州鎮潮義路221-1號', hours: '08:00-17:00',
+          desc: '大草原+綠意森林，野餐天堂',
+          mustDo: '野餐、騎腳踏車、放風箏',
+          transport: ['包車'],
+          tips: '免費入園，適合帶小朋友放電' },
+        { id: 's87', city: 'pingtung', name: '海上教堂咖啡', type: '打卡咖啡', lat: 22.3900, lng: 120.5467, kid: true, pregnant: true,
+          address: '屏東縣東港鎮大鵬路155號', hours: '10:00-18:00',
+          desc: '海上玻璃教堂，夢幻打卡點',
+          mustDo: '拍玻璃教堂、喝咖啡看海',
+          transport: ['包車'],
+          tips: '需消費入場' },
+        { id: 's88', city: 'pingtung', name: '禮納里部落', type: '部落文化', lat: 22.7106, lng: 120.6433, kid: true, pregnant: true,
+          address: '屏東縣瑪家鄉', hours: '全天',
+          desc: '台版普羅旺斯，災後重建美麗部落',
+          mustDo: '看彩色屋、體驗原住民文化、吃美食',
+          transport: ['包車'],
+          tips: '假日有市集，可買原住民手工藝品' },
+        { id: 's89', city: 'pingtung', name: '艾米達精靈谷茶樹莊園', type: '打卡秘境', lat: 22.4639, lng: 120.6089, kid: true, pregnant: true,
+          address: '屏東縣新埤鄉箕湖村內寮路1-36號', hours: '09:00-18:00',
+          desc: '精靈蘑菇屋，童話秘境',
+          mustDo: '拍蘑菇屋、精靈樹屋、喝下午茶',
+          transport: ['包車'],
+          tips: '門票可抵消費' },
+
+        // ===== 花蓮縣 =====
+        { id: 's40', city: 'hualien', name: '太魯閣國家公園', type: '國家公園', lat: 24.1584, lng: 121.4936, kid: true, pregnant: true,
+          address: '花蓮縣秀林鄉', hours: '全天',
+          desc: '鬼斧神工的大理石峽谷',
+          mustDo: '砂卡礑步道、燕子口、長春祠',
+          transport: ['包車最佳', '租機車'],
+          tips: '帶小朋友走砂卡礑步道最輕鬆' },
+        { id: 's41', city: 'hualien', name: '七星潭', type: '海灘', lat: 24.0295, lng: 121.6290, kid: true, pregnant: true,
+          address: '花蓮縣新城鄉', hours: '全天',
+          desc: '看日出、踩浪、撿石頭',
+          mustDo: '看日出、踩浪、騎腳踏車',
+          transport: ['租機車', '包車'],
+          tips: '石頭不能帶走！日出超美' },
+        { id: 's42', city: 'hualien', name: '清水斷崖', type: '自然景觀', lat: 24.2244, lng: 121.6636, kid: true, pregnant: true,
+          address: '花蓮縣秀林鄉', hours: '全天',
+          desc: '台灣十大景觀之一',
+          mustDo: '拍照、看壯觀海景',
+          transport: ['包車', '租機車'],
+          tips: '蘇花公路上，開車經過一定要停下來看' },
+        { id: 's43', city: 'hualien', name: '東大門夜市', type: '夜市', lat: 23.9758, lng: 121.6064, kid: true, pregnant: true,
+          address: '花蓮市中山路50號', hours: '17:00-23:30',
+          desc: '花蓮最大夜市，原住民美食多',
+          mustDo: '烤肉、竹筒飯、各種海鮮',
+          transport: ['步行', 'Uber'],
+          tips: '原住民烤肉攤必吃' },
+        { id: 's91', city: 'hualien', name: '山度空間', type: '咖啡廳', lat: 23.7428, lng: 121.4785, kid: true, pregnant: true,
+          address: '花蓮縣壽豐鄉鹽寮村大坑57號', hours: '09:30-17:00（週三休）',
+          desc: '懸崖邊絕美海景咖啡廳，網美必訪',
+          mustDo: '三角玻璃屋拍照、賞太平洋海景',
+          transport: ['自駕', '包車'],
+          tips: '假日人多建議平日去，需穿好走的鞋' },
+        { id: 's92', city: 'hualien', name: '錐麓古道', type: '健行步道', lat: 24.1785, lng: 121.5389, kid: false, pregnant: false,
+          address: '花蓮縣秀林鄉太魯閣國家公園內', hours: '需事先申請入園',
+          desc: '斷崖峭壁上的古道，台灣最驚險步道',
+          mustDo: '走在500公尺懸崖上的古道',
+          transport: ['自駕至燕子口'],
+          tips: '需提前上網申請入園，孕婦及小孩不建議' },
+        { id: 's93', city: 'hualien', name: '新社梯田', type: '自然景觀', lat: 23.7156, lng: 121.4892, kid: true, pregnant: true,
+          address: '花蓮縣豐濱鄉新社村', hours: '全天',
+          desc: '面海梯田，山海交織的絕美景色',
+          mustDo: '5-6月稻穗黃金期、海稀飯裝置藝術',
+          transport: ['自駕', '包車'],
+          tips: '可順遊石門班哨角、石梯坪' },
+        { id: 's94', city: 'hualien', name: '花蓮觀光糖廠', type: '觀光工廠', lat: 23.7333, lng: 121.4000, kid: true, pregnant: true,
+          address: '花蓮縣光復鄉大進村糖廠街19號', hours: '08:00-20:00',
+          desc: '日治時代糖廠，古早味冰品',
+          mustDo: '吃糖廠冰棒、騎腳踏車遊園區',
+          transport: ['光復火車站轉計程車'],
+          tips: '推薦紅豆牛奶冰棒' },
+
+        // ===== 台東縣 =====
+        { id: 's44', city: 'taitung', name: '伯朗大道', type: '打卡景點', lat: 23.1041, lng: 121.2192, kid: true, pregnant: true,
+          address: '台東縣池上鄉', hours: '全天',
+          desc: '金城武樹，稻田風光',
+          mustDo: '租腳踏車慢遊、金城武樹打卡',
+          transport: ['池上火車站租腳踏車'],
+          tips: '5-6月、10-11月稻子最美' },
+        { id: 's45', city: 'taitung', name: '多良車站', type: '打卡景點', lat: 22.4192, lng: 120.9689, kid: true, pregnant: true,
+          address: '台東縣太麻里鄉', hours: '全天',
+          desc: '全台最美車站，面海看火車',
+          mustDo: '看火車經過、拍照',
+          transport: ['包車', '自駕'],
+          tips: '查好火車時刻表，等火車經過拍照' },
+        { id: 's46', city: 'taitung', name: '三仙台', type: '自然景觀', lat: 23.1228, lng: 121.4089, kid: true, pregnant: true,
+          address: '台東縣成功鎮', hours: '全天',
+          desc: '八拱跨海步橋，看日出聖地',
+          mustDo: '走八拱橋、看日出',
+          transport: ['包車', '自駕'],
+          tips: '日出超美！建議住一晚早起看' },
+        { id: 's47', city: 'taitung', name: '鹿野高台', type: '體驗', lat: 22.9103, lng: 121.1230, kid: true, pregnant: false,
+          address: '台東縣鹿野鄉', hours: '全天',
+          desc: '熱氣球嘉年華舉辦地',
+          mustDo: '夏天看熱氣球、平常滑草',
+          transport: ['包車', '自駕'],
+          tips: '熱氣球季(6-8月)要提早訂住宿' },
+
+        // ===== 宜蘭縣 =====
+        { id: 's90', city: 'yilan', name: '蘭陽博物館', type: '博物館', lat: 24.8692, lng: 121.8328, kid: true, pregnant: true,
+          address: '宜蘭縣頭城鎮青雲路三段750號', hours: '09:00-17:00（週三休）',
+          desc: '單面山造型建築，認識宜蘭',
+          mustDo: '看建築、認識宜蘭文化歷史',
+          transport: ['頭城火車站轉公車'],
+          tips: '建築本身就值得看' },
+        { id: 's91', city: 'yilan', name: '宜蘭幾米公園', type: '打卡景點', lat: 24.7539, lng: 121.7544, kid: true, pregnant: true,
+          address: '宜蘭縣宜蘭市宜興路一段240號', hours: '全天',
+          desc: '幾米繪本主題公園',
+          mustDo: '拍幾米公仔、繪本場景',
+          transport: ['宜蘭火車站旁'],
+          tips: '免費，火車站出來就到' },
+        { id: 's48', city: 'yilan', name: '礁溪溫泉', type: '溫泉', lat: 24.8267, lng: 121.7670, kid: true, pregnant: false,
+          address: '宜蘭縣礁溪鄉', hours: '依各湯屋',
+          desc: '美人湯溫泉，從台北最近',
+          mustDo: '泡溫泉、吃蔥油餅',
+          transport: ['客運直達', '火車'],
+          tips: '湯圍溝公園有免費泡腳池' },
+        { id: 's49', city: 'yilan', name: '羅東夜市', type: '夜市', lat: 24.6772, lng: 121.7665, kid: true, pregnant: true,
+          address: '宜蘭縣羅東鎮', hours: '15:00-00:00',
+          desc: '東部最大夜市',
+          mustDo: '包心粉圓、卜肉、三星蔥油餅',
+          transport: ['羅東火車站步行'],
+          tips: '包心粉圓必吃！' },
+        { id: 's50', city: 'yilan', name: '太平山國家森林遊樂區', type: '森林', lat: 24.5022, lng: 121.5131, kid: true, pregnant: true,
+          address: '宜蘭縣大同鄉', hours: '06:00-20:00',
+          desc: '雲海、日出、蹦蹦車',
+          mustDo: '搭蹦蹦車、走見晴懷古步道、看雲海',
+          transport: ['包車最佳'],
+          tips: '建議住一晚看日出雲海' },
+
+        // ===== 澎湖縣 =====
+        { id: 's63', city: 'penghu', name: '澎湖天后宮', type: '古蹟', lat: 23.5672, lng: 119.5646, kid: true, pregnant: true,
+          address: '澎湖縣馬公市正義街1號', hours: '05:00-21:00',
+          desc: '全台最早媽祖廟，400年歷史',
+          mustDo: '拜媽祖、看古蹟建築',
+          transport: ['馬公市區步行'],
+          tips: '在中央老街旁邊' },
+        { id: 's64', city: 'penghu', name: '七美雙心石滬', type: '打卡景點', lat: 23.2092, lng: 119.4331, kid: true, pregnant: true,
+          address: '澎湖縣七美鄉', hours: '全天',
+          desc: '浪漫心型石滬，IG必拍',
+          mustDo: '拍雙心石滬、小台灣地標',
+          transport: ['馬公搭船'],
+          tips: '可報名一日遊行程' },
+        { id: 's65', city: 'penghu', name: '吉貝島', type: '海島', lat: 23.7283, lng: 119.6100, kid: true, pregnant: true,
+          address: '澎湖縣白沙鄉', hours: '全天',
+          desc: '貝殼沙灘、水上活動天堂',
+          mustDo: '玩水上活動、踏浪、環島',
+          transport: ['北海遊客中心搭船20分鐘'],
+          tips: '夏天必去，水超清澈' },
+        { id: 's66', city: 'penghu', name: '跨海大橋', type: '地標', lat: 23.6322, lng: 119.5567, kid: true, pregnant: true,
+          address: '澎湖縣白沙鄉', hours: '全天',
+          desc: '澎湖地標，連接白沙與西嶼',
+          mustDo: '拍照打卡、吃仙人掌冰',
+          transport: ['租機車'],
+          tips: '橋頭有仙人掌冰必吃' },
+        { id: 's67', city: 'penghu', name: '澎湖水族館', type: '親子景點', lat: 23.6592, lng: 119.5869, kid: true, pregnant: true,
+          address: '澎湖縣白沙鄉岐頭村58號', hours: '09:00-17:00',
+          desc: '認識澎湖海洋生態',
+          mustDo: '海底隧道、觸摸池、餵食秀',
+          transport: ['租機車'],
+          tips: '適合帶小朋友' }
+    ];
+
+    // 美食資料（台灣特色，排除日式港式）
+    const foods = [
+        // ===== 台北市 =====
+        { id: 'f1', city: 'taipei', name: '林東芳牛肉麵', type: '牛肉麵', lat: 25.0517, lng: 121.5449,
+          address: '台北市中山區安東街4-3號', hours: '11:00-03:00', price: '$200-250',
+          queue: '平日30分鐘，假日1小時+',
+          mustTry: '半筋半肉牛肉麵', tips: '凌晨來人較少，辣椒醬是靈魂',
+          backups: [
+            { name: '永康牛肉麵', desc: '湯頭較清爽' },
+            { name: '廖家牛肉麵', desc: '在地人愛' }
+          ]},
+        { id: 'f2', city: 'taipei', name: '老王記牛肉麵', type: '牛肉麵', lat: 25.0429, lng: 121.5087,
+          address: '台北市中正區桃源街15號', hours: '08:00-19:30', price: '$150-200',
+          queue: '約20分鐘',
+          mustTry: '清燉牛肉麵', tips: '清燉派經典',
+          backups: [{ name: '劉山東牛肉麵', desc: '清燉大塊肉' }]},
+        { id: 'f3', city: 'taipei', name: '阜杭豆漿', type: '早餐', lat: 25.0443, lng: 121.5283,
+          address: '台北市中正區忠孝東路一段108號2樓', hours: '05:30-12:00', price: '$60-120',
+          queue: '平日40分鐘，假日1-2小時',
+          mustTry: '厚燒餅夾蛋、鹹豆漿', tips: '5:30開門，6點前到可省很多時間',
+          backups: [
+            { name: '鼎元豆漿', desc: '金華街，不用排太久' },
+            { name: '秦小姐豆漿', desc: '東區選擇' }
+          ]},
+        { id: 'f4', city: 'taipei', name: '梁記嘉義雞肉飯', type: '雞肉飯', lat: 25.0536, lng: 121.5330,
+          address: '台北市中山區松江路90巷19號', hours: '10:00-20:00（週一休）', price: '$50-100',
+          queue: '用餐時間30分鐘',
+          mustTry: '雞肉飯、油豆腐、筍絲', tips: '錯開用餐時間',
+          backups: [{ name: '劉家雞肉飯', desc: '吉林路' }]},
+        { id: 'f5', city: 'taipei', name: '富霸王豬腳', type: '豬腳', lat: 25.0528, lng: 121.5344,
+          address: '台北市中山區南京東路二段115巷20號', hours: '10:00-20:30', price: '$80-150',
+          queue: '15-30分鐘',
+          mustTry: '豬腳飯、滷豆腐', tips: '外帶比較快',
+          backups: []},
+        { id: 'f6', city: 'taipei', name: '施家鮮肉湯圓', type: '小吃', lat: 25.0443, lng: 121.5128,
+          address: '台北市中正區許昌街17號', hours: '09:00-21:00', price: '$50-80',
+          queue: '10-20分鐘',
+          mustTry: '鮮肉湯圓（鹹的）', tips: '可外帶冷凍',
+          backups: []},
+        { id: 'f8', city: 'taipei', name: '寧夏夜市 · 劉芋仔', type: '小吃', lat: 25.0556, lng: 121.5156,
+          address: '寧夏夜市內', hours: '18:00-售完', price: '$40-60',
+          queue: '30分鐘起跳',
+          mustTry: '芋頭餅', tips: '排隊是值得的',
+          backups: [{ name: '蚵仔煎', desc: '夜市內多攤可選' }]},
+        { id: 'f9', city: 'taipei', name: '遼寧街夜市 · 阿圖麻油雞', type: '麻油雞', lat: 25.0489, lng: 121.5417,
+          address: '台北市中山區遼寧街', hours: '17:00-01:00', price: '$150-250',
+          queue: '20分鐘',
+          mustTry: '麻油雞、麵線', tips: '冬天喝超暖',
+          backups: []},
+        { id: 'f10', city: 'taipei', name: '快炒店推薦 · 熱炒99', type: '熱炒', lat: 25.0483, lng: 121.5170,
+          address: '台北市多處分店', hours: '17:00-02:00', price: '$200-400/人',
+          queue: '晚餐時段可能要等',
+          mustTry: '炒花枝、三杯雞、炒水蓮', tips: '點菜制，人多划算',
+          backups: [{ name: '33區熱炒', desc: '南京東路' }]},
+        { id: 'f11', city: 'taipei', name: '施老闆麻辣乾拌麵', type: '乾拌麵', lat: 25.0397, lng: 121.5651,
+          address: '台北市信義區永吉路30巷', hours: '11:30-20:30', price: '$80-120',
+          queue: '10分鐘',
+          mustTry: '麻辣乾拌麵', tips: '辣度可調整',
+          backups: []},
+        { id: 'f12', city: 'taipei', name: '老天祿滷味', type: '乾滷味', lat: 25.0421, lng: 121.5065,
+          address: '台北市萬華區武昌街二段55號', hours: '10:00-22:00', price: '$100-200',
+          queue: '10分鐘',
+          mustTry: '鴨翅、鴨舌、豆干', tips: '西門町必買',
+          backups: []},
+
+        // ===== 新北市 =====
+
+        // ===== 台中市 =====
+        { id: 'f15', city: 'taichung', name: '第二市場 · 王記菜頭粿糯米腸', type: '早餐', lat: 24.1374, lng: 120.6797,
+          address: '台中市中區三民路二段87號', hours: '06:30-13:00', price: '$50-100',
+          queue: '20-30分鐘',
+          mustTry: '菜頭粿＋糯米腸組合', tips: '來第二市場必吃',
+          backups: [
+            { name: '老賴茶棧', desc: '第二市場內，紅茶讚' },
+            { name: '山河魯肉飯', desc: '魯肉飯名店' }
+          ]},
+        { id: 'f16', city: 'taichung', name: '肉蛋吐司', type: '早餐', lat: 24.1618, lng: 120.6594,
+          address: '台中市北區健行路1005號', hours: '05:30-12:30', price: '$40-80',
+          queue: '30-60分鐘',
+          mustTry: '肉蛋吐司', tips: '7點前到比較不用排太久',
+          backups: []},
+        { id: 'f17', city: 'taichung', name: '一中街 · 豐仁冰', type: '冰品', lat: 24.1499, lng: 120.6852,
+          address: '台中市北區育才街', hours: '10:30-22:00', price: '$40-60',
+          queue: '10分鐘',
+          mustTry: '豐仁冰（蜜豆+冰淇淋）', tips: '一中街逛完來吃',
+          backups: []},
+        { id: 'f18', city: 'taichung', name: '沙鹿 · 阿榮羊肉爐', type: '羊肉爐', lat: 24.2345, lng: 120.5666,
+          address: '台中市沙鹿區鎮南路二段538號', hours: '16:00-02:00', price: '$300-500/人',
+          queue: '假日可能要等',
+          mustTry: '羊肉爐、羊腳筋', tips: '冬天必吃！',
+          backups: []},
+
+        // ===== 台南市 =====
+        { id: 'f19', city: 'tainan', name: '六千牛肉湯', type: '牛肉湯', lat: 22.9984, lng: 120.1977,
+          address: '台南市中西區海安路一段63號', hours: '04:30-13:00', price: '$120-180',
+          queue: '15-30分鐘',
+          mustTry: '牛肉湯（溫體牛）', tips: '越早越新鮮，8點前最佳',
+          backups: [
+            { name: '文章牛肉湯', desc: '安平路' },
+            { name: '阿村第二代牛肉湯', desc: '保安路' }
+          ]},
+        { id: 'f20', city: 'tainan', name: '阿堂鹹粥', type: '早餐', lat: 23.0012, lng: 120.2084,
+          address: '台南市中西區西門路一段728號', hours: '05:00-12:30', price: '$60-120',
+          queue: '15-30分鐘',
+          mustTry: '虱目魚肚粥', tips: '台南人的早餐',
+          backups: []},
+        { id: 'f21', city: 'tainan', name: '阿明豬心冬粉', type: '小吃', lat: 22.9957, lng: 120.2013,
+          address: '台南市中西區保安路72號', hours: '17:00-01:00', price: '$50-100',
+          queue: '10-20分鐘',
+          mustTry: '豬心冬粉、豬肝', tips: '保安路小吃很多',
+          backups: []},
+        { id: 'f22', city: 'tainan', name: '周氏蝦捲', type: '小吃', lat: 23.0014, lng: 120.1602,
+          address: '台南市安平區安平路408-1號', hours: '10:00-20:00', price: '$50-100',
+          queue: '10分鐘',
+          mustTry: '蝦捲、蝦餅', tips: '可買冷凍帶走',
+          backups: []},
+        { id: 'f23', city: 'tainan', name: '阿龍香腸熟肉', type: '小吃', lat: 22.9939, lng: 120.2002,
+          address: '台南市中西區保安路34號', hours: '17:00-01:00', price: '$100-200',
+          queue: '10分鐘',
+          mustTry: '香腸、粉腸、各種熟肉', tips: '台南特有的熟肉文化',
+          backups: []},
+
+        // ===== 高雄市 =====
+        { id: 'f24', city: 'kaohsiung', name: '興隆居', type: '早餐', lat: 22.6330, lng: 120.2995,
+          address: '高雄市前金區六合二路186號', hours: '04:00-11:00', price: '$40-80',
+          queue: '30-60分鐘',
+          mustTry: '湯包（燙口多汁）', tips: '6點前到比較好',
+          backups: [{ name: '果貿吳媽家餃子', desc: '眷村口味' }]},
+        { id: 'f25', city: 'kaohsiung', name: '老江紅茶牛奶', type: '飲料', lat: 22.6325, lng: 120.2997,
+          address: '高雄市前金區七賢二路77號', hours: '06:00-售完', price: '$30-50',
+          queue: '10分鐘',
+          mustTry: '紅茶牛奶', tips: '高雄經典飲料',
+          backups: []},
+        { id: 'f26', city: 'kaohsiung', name: '旗津海產', type: '海鮮', lat: 22.5905, lng: 120.2622,
+          address: '高雄市旗津區廟前路多家', hours: '10:00-20:00', price: '$300-500/人',
+          queue: '看店家',
+          mustTry: '花枝、蝦、蟹', tips: '多比較幾家再決定',
+          backups: []},
+        { id: 'f27', city: 'kaohsiung', name: '岡山羊肉爐', type: '羊肉爐', lat: 22.7956, lng: 120.2953,
+          address: '高雄市岡山區多家', hours: '16:00-00:00', price: '$300-500/人',
+          queue: '假日建議預約',
+          mustTry: '帶皮羊肉、羊腳筋', tips: '岡山是羊肉重鎮',
+          backups: []},
+
+        // ===== 花蓮縣 =====
+        { id: 'f28', city: 'hualien', name: '公正包子', type: '包子', lat: 23.9758, lng: 121.6042,
+          address: '花蓮市中山路199-2號', hours: '06:00-售完', price: '$15/顆',
+          queue: '30-60分鐘',
+          mustTry: '小籠包', tips: '一籠10顆，買兩籠',
+          backups: [{ name: '周家蒸餃', desc: '蒸餃也讚' }]},
+        { id: 'f29', city: 'hualien', name: '戴記扁食', type: '扁食', lat: 23.9764, lng: 121.6053,
+          address: '花蓮市中華路120號', hours: '08:00-23:00', price: '$60-100',
+          queue: '10分鐘',
+          mustTry: '扁食湯', tips: '花蓮特色小吃',
+          backups: [{ name: '液香扁食', desc: '另一家名店' }]},
+        { id: 'f30', city: 'hualien', name: '炸彈蔥油餅', type: '小吃', lat: 23.9775, lng: 121.6048,
+          address: '花蓮市復興街', hours: '13:00-售完', price: '$35-50',
+          queue: '20-40分鐘',
+          mustTry: '加蛋蔥油餅', tips: '下午才開',
+          backups: []},
+
+        // ===== 台東縣 =====
+        { id: 'f31', city: 'taitung', name: '池上飯包 · 悟饕', type: '便當', lat: 23.1203, lng: 121.2196,
+          address: '台東縣池上鄉忠孝路259號', hours: '07:00-21:00', price: '$80-120',
+          queue: '10分鐘',
+          mustTry: '招牌飯包', tips: '池上米真的不一樣',
+          backups: [{ name: '全美行池上便當', desc: '更老字號' }]},
+        { id: 'f32', city: 'taitung', name: '米苔目', type: '小吃', lat: 22.7560, lng: 121.1445,
+          address: '台東市多家', hours: '依店家', price: '$40-60',
+          queue: '10分鐘',
+          mustTry: '米苔目湯', tips: '台東古早味',
+          backups: []},
+
+        // ===== 嘉義 =====
+        { id: 'f33', city: 'chiayi', name: '林聰明砂鍋魚頭', type: '砂鍋魚頭', lat: 23.4801, lng: 120.4502,
+          address: '嘉義市東區中正路361號', hours: '15:00-21:30', price: '$200-300',
+          queue: '30-60分鐘',
+          mustTry: '砂鍋魚頭', tips: '嘉義必吃',
+          backups: []},
+        { id: 'f34', city: 'chiayi', name: '劉里長雞肉飯', type: '雞肉飯', lat: 23.4815, lng: 120.4477,
+          address: '嘉義市東區公明路197號', hours: '06:30-14:30', price: '$30-50',
+          queue: '用餐時間20分鐘',
+          mustTry: '雞肉飯、下水湯', tips: '在地人推薦',
+          backups: [{ name: '郭家雞肉飯', desc: '也很讚' }]},
+
+        // ===== 宜蘭縣 =====
+        { id: 'f35', city: 'yilan', name: '正常鮮肉小籠包', type: '小籠包', lat: 24.7575, lng: 121.7535,
+          address: '宜蘭市泰山路25-1號', hours: '06:30-12:30', price: '$50-80',
+          queue: '15-30分鐘',
+          mustTry: '鮮肉小籠包', tips: '宜蘭人的早餐',
+          backups: []},
+        { id: 'f36', city: 'yilan', name: '羅東夜市 · 包心粉圓', type: '甜點', lat: 24.6772, lng: 121.7665,
+          address: '羅東夜市內', hours: '15:00-00:00', price: '$40-60',
+          queue: '10分鐘',
+          mustTry: '包心粉圓冰', tips: '羅東夜市必吃',
+          backups: []},
+        { id: 'f37', city: 'yilan', name: '三星蔥油餅', type: '蔥油餅', lat: 24.6625, lng: 121.6636,
+          address: '宜蘭縣三星鄉多處', hours: '依攤位', price: '$30-50',
+          queue: '10-20分鐘',
+          mustTry: '加蛋蔥油餅', tips: '三星蔥又甜又香',
+          backups: []},
+
+        // ===== 桃園市 =====
+        { id: 'f39', city: 'taoyuan', name: '大溪黃日香豆干', type: '豆干', lat: 24.8817, lng: 121.2867,
+          address: '桃園市大溪區和平路56號', hours: '08:00-20:00', price: '$50-150',
+          queue: '假日15分鐘',
+          mustTry: '黑豆干、滷味拼盤', tips: '大溪老街必買',
+          backups: [{ name: '黃大目豆干', desc: '也是老店' }]},
+        { id: 'f40', city: 'taoyuan', name: '中壢夜市', type: '夜市', lat: 24.9583, lng: 121.2256,
+          address: '桃園市中壢區新明路', hours: '17:00-00:00', price: '$50-150',
+          queue: '視攤位',
+          mustTry: '花生糖冰淇淋捲、烤肉、地瓜球', tips: '在地人夜市',
+          backups: []},
+
+        // ===== 彰化縣 =====
+        { id: 'f41', city: 'changhua', name: '阿璋肉圓', type: '肉圓', lat: 24.0806, lng: 120.5381,
+          address: '彰化市長安街144號', hours: '09:00-20:00', price: '$40-60',
+          queue: '用餐時間15分鐘',
+          mustTry: '彰化肉圓（先蒸後炸）', tips: '彰化肉圓跟其他地方不一樣',
+          backups: [{ name: '正彰化肉圓', desc: '車站旁' }]},
+        { id: 'f42', city: 'changhua', name: '鹿港蚵仔煎', type: '蚵仔煎', lat: 24.0564, lng: 120.4313,
+          address: '鹿港老街內多家', hours: '10:00-18:00', price: '$60-80',
+          queue: '10分鐘',
+          mustTry: '蚵仔煎、蚵嗲', tips: '鹿港蚵仔肥美',
+          backups: []},
+        { id: 'f43', city: 'changhua', name: '北斗肉圓生', type: '肉圓', lat: 23.8711, lng: 120.5189,
+          address: '彰化縣北斗鎮中華路192號', hours: '09:00-18:00', price: '$35-50',
+          queue: '10分鐘',
+          mustTry: '北斗肉圓', tips: '另一種風味的彰化肉圓',
+          backups: []},
+
+        // ===== 澎湖縣 =====
+        { id: 'f44', city: 'penghu', name: '馬公市區海鮮', type: '海鮮', lat: 23.5656, lng: 119.5664,
+          address: '澎湖縣馬公市區多家', hours: '11:00-21:00', price: '$300-600/人',
+          queue: '假日建議預約',
+          mustTry: '小管三吃、澎湖海菜、石蚵', tips: '海鮮新鮮又便宜',
+          backups: []},
+        { id: 'f45', city: 'penghu', name: '仙人掌冰', type: '冰品', lat: 23.6322, lng: 119.5567,
+          address: '跨海大橋附近多攤', hours: '09:00-18:00', price: '$30-50',
+          queue: '5分鐘',
+          mustTry: '仙人掌冰淇淋', tips: '澎湖特產，顏色超美',
+          backups: []},
+        { id: 'f46', city: 'penghu', name: '玉冠嫩仙草', type: '甜點', lat: 23.5681, lng: 119.5659,
+          address: '澎湖縣馬公市仁愛路28號', hours: '10:00-22:00', price: '$40-60',
+          queue: '10分鐘',
+          mustTry: '嫩仙草、仙草奶凍', tips: '澎湖排隊名店',
+          backups: []},
+
+        // ===== 薑母鴨 =====
+        { id: 'f38', city: 'taipei', name: '帝王食補薑母鴨', type: '薑母鴨', lat: 25.0583, lng: 121.5283,
+          address: '台北市多家分店', hours: '16:00-02:00', price: '$350-500/人',
+          queue: '冬天要等',
+          mustTry: '薑母鴨、鴨血、豆皮', tips: '冬天進補必吃',
+          backups: [{ name: '霸味薑母鴨', desc: '也很有名' }]}
+    ];
+
+    // 伴手禮資料（重點茶葉，排除太陽餅鳳梨酥）
+    const gifts = [
+        // ===== 茶葉 =====
+        { id: 'g1', city: 'taipei', name: '王德傳茶莊', type: '茶葉', lat: 25.0556, lng: 121.5107,
+          address: '台北市大同區迪化街一段64號', hours: '09:30-18:30', price: '$500-2000+',
+          desc: '百年老茶莊，高品質台灣茶',
+          mustBuy: '東方美人茶、凍頂烏龍', tips: '有試喝服務' },
+        { id: 'g2', city: 'taipei', name: '有記名茶', type: '茶葉', lat: 25.0544, lng: 121.5089,
+          address: '台北市大同區重慶北路二段64巷26號', hours: '09:00-18:00', price: '$300-1500',
+          desc: '老字號茶行，價格實在',
+          mustBuy: '包種茶、鐵觀音', tips: '可以參觀茶廠' },
+        { id: 'g3', city: 'taipei', name: '天仁茗茶', type: '茶葉', lat: 25.0421, lng: 121.5081,
+          address: '全台多家分店', hours: '10:00-22:00', price: '$200-800',
+          desc: '連鎖茶行，品質穩定好買',
+          mustBuy: '913茶王', tips: '機場也有店' },
+        { id: 'g4', city: 'nantou', name: '日月潭紅茶', type: '茶葉', lat: 23.8653, lng: 120.9175,
+          address: '南投縣魚池鄉日月潭周邊', hours: '依店家', price: '$300-1000',
+          desc: '日月潭特產紅茶',
+          mustBuy: '台茶18號（紅玉）', tips: '向山遊客中心附近有賣' },
+        { id: 'g5', city: 'chiayi', name: '阿里山高山茶', type: '茶葉', lat: 23.5116, lng: 120.8022,
+          address: '嘉義縣阿里山鄉', hours: '依店家', price: '$500-2000+',
+          desc: '台灣最知名高山茶區',
+          mustBuy: '阿里山烏龍茶', tips: '上阿里山時買' },
+        { id: 'g6', city: 'hualien', name: '蜜香紅茶', type: '茶葉', lat: 23.4922, lng: 121.3674,
+          address: '花蓮縣瑞穗鄉', hours: '依店家', price: '$400-1200',
+          desc: '花蓮瑞穗特產',
+          mustBuy: '蜜香紅茶', tips: '有天然蜜香' },
+
+        // ===== 肉乾/肉鬆 =====
+        { id: 'g7', city: 'taipei', name: '快車肉乾', type: '肉乾', lat: 25.0567, lng: 121.5139,
+          address: '台北市大同區南京西路238號', hours: '09:00-21:00', price: '$200-400',
+          desc: '厚度剛好，口味多',
+          mustBuy: '特厚蜜汁豬肉乾', tips: '試吃大方' },
+        { id: 'g8', city: 'taipei', name: '新東陽', type: '肉乾/肉鬆', lat: 25.0330, lng: 121.5654,
+          address: '全台多家分店/機場', hours: '依店家', price: '$200-500',
+          desc: '老牌子，品質穩定',
+          mustBuy: '肉鬆、肉乾', tips: '機場必買' },
+
+        // ===== 糕餅（非太陽餅鳳梨酥）=====
+        { id: 'g9', city: 'taipei', name: '小潘蛋糕坊', type: '蛋黃酥', lat: 25.0169, lng: 121.4628,
+          address: '新北市板橋區中正路135巷11-1號', hours: '09:00-21:00', price: '$50-60/顆',
+          desc: '中秋節超難買到',
+          mustBuy: '蛋黃酥（鳳梨蛋黃酥）', tips: '平常日比較買得到' },
+        { id: 'g10', city: 'taichung', name: '陳允寶泉', type: '糕餅', lat: 24.1384, lng: 120.6864,
+          address: '台中市中區自由路二段88號', hours: '09:00-21:00', price: '$200-500',
+          desc: '日治時期創立',
+          mustBuy: '小月餅、御丹波', tips: '比太陽餅特別' },
+        { id: 'g11', city: 'taichung', name: '一福堂', type: '糕餅', lat: 24.1388, lng: 120.6859,
+          address: '台中市中區中山路67號', hours: '08:00-22:00', price: '$200-400',
+          desc: '百年餅店',
+          mustBuy: '檸檬餅', tips: '台中名產' },
+        { id: 'g12', city: 'tainan', name: '萬川號', type: '糕餅', lat: 22.9958, lng: 120.2043,
+          address: '台南市中西區民權路一段205號', hours: '09:00-20:00', price: '$30-100',
+          desc: '台南古早味',
+          mustBuy: '椪餅、水晶餃', tips: '老店特色' },
+        { id: 'g13', city: 'kinmen', name: '金門貢糖', type: '糕點', lat: 24.4493, lng: 118.3767,
+          address: '金門縣多家', hours: '依店家', price: '$100-200',
+          desc: '金門必買',
+          mustBuy: '聖祖貢糖', tips: '機場也有' },
+
+        // ===== 麵/醬料 =====
+        { id: 'g14', city: 'taipei', name: '曾拌麵', type: '拌麵', lat: 25.0330, lng: 121.5654,
+          address: '超市/機場有售', hours: '依店家', price: '$100-150/包',
+          desc: '曾國城代言',
+          mustBuy: '麻辣/蔥油拌麵', tips: '帶回去自己煮' },
+        { id: 'g21', city: 'taipei', name: '京盛宇', type: '茶葉', lat: 25.0397, lng: 121.5651,
+          address: '台北市多處/永康街', hours: '11:00-21:00', price: '$300-800',
+          desc: '高質感台灣茶專賣，包裝精美送禮佳',
+          mustBuy: '不知春、桂花烏龍', tips: '永康街有手沖茶可試飲' },
+        { id: 'g22', city: 'taipei', name: '台北犁記', type: '糕餅', lat: 25.0330, lng: 121.5654,
+          address: '台北市長安東路二段73號', hours: '09:00-21:00', price: '$100-600',
+          desc: '百年老店，鳳梨酥始祖',
+          mustBuy: '鳳梨酥、綠豆椪', tips: '注意別買錯成犁記餅店' },
+        { id: 'g23', city: 'taipei', name: '糖村', type: '牛軋糖', lat: 25.0577, lng: 121.5500,
+          address: '台北市多處/機場皆有售', hours: '依店家', price: '$250-500',
+          desc: '法式牛軋糖品牌，口感柔軟不黏牙',
+          mustBuy: '法式牛軋糖、太陽餅', tips: '機場買方便' },
+        { id: 'g15', city: 'yunlin', name: '西螺醬油', type: '醬油', lat: 23.7985, lng: 120.4631,
+          address: '雲林縣西螺鎮', hours: '依店家', price: '$150-400',
+          desc: '百年醬油',
+          mustBuy: '丸莊、瑞春醬油', tips: '比一般醬油香' },
+        { id: 'g16', city: 'hsinchu', name: '新竹米粉', type: '米粉', lat: 24.8138, lng: 120.9675,
+          address: '新竹市多處', hours: '依店家', price: '$50-100',
+          desc: '風吹米粉',
+          mustBuy: '純米米粉', tips: '選純米的才Q' },
+        { id: 'g17', city: 'hsinchu', name: '新竹貢丸', type: '貢丸', lat: 24.8138, lng: 120.9675,
+          address: '新竹市多處', hours: '依店家', price: '$100-200',
+          desc: '彈牙肉丸',
+          mustBuy: '進益貢丸', tips: '冷凍帶回去' },
+
+        // ===== 其他特產 =====
+        { id: 'g18', city: 'miaoli', name: '大湖草莓', type: '水果', lat: 24.4181, lng: 120.8667,
+          address: '苗栗縣大湖鄉', hours: '12-4月', price: '依時價',
+          desc: '台灣草莓之鄉',
+          mustBuy: '鮮草莓、草莓乾', tips: '冬天才有' },
+        { id: 'g19', city: 'taitung', name: '池上米', type: '米', lat: 23.1203, lng: 121.2196,
+          address: '台東縣池上鄉', hours: '依店家', price: '$200-400',
+          desc: '台灣最好的米',
+          mustBuy: '池上米', tips: '真空包裝可帶回' },
+        { id: 'g20', city: 'pingtung', name: '萬巒豬腳', type: '豬腳', lat: 22.5789, lng: 120.5656,
+          address: '屏東縣萬巒鄉', hours: '依店家', price: '$500-800',
+          desc: 'Q彈豬腳',
+          mustBuy: '海鴻/林家豬腳', tips: '可真空帶回' },
+        { id: 'g21', city: 'kinmen', name: '金門高粱', type: '酒類', lat: 24.4493, lng: 118.3767,
+          address: '金門縣多處', hours: '依店家', price: '$300-800',
+          desc: '金門名酒',
+          mustBuy: '58度金門高粱', tips: '免稅店買便宜' }
+    ];
+
+    // ==================== 全域變數 ====================
+    let map;
+    let markers = [];
+    let markerClusterGroup = null;
+    let currentCity = 'taipei';
+    let currentRegion = 'north';
+    let currentCategory = 'all';
+    let completedItems = new Set();
+    let filterKid = false;
+    let filterPregnant = false;
+
+    // ==================== 初始化 ====================
+    function init() {
+        initCompleted();
+        initMap();
+        renderCityList();
+        renderCityShortcuts();
+        renderCards();
+        updateStats();
+        renderCompletedList();
+        setupEventListeners();
+    }
+
+    // 渲染城市縮寫按鈕
+    function renderCityShortcuts() {
+        const container = document.getElementById('cityShortcuts');
+        const regionCities = Object.entries(cities)
+            .filter(([id, city]) => city.region === currentRegion);
+
+        container.innerHTML = regionCities.map(([id, city]) => `
+            <button class="city-shortcut-btn ${id === currentCity ? 'active' : ''}"
+                    data-city="${id}" data-region="${city.region}" title="${city.name}">
+                ${city.short}
+            </button>
+        `).join('');
+    }
+
+    function initCompleted() {
+        // 載入用戶已完成的項目
+        userCompleted.spots.forEach(name => {
+            const spot = spots.find(s => s.name.includes(name) || name.includes(s.name));
+            if (spot) completedItems.add(spot.id);
+        });
+        userCompleted.foods.forEach(name => {
+            const food = foods.find(f => f.name.includes(name) || name.includes(f.name));
+            if (food) completedItems.add(food.id);
+        });
+        // 載入已完成的伴手禮
+        if (userCompleted.gifts) {
+            userCompleted.gifts.forEach(item => {
+                const gift = gifts.find(g => g.name.includes(item.name) || item.name.includes(g.name));
+                if (gift) completedItems.add(gift.id);
+            });
+        }
+    }
+
+    function initMap() {
+        map = L.map('map').setView([23.7, 121], 7);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        // 初始化 marker cluster group
+        markerClusterGroup = L.markerClusterGroup({
+            maxClusterRadius: 50,
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: false,
+            zoomToBoundsOnClick: true
+        });
+        map.addLayer(markerClusterGroup);
+
+        // 添加城市標記
+        Object.entries(cities).forEach(([id, city]) => {
+            const marker = L.circleMarker([city.lat, city.lng], {
+                radius: 8,
+                fillColor: getRegionColor(city.region),
+                color: '#fff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
+
+            marker.bindPopup(`<div class="popup-title">${city.name}</div>`);
+            marker.on('click', () => selectCity(id));
+        });
+    }
+
+    function getRegionColor(region) {
+        const colors = {
+            north: '#74B9FF',
+            central: '#55EFC4',
+            south: '#FF7675',
+            east: '#A29BFE',
+            island: '#FD79A8'
+        };
+        return colors[region] || '#636e72';
+    }
+
+    // ==================== 渲染城市列表 ====================
+    function renderCityList() {
+        const container = document.getElementById('cityList');
+        const regionCities = Object.entries(cities)
+            .filter(([id, city]) => city.region === currentRegion);
+
+        container.innerHTML = regionCities.map(([id, city]) => {
+            const citySpots = spots.filter(s => s.city === id).length;
+            const cityFoods = foods.filter(f => f.city === id).length;
+            const cityGifts = gifts.filter(g => g.city === id).length;
+            const total = citySpots + cityFoods + cityGifts;
+            const completed = [...spots, ...foods, ...gifts]
+                .filter(item => item.city === id && completedItems.has(item.id)).length;
+
+            return `
+                <button class="city-btn ${id === currentCity ? 'active' : ''}" data-city="${id}">
+                    ${city.name}
+                    <span class="progress">${completed}/${total}</span>
+                </button>
+            `;
+        }).join('');
+    }
+
+    // ==================== 渲染卡片 ====================
+    function renderCards() {
+        const container = document.getElementById('cardsGrid');
+        let items = [];
+
+        if (currentCategory === 'all' || currentCategory === 'spot') {
+            items = items.concat(spots.filter(s => s.city === currentCity).map(s => ({...s, itemType: 'spot'})));
+        }
+        if (currentCategory === 'all' || currentCategory === 'food') {
+            items = items.concat(foods.filter(f => f.city === currentCity).map(f => ({...f, itemType: 'food'})));
+        }
+        if (currentCategory === 'all' || currentCategory === 'gift') {
+            items = items.concat(gifts.filter(g => g.city === currentCity).map(g => ({...g, itemType: 'gift'})));
+        }
+
+        // 親子友善篩選
+        if (filterKid) {
+            items = items.filter(item => item.kid === true);
+        }
+        // 孕婦友善篩選
+        if (filterPregnant) {
+            items = items.filter(item => item.pregnant === true);
+        }
+
+        // 過濾掉已完成的項目（不顯示為卡片）
+        const pendingItems = items.filter(item => !completedItems.has(item.id));
+
+        container.innerHTML = pendingItems.map(item => createCard(item)).join('');
+
+        // 更新地圖顯示
+        clearMarkers();
+        items.forEach(item => addMarker(item));
+
+        // 飛到當前城市
+        const city = cities[currentCity];
+        if (city) {
+            map.flyTo([city.lat, city.lng], 11);
+        }
+    }
+
+    // 篩選切換
+    function toggleFilter(type) {
+        if (type === 'kid') {
+            filterKid = !filterKid;
+            document.getElementById('filterKid').classList.toggle('active', filterKid);
+        } else if (type === 'pregnant') {
+            filterPregnant = !filterPregnant;
+            document.getElementById('filterPregnant').classList.toggle('active', filterPregnant);
+        }
+        renderCards();
+    }
+
+    function createCard(item) {
+        const isCompleted = completedItems.has(item.id);
+        const headerClass = item.itemType;
+
+        if (item.itemType === 'spot') {
+            return createSpotCard(item, isCompleted);
+        } else if (item.itemType === 'food') {
+            return createFoodCard(item, isCompleted);
+        } else {
+            return createGiftCard(item, isCompleted);
+        }
+    }
+
+    function createSpotCard(item, isCompleted) {
+        return `
+            <div class="card ${isCompleted ? 'completed' : ''}" data-id="${item.id}">
+                <div class="card-header spot">
+                    <div class="card-badges">
+                        <span class="badge">📍 ${item.type}</span>
+                        ${item.kid ? '<span class="badge kid">👶 親子友善</span>' : ''}
+                        ${item.pregnant ? '<span class="badge pregnant">🤰 孕婦OK</span>' : ''}
+                    </div>
+                    <div class="card-title">${item.name}</div>
+                    <div class="card-subtitle">${item.address}</div>
+                </div>
+                <div class="card-body">
+                    <p style="margin-bottom: 12px; color: #666;">${item.desc}</p>
+                    <div class="info-item"><i class="fas fa-clock"></i> ${item.hours}</div>
+                    <div class="info-item"><i class="fas fa-star"></i> <strong>必做：</strong>${item.mustDo}</div>
+                    <div class="info-item"><i class="fas fa-lightbulb"></i> <strong>Tips：</strong>${item.tips}</div>
+                    <div class="transport-box">
+                        <h4><i class="fas fa-car"></i> 交通方式</h4>
+                        <div class="transport-options">
+                            ${item.transport.map(t => `<span class="transport-option">${t}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="action-btn check-btn ${isCompleted ? 'checked' : ''}" onclick="toggleComplete('${item.id}')">
+                        <i class="fas fa-${isCompleted ? 'check' : 'map-marker-alt'}"></i>
+                        ${isCompleted ? '已去過' : '標記去過'}
+                    </button>
+                    <button class="action-btn map-btn" onclick="showOnMap(${item.lat}, ${item.lng}, '${item.name}')">
+                        <i class="fas fa-map"></i> 地圖
+                    </button>
+                    <button class="action-btn nearby-btn" onclick="showNearby(${item.lat}, ${item.lng}, '${item.id}')">
+                        <i class="fas fa-location-arrow"></i> 附近
+                    </button>
+                    <button class="action-btn weather-btn" onclick="showWeather('${cities[item.city]?.name || item.city}')">
+                        <i class="fas fa-cloud-sun"></i>
+                    </button>
+                    <button class="action-btn google-btn" onclick="googleSearchItem('${item.name} ${item.address}')">
+                        <i class="fab fa-google"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    function createFoodCard(item, isCompleted) {
+        return `
+            <div class="card ${isCompleted ? 'completed' : ''}" data-id="${item.id}">
+                <div class="card-header food">
+                    <div class="card-badges">
+                        <span class="badge">🍜 ${item.type}</span>
+                        <span class="badge musteat">必吃</span>
+                    </div>
+                    <div class="card-title">${item.name}</div>
+                    <div class="card-subtitle">${item.address}</div>
+                </div>
+                <div class="card-body">
+                    <div class="info-item"><i class="fas fa-clock"></i> ${item.hours}</div>
+                    <div class="info-item"><i class="fas fa-dollar-sign"></i> ${item.price}</div>
+                    <div class="info-item"><i class="fas fa-users"></i> <strong>排隊：</strong>${item.queue}</div>
+                    <div class="info-item"><i class="fas fa-star"></i> <strong>必點：</strong>${item.mustTry}</div>
+                    <div class="info-item"><i class="fas fa-lightbulb"></i> <strong>Tips：</strong>${item.tips}</div>
+                    ${item.backups && item.backups.length > 0 ? `
+                    <div class="backup-section">
+                        <div class="backup-title"><i class="fas fa-sync-alt"></i> 排太久？後備方案：</div>
+                        ${item.backups.map(b => `
+                            <div class="backup-item"><strong>${b.name}</strong> - ${b.desc}</div>
+                        `).join('')}
+                    </div>
+                    ` : ''}
+                </div>
+                <div class="card-actions">
+                    <button class="action-btn check-btn ${isCompleted ? 'checked' : ''}" onclick="toggleComplete('${item.id}')">
+                        <i class="fas fa-${isCompleted ? 'check' : 'utensils'}"></i>
+                        ${isCompleted ? '已吃過' : '標記吃過'}
+                    </button>
+                    <button class="action-btn map-btn" onclick="showOnMap(${item.lat}, ${item.lng}, '${item.name}')">
+                        <i class="fas fa-map"></i> 地圖
+                    </button>
+                    <button class="action-btn nearby-btn" onclick="showNearby(${item.lat}, ${item.lng}, '${item.id}')">
+                        <i class="fas fa-location-arrow"></i> 附近
+                    </button>
+                    <button class="action-btn google-btn" onclick="googleSearchItem('${item.name} ${item.address}')">
+                        <i class="fab fa-google"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    function createGiftCard(item, isCompleted) {
+        const isTea = item.type === '茶葉';
+        return `
+            <div class="card ${isCompleted ? 'completed' : ''} ${isTea ? 'tea-highlight' : ''}" data-id="${item.id}">
+                <div class="card-header gift">
+                    <div class="card-badges">
+                        <span class="badge">🎁 ${item.type}</span>
+                        ${isTea ? '<span class="badge" style="background:#27AE60;color:white;">🍵 推薦</span>' : ''}
+                    </div>
+                    <div class="card-title">${item.name}</div>
+                    <div class="card-subtitle">${item.address}</div>
+                </div>
+                <div class="card-body">
+                    <p style="margin-bottom: 12px; color: #666;">${item.desc}</p>
+                    <div class="info-item"><i class="fas fa-clock"></i> ${item.hours}</div>
+                    <div class="info-item"><i class="fas fa-dollar-sign"></i> ${item.price}</div>
+                    <div class="info-item"><i class="fas fa-shopping-bag"></i> <strong>必買：</strong>${item.mustBuy}</div>
+                    <div class="info-item"><i class="fas fa-lightbulb"></i> <strong>Tips：</strong>${item.tips}</div>
+                </div>
+                <div class="card-actions">
+                    <button class="action-btn check-btn ${isCompleted ? 'checked' : ''}" onclick="toggleComplete('${item.id}')">
+                        <i class="fas fa-${isCompleted ? 'check' : 'gift'}"></i>
+                        ${isCompleted ? '已買過' : '標記買過'}
+                    </button>
+                    <button class="action-btn map-btn" onclick="showOnMap(${item.lat}, ${item.lng}, '${item.name}')">
+                        <i class="fas fa-map"></i> 地圖
+                    </button>
+                    <button class="action-btn google-btn" onclick="googleSearchItem('${item.name}')">
+                        <i class="fab fa-google"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // ==================== 地圖功能 ====================
+    function clearMarkers() {
+        markerClusterGroup.clearLayers();
+        markers = [];
+    }
+
+    function addMarker(item) {
+        if (!item.lat || !item.lng) return;
+
+        const color = item.itemType === 'spot' ? '#6C5CE7' :
+                      item.itemType === 'food' ? '#E17055' : '#FDCB6E';
+
+        const icon = item.itemType === 'spot' ? '📍' :
+                     item.itemType === 'food' ? '🍜' : '🎁';
+
+        // 使用自定義圖標代替圓形標記，以便更好地群集
+        const customIcon = L.divIcon({
+            className: 'custom-marker',
+            html: `<div style="background:${color}; color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; border:2px solid white; box-shadow:0 2px 5px rgba(0,0,0,0.3);">${icon}</div>`,
+            iconSize: [28, 28],
+            iconAnchor: [14, 14]
+        });
+
+        const marker = L.marker([item.lat, item.lng], { icon: customIcon });
+
+        marker.bindPopup(`
+            <div class="popup-title">${icon} ${item.name}</div>
+            <div class="popup-type">${item.type || ''}</div>
+        `);
+
+        markerClusterGroup.addLayer(marker);
+        markers.push(marker);
+    }
+
+    function showOnMap(lat, lng, name) {
+        map.flyTo([lat, lng], 15);
+        L.popup()
+            .setLatLng([lat, lng])
+            .setContent(`<div class="popup-title">${name}</div>`)
+            .openOn(map);
+    }
+
+    // ==================== Google 搜尋 ====================
+    function googleSearch() {
+        const query = document.getElementById('searchInput').value;
+        if (query) {
+            window.open(`https://www.google.com/search?q=${encodeURIComponent(query + ' 台灣')}`, '_blank');
+        }
+    }
+
+    // 手機版 Header 搜尋
+    function googleSearchMobile() {
+        const query = document.getElementById('headerSearchInput').value;
+        if (query) {
+            window.open(`https://www.google.com/search?q=${encodeURIComponent(query + ' 台灣')}`, '_blank');
+        }
+    }
+
+    // 手機版搜尋按 Enter 觸發
+    if (document.getElementById('headerSearchInput')) {
+        document.getElementById('headerSearchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') googleSearchMobile();
+        });
+    }
+
+    function googleSearchItem(query) {
+        window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+    }
+
+    // ==================== 路線規劃 ====================
+    function planRoute() {
+        const from = document.getElementById('routeFrom').value.trim();
+        const to = document.getElementById('routeTo').value.trim();
+
+        if (!from || !to) {
+            alert('請輸入起點和終點');
+            return;
+        }
+
+        const url = `https://www.google.com/maps/dir/${encodeURIComponent(from + ' 台灣')}/${encodeURIComponent(to + ' 台灣')}`;
+        window.open(url, '_blank');
+    }
+
+    // 快速設定路線起點/終點
+    function setRouteFrom(name) {
+        document.getElementById('routeFrom').value = name;
+    }
+
+    function setRouteTo(name) {
+        document.getElementById('routeTo').value = name;
+    }
+
+    // ==================== 選擇城市 ====================
+    function selectCity(cityId) {
+        currentCity = cityId;
+        const city = cities[cityId];
+        if (city && city.region !== currentRegion) {
+            currentRegion = city.region;
+            document.querySelectorAll('.region-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.region === currentRegion);
+            });
+        }
+        renderCityList();
+        renderCityShortcuts();
+        renderCards();
+    }
+
+    // ==================== 完成功能 ====================
+    function toggleComplete(id) {
+        if (completedItems.has(id)) {
+            completedItems.delete(id);
+        } else {
+            completedItems.add(id);
+        }
+        renderCards();
+        updateStats();
+        renderCompletedList();
+    }
+
+    function updateStats() {
+        // 只計算未完成的項目為「總數」
+        const spotDone = spots.filter(s => completedItems.has(s.id)).length;
+        const foodDone = foods.filter(f => completedItems.has(f.id)).length;
+        const giftDone = gifts.filter(g => completedItems.has(g.id)).length;
+
+        const spotPending = spots.length - spotDone;
+        const foodPending = foods.length - foodDone;
+        const giftPending = gifts.length - giftDone;
+
+        document.getElementById('spotTotal').textContent = spotPending;
+        document.getElementById('spotDone').textContent = spotDone;
+        document.getElementById('foodTotal').textContent = foodPending;
+        document.getElementById('foodDone').textContent = foodDone;
+        document.getElementById('giftTotal').textContent = giftPending;
+        document.getElementById('giftDone').textContent = giftDone;
+    }
+
+    function renderCompletedList() {
+        const container = document.getElementById('completedList');
+
+        // 按城市分組已完成項目
+        const completedByCity = {};
+
+        // 景點
+        spots.filter(s => completedItems.has(s.id)).forEach(s => {
+            const cityName = cities[s.city]?.name || s.city;
+            if (!completedByCity[cityName]) completedByCity[cityName] = { spots: [], foods: [], gifts: [] };
+            completedByCity[cityName].spots.push(s.name);
+        });
+
+        // 美食
+        foods.filter(f => completedItems.has(f.id)).forEach(f => {
+            const cityName = cities[f.city]?.name || f.city;
+            if (!completedByCity[cityName]) completedByCity[cityName] = { spots: [], foods: [], gifts: [] };
+            completedByCity[cityName].foods.push(f.name);
+        });
+
+        // 伴手禮（含備註）
+        gifts.filter(g => completedItems.has(g.id)).forEach(g => {
+            const cityName = cities[g.city]?.name || g.city;
+            if (!completedByCity[cityName]) completedByCity[cityName] = { spots: [], foods: [], gifts: [] };
+            // 查找備註
+            const userGift = userCompleted.gifts?.find(ug => g.name.includes(ug.name) || ug.name.includes(g.name));
+            const note = userGift?.note || '';
+            completedByCity[cityName].gifts.push(note ? `${g.name}（${note}）` : g.name);
+        });
+
+        // 生成緊湊格式 HTML
+        let html = '';
+        Object.entries(completedByCity).forEach(([city, items]) => {
+            if (items.spots.length > 0) {
+                html += `<div class="completed-group">
+                    <span class="completed-label">📍 完成${city}景點探索 ${items.spots.length}個：</span>
+                    <span class="completed-items">${items.spots.join('、')}</span>
+                </div>`;
+            }
+            if (items.foods.length > 0) {
+                html += `<div class="completed-group">
+                    <span class="completed-label">🍜 完成${city}美食打卡 ${items.foods.length}個：</span>
+                    <span class="completed-items">${items.foods.join('、')}</span>
+                </div>`;
+            }
+            if (items.gifts.length > 0) {
+                html += `<div class="completed-group">
+                    <span class="completed-label">🎁 完成${city}伴手禮購買 ${items.gifts.length}個：</span>
+                    <span class="completed-items">${items.gifts.join('、')}</span>
+                </div>`;
+            }
+        });
+
+        container.innerHTML = html || '<p style="color: #888;">還沒有完成任何項目，開始探索吧！</p>';
+    }
+
+    // ==================== 事件監聯 ====================
+    function setupEventListeners() {
+        // 區域切換
+        document.querySelectorAll('.region-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                currentRegion = tab.dataset.region;
+                document.querySelectorAll('.region-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // 選擇該區域第一個城市
+                const firstCity = Object.entries(cities).find(([id, city]) => city.region === currentRegion);
+                if (firstCity) {
+                    currentCity = firstCity[0];
+                }
+                renderCityList();
+                renderCityShortcuts();
+                renderCards();
+            });
+        });
+
+        // 城市縮寫按鈕點擊
+        document.getElementById('cityShortcuts').addEventListener('click', (e) => {
+            const btn = e.target.closest('.city-shortcut-btn');
+            if (btn) {
+                selectCity(btn.dataset.city);
+            }
+        });
+
+        // 城市切換
+        document.getElementById('cityList').addEventListener('click', (e) => {
+            const btn = e.target.closest('.city-btn');
+            if (btn) {
+                selectCity(btn.dataset.city);
+            }
+        });
+
+        // 類別切換
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                currentCategory = tab.dataset.category;
+                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                renderCards();
+            });
+        });
+
+        // 搜尋
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') googleSearch();
+        });
+    }
+
+    // ==================== 手機版地圖切換 ====================
+    function toggleMap() {
+        const mapContainer = document.getElementById('mapContainer');
+        const toggleText = document.getElementById('mapToggleText');
+        mapContainer.classList.toggle('show');
+        if (mapContainer.classList.contains('show')) {
+            toggleText.textContent = '隱藏地圖';
+            // 需要重新渲染地圖，因為隱藏時尺寸會出問題
+            setTimeout(() => map.invalidateSize(), 100);
+        } else {
+            toggleText.textContent = '顯示地圖';
+        }
+    }
+
+    // ==================== 手機版路線規劃收合 ====================
+    function toggleRoutePlanner() {
+        const routePlanner = document.getElementById('routePlanner');
+        const icon = document.getElementById('routeCollapseIcon');
+        routePlanner.classList.toggle('expanded');
+        if (routePlanner.classList.contains('expanded')) {
+            icon.className = 'fas fa-chevron-up';
+        } else {
+            icon.className = 'fas fa-chevron-down';
+        }
+    }
+
+    // ==================== 附近推薦 ====================
+    function calcDistance(lat1, lng1, lat2, lng2) {
+        const R = 6371; // 地球半徑 km
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLng = (lng2 - lng1) * Math.PI / 180;
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLng/2) * Math.sin(dLng/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    }
+
+    function showNearby(lat, lng, excludeId) {
+        const allItems = [
+            ...spots.map(s => ({...s, itemType: 'spot'})),
+            ...foods.map(f => ({...f, itemType: 'food'})),
+            ...gifts.map(g => ({...g, itemType: 'gift'}))
+        ];
+
+        // 計算距離並排序
+        const nearby = allItems
+            .filter(item => item.id !== excludeId && item.lat && item.lng)
+            .map(item => ({
+                ...item,
+                distance: calcDistance(lat, lng, item.lat, item.lng)
+            }))
+            .filter(item => item.distance <= 5) // 5公里內
+            .sort((a, b) => a.distance - b.distance)
+            .slice(0, 10); // 最多10個
+
+        const list = document.getElementById('nearbyList');
+        if (nearby.length === 0) {
+            list.innerHTML = '<div style="padding:20px; text-align:center; color:#888;">5公里內沒有其他推薦項目</div>';
+        } else {
+            const icons = { spot: '📍', food: '🍜', gift: '🎁' };
+            list.innerHTML = nearby.map(item => `
+                <div class="nearby-item">
+                    <div class="nearby-item-info">
+                        <div class="nearby-item-name">${icons[item.itemType]} ${item.name}</div>
+                        <div class="nearby-item-type">${item.type}</div>
+                    </div>
+                    <div class="nearby-item-distance">${item.distance.toFixed(1)} km</div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('nearbyModal').classList.add('show');
+    }
+
+    function closeNearbyModal(event) {
+        if (!event || event.target === document.getElementById('nearbyModal')) {
+            document.getElementById('nearbyModal').classList.remove('show');
+        }
+    }
+
+    // ==================== 天氣查詢 ====================
+    function showWeather(cityName) {
+        const url = `https://www.google.com/search?q=${encodeURIComponent(cityName + ' 天氣')}`;
+        window.open(url, '_blank');
+    }
+
+    // ==================== 回到頂部 ====================
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 監聽滾動顯示/隱藏回到頂部按鈕
+    window.addEventListener('scroll', function() {
+        const btn = document.getElementById('backToTop');
+        if (window.scrollY > 300) {
+            btn.classList.add('show');
+        } else {
+            btn.classList.remove('show');
+        }
+    });
+
+    // 初始化
+    init();
+    </script>
+</body>
+</html>
