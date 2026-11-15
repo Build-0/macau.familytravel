@@ -1,0 +1,74 @@
+name: Deploy site to GitHub Pages
+
+# 靜態頁(首頁、macau、tw、kids)+ 行程程式(trip/)+ 分享預覽頁(t/<slug>/)一齊部署。
+# 注意:要喺 repo Settings → Pages → Source 揀「GitHub Actions」呢個工作流程先會生效。
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  # 每 15 分鐘睇一次行程有冇改過,有改先重新建置(行程改動時 Supabase Edge Function trip-sync 亦會即時觸發)
+  schedule:
+    - cron: '*/15 * * * *'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      build: ${{ steps.c.outputs.build }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: c
+        run: |
+          if [ "$GITHUB_EVENT_NAME" != "schedule" ]; then echo "build=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          URL=$(grep -oP "SUPABASE_URL\s*=\s*'\K[^']+" trip-app/src/supabase.js)
+          KEY=$(grep -oP "SUPABASE_ANON_KEY\s*=\s*'\K[^']+" trip-app/src/supabase.js)
+          NEW=$(curl -fsS "$URL/rest/v1/trips?select=slug,title,data,updated_at&published=eq.true&order=slug" -H "apikey: $KEY" -H "Authorization: Bearer $KEY" | sha256sum | cut -c1-16) || NEW=""
+          OLD=$(curl -fsS "https://build-0.github.io/macau.familytravel/share-manifest.json" | jq -r .hash 2>/dev/null) || OLD="none"
+          echo "live=$OLD now=$NEW"
+          if [ -n "$NEW" ] && [ "$NEW" != "$OLD" ]; then echo "build=true" >> "$GITHUB_OUTPUT"; else echo "build=false" >> "$GITHUB_OUTPUT"; fi
+
+  build:
+    needs: check
+    if: needs.check.outputs.build == 'true'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pages-build
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: trip-app/package-lock.json
+      - name: 建置行程程式
+        working-directory: trip-app
+        run: npm ci && npm run build
+      - name: 組合整個網站
+        run: |
+          mkdir site
+          cp index.html site/
+          cp -r macau tw kids site/
+          cp -r trip-app/dist site/trip
+      - name: 生成分享預覽頁 + 鏡像相片
+        working-directory: trip-app
+        run: OUT=../site node scripts/gen-share.mjs
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
