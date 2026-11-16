@@ -53,7 +53,7 @@ const log = async (action: string, detail: string, reason = '') => {
 const gh = (path: string, init: RequestInit = {}) =>
   fetch(`https://api.github.com/repos/${REPO}/${path}`, {
     ...init,
-    headers: { Authorization: `Bearer ${GH_TOKEN}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'User-Agent': 'benka-trip-sync', ...(init.headers || {}) },
+    headers: { Authorization: `Bearer ${GH_TOKEN}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'User-Agent': 'family-trip-sync', ...(init.headers || {}) },
   })
 
 // 派發 deploy.yml;401/403/404/422 係設定問題,唔重試;5xx/限流重試最多 3 次
@@ -96,22 +96,25 @@ async function sync(reason: string) {
         return
       }
       await log('dispatched', `已派發部署(第 ${attempt} 次)`, reason)
+      const dispatchedAt = Date.now() - 10_000 // 容許少少時鐘差
 
       // 確認真正完成:輪詢線上 manifest,直到 hash = 最新資料 hash
+      // 只認「今次派發之後」先出現嘅 run(舊 run 唔算);run 成功後 GitHub Pages 仲要少少時間發佈,
+      // 所以 run 成功後再等最多 60 秒,hash 仍然唔同先當係期間行程又有改動而重派。
       let retry = false
-      while (Date.now() - t0 < 125_000) {
+      let doneAt = 0
+      while (Date.now() - t0 < 170_000) {
         await sleep(10_000)
         const cur = await currentHash()
         if (cur === (await liveHash())) { await log('verified', `部署完成並已確認(用咗 ${Math.round((Date.now() - t0) / 1000)} 秒)`, reason); return }
         const run = await latestRun()
-        if (run?.status === 'completed') {
-          if (run.conclusion !== 'success') { await log('error', `部署失敗:${run.conclusion} ${run.html_url}`, reason) }
-          else { await log('info', '部署期間行程又有改動,會再派發一次', reason) }
-          retry = true
-          break
+        if (run && Date.parse(run.created_at) >= dispatchedAt && run.status === 'completed') {
+          if (run.conclusion !== 'success') { await log('error', `部署失敗:${run.conclusion} ${run.html_url}`, reason); retry = true; break }
+          if (!doneAt) doneAt = Date.now()
+          if (Date.now() - doneAt > 60_000) { await log('info', '部署完成後線上版本仍然唔同步(期間行程可能又有改動),會再派發一次', reason); retry = true; break }
         }
       }
-      if (!retry) { await log('pending', '125 秒內未能確認完成(可能仲喺建置),定時檢查會繼續跟進', reason); return }
+      if (!retry) { await log('pending', '170 秒內未能確認完成(可能仲喺建置),定時檢查會繼續跟進', reason); return }
     }
     await log('error', '重試 3 次後仍未同步,請睇 GitHub Actions 記錄', reason)
   } catch (e) {
