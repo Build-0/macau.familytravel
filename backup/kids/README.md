@@ -1,6 +1,6 @@
 # 仁仁德德去哪裡:資料備份
 
-呢個頁(/kids/)只係空殼,真正版面同資料放喺 Supabase 專案 `renren-homework`(ref nikijysochwdfcqscgby)嘅 `kids_events` 表:
+呢個頁(/kids/)只係空殼,真正版面同資料放喺 Supabase 專案「教育與玩樂網站」(原名 renren-homework,ref nikijysochwdfcqscgby)嘅 `kids_events` 表:
 
 - `layout`:頁面 HTML(`layout.html` 係 2026-11-09 版本)
 - `current`:活動資料(`current.json` 備份於 2026-11-16,資料更新日 2026-11-13)

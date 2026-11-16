@@ -12,6 +12,8 @@
 | `/trip/#/manage` | 行程管理(要登入:貼 JSON、發布、複製分享連結) | 同上 |
 | `/t/<slug>/` | 行程分享預覽頁(WhatsApp 預覽卡,開啟後跳去行程頁) | 建置時由 `trip-app/scripts/gen-share.mjs` 生成 |
 
+資料庫:Supabase 專案「教育與玩樂網站」(ref `nikijysochwdfcqscgby`)。交接細節見 `CLAUDE.md`。
+
 部署:`.github/workflows/deploy.yml`(push / 手動 / 每 15 分鐘檢查行程有冇改)。Supabase Edge Function `trip-sync`(見 `supabase/functions/`、`docs/trip-sync-setup.md`)喺行程改動時即時觸發部署。
 
 備份還原標記:`backup-before-merge-20261115`(搬遷前狀態)。
