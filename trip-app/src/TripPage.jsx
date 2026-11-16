@@ -298,7 +298,10 @@ export default function TripPage({ slug }) {
       <header id="tp-top" className="tp-head">
         <div className="tp-wrap">
           <div className="tp-head-top">
-            {cov.tags && <div className="tp-tags">{cov.tags.map((t) => <span key={t}>{t}</span>)}</div>}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+              <a href={SITE_BASE} className="tp-home" style={{ flex: 'none', display: 'inline-flex', alignItems: 'center', border: '1px solid var(--line)', background: 'var(--card)', color: 'var(--soft)', fontSize: '14px', fontWeight: 700, padding: '6px 12px', borderRadius: '99px', textDecoration: 'none', whiteSpace: 'nowrap' }}>‹ 首頁</a>
+              {cov.tags && <div className="tp-tags">{cov.tags.map((t) => <span key={t}>{t}</span>)}</div>}
+            </div>
             <div className="tp-share">
               <button type="button" onClick={share}>分享</button>
               <button type="button" onClick={copy}>{copied ? '已複製 ✓' : '複製連結'}</button>
