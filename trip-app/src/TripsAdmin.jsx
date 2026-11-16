@@ -8,7 +8,7 @@ import './tripadmin.css'
 
 const shareUrl = (slug) => SITE_BASE + 't/' + slug + '/'
 const previewUrl = (slug) => APP_BASE + '#/t/' + slug
-const SYNC_URL = 'https://fdnflasdjcnqldtyqkha.supabase.co/functions/v1/trip-sync'
+const SYNC_URL = 'https://nikijysochwdfcqscgby.supabase.co/functions/v1/trip-sync'
 const ACTION = { verified: '已完成並確認', dispatched: '已觸發部署', pending: '等緊確認', error: '出錯', in_sync: '已同步', skipped: '合併處理', rate_limited: '超過頻率上限', info: '資訊' }
 
 // 行程管理(只有登入嘅主人用):貼 ChatGPT 嘅行程 JSON → 檢查 → 存草稿 / 發布 → 複製分享連結

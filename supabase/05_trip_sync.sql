@@ -23,7 +23,7 @@ begin
      or (tg_op <> 'DELETE' and (new.published or (tg_op = 'UPDATE' and old.published))) then
     begin
       perform net.http_post(
-        url := 'https://fdnflasdjcnqldtyqkha.supabase.co/functions/v1/trip-sync',
+        url := 'https://nikijysochwdfcqscgby.supabase.co/functions/v1/trip-sync',
         headers := '{"Content-Type":"application/json"}'::jsonb,
         body := jsonb_build_object('reason', 'trips:' || tg_op || ':' || coalesce(new.slug, old.slug))
       );

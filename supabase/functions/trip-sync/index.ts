@@ -18,7 +18,7 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 const GH_TOKEN = Deno.env.get('GH_TOKEN') || ''
 // 公開 anon 金鑰(同 src/supabase.js 一樣,本來就係公開)
-const ANON = Deno.env.get('SUPABASE_ANON_KEY') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZkbmZsYXNkamNucWxkdHlxa2hhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5MjY4NjUsImV4cCI6MjA5OTUwMjg2NX0.NnVQ75pW5uYkoOwg365PILiAU7HfJCovukoBO9XNl-c'
+const ANON = Deno.env.get('SUPABASE_ANON_KEY') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pa2lqeXNvY2h3ZGZjcXNjZ2J5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1MzQ2MTYsImV4cCI6MjEwODExMDYxNn0.1QDaEfWr9HgI5_jd_SGSca9m95arRFcYi22Xtacb_5s'
 const REPO = 'Build-0/macau.familytravel'
 const WORKFLOW = 'deploy.yml'
 const REF = 'main'
