@@ -48,9 +48,13 @@
 
 ## 未完成(Benny 話最後先搞)
 
-1. 管理員帳戶:Supabase → Authentication → Users → Add user(Benny 自己設密碼),並關閉 "Allow new users to sign up";然後將 `trips.user_id`(行程 `sz-dino-7k3q` 現時係 NULL)綁新用戶 uid,測試 `/trip/#/manage` 登入/匯入/發佈。
-2. 逐項公開/私人開關(尚未做)。
-3. 子頁加「‹ 首頁」返回連結;搞清楚 kids `current` 資料由邊個更新。
+1. **管理員帳戶(仲未做,要 Benny 親手):**Supabase → Authentication → Users → Add user(Benny 自己設密碼),並關閉 "Allow new users to sign up";然後將 `trips.user_id`(行程 `sz-dino-7k3q` 現時係 NULL)綁新用戶 uid,測試 `/trip/#/manage` 登入/匯入/發佈。**item 2 嘅發布開關要呢步做完先用得到。**
+
+## 已完成(2026-11-17)
+
+2. **逐項(逐個行程)公開/私人開關:UI + 邏輯已存在**(`TripsAdmin.jsx` 每行有「發布/取消發布」掣 → `update published`)。暫時用唔到,因為寫入受 RLS `trips_owner_all`(`user_id = auth.uid()`)限制,而行程 `user_id` 仲係 NULL —— 等 item 1 綁咗 uid 就通。**唔使再起新嘢。**
+3. **子頁「‹ 首頁」返回連結:已加。** macau（`.top-bar` 左）、tw（header 左)、trip 行程頁(`TripPage.jsx` header，跟分享按鈕風格)—— 以上已 commit+push;kids 喺 Supabase `kids_events` id='layout' 版面頂加咗(即時 live,原版備份去 row `layout_backup_20261117`)。
+   - **kids `current` 資料點更新:唔係本 repo。** 本 repo 冇任何檔寫 `kids_events`;`current`(活動資料)係外部直接寫 Supabase(手動,或功課網 `renren-homework` 嗰邊工具)。
 
 ## 備份
 
