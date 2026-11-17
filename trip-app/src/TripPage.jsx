@@ -218,7 +218,13 @@ export default function TripPage({ slug }) {
 
   useEffect(() => {
     let alive = true
-    setSt({ s: 'loading' })
+    // 快取優先:上次睇過嘅行程即時出,唔使等網絡
+    let hadCache = false
+    try {
+      const c = localStorage.getItem('trip:' + slug)
+      if (c) { setSt({ s: 'ok', trip: JSON.parse(c) }); hadCache = true }
+    } catch { /* ignore */ }
+    if (!hadCache) setSt({ s: 'loading' })
     ;(async () => {
       let last = ''
       for (let a = 0; a < 3; a++) {
@@ -229,12 +235,17 @@ export default function TripPage({ slug }) {
             loadImgMap(),
           ])
           if (!alive) return
-          if (!error) { setSt(data ? { s: 'ok', trip: data } : { s: 'missing' }); return }
+          if (!error) {
+            if (data) { try { localStorage.setItem('trip:' + slug, JSON.stringify(data)) } catch { /* ignore */ } setSt({ s: 'ok', trip: data }) }
+            else { try { localStorage.removeItem('trip:' + slug) } catch { /* ignore */ } if (!hadCache) setSt({ s: 'missing' }) }
+            return
+          }
           last = error.message
         } catch (e) { last = e.message }
         if (a < 2) await new Promise((r) => setTimeout(r, 900 * (a + 1)))
       }
-      if (alive) setSt({ s: 'error', msg: last })
+      // 有快取就保留住上次內容,唔好突然變錯誤畫面
+      if (alive && !hadCache) setSt({ s: 'error', msg: last })
     })()
     return () => { alive = false }
   }, [slug, tick])
