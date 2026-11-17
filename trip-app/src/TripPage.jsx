@@ -298,10 +298,7 @@ export default function TripPage({ slug }) {
       <header id="tp-top" className="tp-head">
         <div className="tp-wrap">
           <div className="tp-head-top">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
-              <a href={SITE_BASE} className="tp-home" style={{ flex: 'none', display: 'inline-flex', alignItems: 'center', border: '1px solid var(--line)', background: 'var(--card)', color: 'var(--soft)', fontSize: '14px', fontWeight: 700, padding: '6px 12px', borderRadius: '99px', textDecoration: 'none', whiteSpace: 'nowrap' }}>‹ 首頁</a>
-              {cov.tags && <div className="tp-tags">{cov.tags.map((t) => <span key={t}>{t}</span>)}</div>}
-            </div>
+            <a href={SITE_BASE} className="tp-home" style={{ flex: 'none', display: 'inline-flex', alignItems: 'center', border: '1px solid var(--line)', background: 'var(--card)', color: 'var(--soft)', fontSize: '14px', fontWeight: 700, padding: '6px 12px', borderRadius: '99px', textDecoration: 'none', whiteSpace: 'nowrap' }}>‹ 首頁</a>
             <div className="tp-share">
               <button type="button" onClick={share}>分享</button>
               <button type="button" onClick={copy}>{copied ? '已複製 ✓' : '複製連結'}</button>
@@ -309,6 +306,7 @@ export default function TripPage({ slug }) {
           </div>
           <h1>{tparts.length > 1 && <small className="tp-kicker">{tparts[0]}</small>}<span>{tparts.length > 1 ? tparts.slice(1).join(' · ') : trip.title}</span></h1>
           {cov.subtitle && <p className="tp-sub1">{cov.subtitle}</p>}
+          {cov.tags && cov.tags.length > 0 && <div className="tp-tags tp-tags-row">{cov.tags.map((t) => <span key={t}>{t}</span>)}</div>}
           {cov.image && <Pic src={cov.image} alt={trip.title} cls="tp-cover" ratio="2 / 1" pos={cov.pos} credit={cov.credit} />}
           {factsShown.length > 0 && (
             <dl className="tp-facts">
