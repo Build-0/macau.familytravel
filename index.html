@@ -5,58 +5,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>我們這一家</title>
 <meta name="description" content="全家玩樂入口:澳門周邊、台灣、仁仁德德去哪裡、旅遊行程">
-<meta name="theme-color" content="#faf7f1">
+<meta name="theme-color" content="#f6f1e8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap">
 <style>
 :root{
-  --paper:#faf7f1; --ink:#1a2230; --soft:#55637a; --mute:#8a96a8; --line:#ece6da; --card:#fff;
+  --paper:#f6f1e8; --ink:#171f2c; --soft:#5a6678; --mute:#93a0b0; --line:#e7e0d2; --card:#fff;
   --serif:'Noto Serif TC',serif; --sans:'Noto Sans TC',sans-serif;
-  --macau1:#ff9f43; --macau2:#ff6b35; --tw1:#2bc4a0; --tw2:#0a9ea0; --kids1:#4f86e0; --kids2:#2a57b8;
+  --macau1:#ffb259; --macau2:#f2622c; --tw1:#2fc8a4; --tw2:#068a8f;
+  --kids1:#5b8cf0; --kids2:#2746c2; --trip1:#b57cf0; --trip2:#7b3dc4;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
-main{max-width:1040px;margin:0 auto;padding:clamp(28px,6vw,64px) clamp(18px,5vw,40px) calc(60px + env(safe-area-inset-bottom))}
+main{max-width:1040px;margin:0 auto;padding:clamp(30px,6vw,64px) clamp(18px,5vw,40px) calc(60px + env(safe-area-inset-bottom))}
 
 /* HERO */
-.over{font-size:12.5px;font-weight:900;letter-spacing:.32em;color:var(--macau2);text-transform:uppercase;margin:0 0 14px}
-h1{font-family:var(--serif);font-weight:900;font-size:clamp(42px,9vw,76px);line-height:1.04;letter-spacing:-.01em;margin:0}
+.over{font-size:12.5px;font-weight:900;letter-spacing:.3em;color:var(--macau2);text-transform:uppercase;margin:0 0 14px}
+h1{font-family:var(--serif);font-weight:900;font-size:clamp(44px,9.5vw,78px);line-height:1.02;letter-spacing:-.01em;margin:0}
 h1 .dot{color:var(--macau2)}
 .lead{font-size:clamp(16px,2.4vw,20px);color:var(--soft);margin:16px 0 0;max-width:30ch}
-.rule{height:2px;width:72px;background:var(--ink);margin:30px 0 40px;border-radius:2px}
+.rule{height:3px;width:60px;background:var(--macau2);margin:28px 0 36px;border-radius:3px}
+.lab{font-size:12px;font-weight:900;letter-spacing:.2em;color:var(--mute);text-transform:uppercase;margin:0 0 16px}
 
-/* DESTINATIONS */
-.dests{display:grid;grid-template-columns:1fr;gap:16px}
-@media(min-width:720px){.dests{grid-template-columns:1fr 1fr}.dests .d:first-child{grid-column:1/-1}}
-.d{position:relative;display:block;text-decoration:none;color:inherit;border-radius:22px;overflow:hidden;
-   padding:26px 24px;min-height:152px;border:1px solid var(--line);background:var(--card);
-   transition:transform .18s ease,box-shadow .18s ease}
-.d:first-child{min-height:198px}
-.d:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(26,34,48,.12)}
-.d:active{transform:translateY(0)}
-.d .wash{position:absolute;inset:0;opacity:.14;background:linear-gradient(135deg,var(--c1),var(--c2))}
-.d .num{position:absolute;right:16px;bottom:-16px;font-family:var(--serif);font-weight:900;font-size:120px;line-height:1;color:var(--c2);opacity:.12}
-.d .k{position:relative;font-size:12.5px;font-weight:900;letter-spacing:.14em;color:var(--c2);text-transform:uppercase}
-.d h2{position:relative;font-family:var(--serif);font-weight:900;font-size:clamp(24px,4.6vw,34px);line-height:1.2;margin:8px 0}
-.d p{position:relative;margin:0;color:var(--soft);font-size:15px;max-width:42ch}
-.d .arw{position:relative;display:inline-flex;margin-top:16px;font-weight:800;color:var(--c2);font-size:14.5px}
+/* DESTINATIONS — 2×2 正方形 */
+.dests{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(min-width:560px){.dests{gap:18px}}
+.d{position:relative;display:flex;flex-direction:column;text-decoration:none;color:inherit;
+   aspect-ratio:1/1;border-radius:20px;overflow:hidden;padding:18px 18px 18px 24px;background:var(--card);
+   box-shadow:0 10px 26px rgba(23,31,44,.09);transition:transform .18s ease,box-shadow .18s ease}
+.d:hover{transform:translateY(-4px);box-shadow:0 20px 44px rgba(23,31,44,.16)}
+.d:active{transform:translateY(-1px)}
+.d .bar{position:absolute;left:0;top:0;bottom:0;width:7px;background:linear-gradient(180deg,var(--c1),var(--c2))}
+.d .num{position:absolute;right:14px;bottom:8px;font-family:var(--serif);font-weight:900;font-size:clamp(46px,13vw,76px);line-height:1;color:var(--c2);opacity:.15;pointer-events:none}
+.d .k{align-self:flex-start;background:var(--c2);color:#fff;font-size:11px;font-weight:900;letter-spacing:.08em;
+      padding:5px 10px;border-radius:999px;text-transform:uppercase}
+.d h2{position:relative;font-family:var(--serif);font-weight:900;font-size:clamp(20px,5.6vw,27px);line-height:1.2;margin:auto 0 0}
+.d .arw{position:relative;margin-top:10px;font-weight:900;color:var(--c2);font-size:13.5px}
 
 /* TRIPS */
-.sec{display:flex;align-items:baseline;gap:14px;margin:52px 0 20px}
-.sec h3{font-family:var(--serif);font-weight:900;font-size:24px;margin:0}
-.sec .ln{flex:1;height:1px;background:var(--line)}
+.sec{margin:54px 0 18px;scroll-margin-top:16px}
+.sec h3{font-family:var(--serif);font-weight:900;font-size:26px;margin:0}
 .trips{display:grid;grid-template-columns:1fr;gap:18px}
 @media(min-width:720px){.trips{grid-template-columns:1fr 1fr}}
-.trip{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:transform .18s,box-shadow .18s}
-.trip:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(26,34,48,.12)}
+.trip{display:block;text-decoration:none;color:inherit;background:var(--card);border-radius:20px;overflow:hidden;
+      box-shadow:0 10px 26px rgba(23,31,44,.09);transition:transform .18s,box-shadow .18s}
+.trip:hover{transform:translateY(-4px);box-shadow:0 20px 44px rgba(23,31,44,.16)}
 .trip .ph{aspect-ratio:16/10;background:#e7e0d2 center/cover no-repeat;display:block}
 .trip .tx{padding:16px 18px 18px}
-.trip .tg{font-size:11.5px;font-weight:900;letter-spacing:.1em;color:var(--macau2);text-transform:uppercase}
-.trip b{display:block;font-family:var(--serif);font-weight:700;font-size:19px;line-height:1.35;margin:6px 0 4px}
+.trip .tg{display:inline-block;background:#fdeee6;color:var(--macau2);font-size:11px;font-weight:900;letter-spacing:.08em;padding:4px 9px;border-radius:999px;text-transform:uppercase}
+.trip b{display:block;font-family:var(--serif);font-weight:700;font-size:19px;line-height:1.35;margin:9px 0 4px}
 .trip small{display:block;color:var(--soft);font-size:14px;line-height:1.5}
 .trip .none{padding:22px 18px;color:var(--mute)}
-footer{margin-top:48px;font-size:13px;color:var(--mute);text-align:center;border-top:1px solid var(--line);padding-top:22px}
+footer{margin-top:50px;font-size:13px;color:var(--mute);text-align:center;border-top:1px solid var(--line);padding-top:22px}
 </style>
 </head>
 <body>
@@ -66,31 +67,35 @@ footer{margin-top:48px;font-size:13px;color:var(--mute);text-align:center;border
   <p class="lead">去邊度、玩咩、點去 —— 一個入口，全家搞掂。</p>
   <div class="rule"></div>
 
+  <p class="lab">四個玩樂入口</p>
   <section class="dests">
     <a class="d" href="macau/" style="--c1:var(--macau1);--c2:var(--macau2)">
-      <span class="wash"></span><span class="num">01</span>
+      <span class="bar"></span><span class="num">01</span>
       <span class="k">澳門出發</span>
-      <h2>澳門周邊親子遊</h2>
-      <p>珠海、中山、廣州、佛山等地景點，可按地區、偏好、類型、季節篩選。</p>
+      <h2>澳門周邊<br>親子遊</h2>
       <span class="arw">睇景點 →</span>
     </a>
     <a class="d" href="tw/" style="--c1:var(--tw1);--c2:var(--tw2)">
-      <span class="wash"></span><span class="num">02</span>
+      <span class="bar"></span><span class="num">02</span>
       <span class="k">台灣</span>
-      <h2>全家玩轉寶島</h2>
-      <p>景點、美食、伴手禮，地圖分區睇，仲可以規劃景點之間嘅交通。</p>
+      <h2>全家玩轉<br>寶島</h2>
       <span class="arw">睇寶島 →</span>
     </a>
     <a class="d" href="kids/" style="--c1:var(--kids1);--c2:var(--kids2)">
-      <span class="wash"></span><span class="num">03</span>
+      <span class="bar"></span><span class="num">03</span>
       <span class="k">仁仁德德</span>
       <h2>去哪裡</h2>
-      <p>適合仁仁、德德嘅活動，分「要報名」同「現場參加」。</p>
       <span class="arw">睇活動 →</span>
+    </a>
+    <a class="d" href="#trips-sec" style="--c1:var(--trip1);--c2:var(--trip2)">
+      <span class="bar"></span><span class="num">04</span>
+      <span class="k">旅遊行程</span>
+      <h2>精選<br>行程</h2>
+      <span class="arw">睇行程 →</span>
     </a>
   </section>
 
-  <div class="sec"><h3>旅遊行程</h3><span class="ln"></span></div>
+  <div class="sec" id="trips-sec"><h3>旅遊行程</h3></div>
   <div class="trips" id="trips"><div class="trip"><div class="none">載入中…</div></div></div>
 
   <footer>票價、班次、開放時間可能更改，出發前請以官方公告為準。</footer>
