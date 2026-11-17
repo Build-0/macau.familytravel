@@ -32,19 +32,20 @@
         }
 
         :root {
-            --primary: #E17055;
-            --secondary: #00B894;
-            --accent: #FDCB6E;
+            --primary: #068a8f;
+            --secondary: #2fc8a4;
+            --accent: #efa94a;
             --purple: #6C5CE7;
             --blue: #0984E3;
             --pink: #FD79A8;
             --dark: #171f2c;
             --light: #f5f6f8;
-            --north: #74B9FF;
-            --central: #55EFC4;
-            --south: #FF7675;
-            --east: #A29BFE;
-            --island: #FD79A8;
+            /* 統一青綠系:分區唔再彩虹 */
+            --north: #068a8f;
+            --central: #068a8f;
+            --south: #068a8f;
+            --east: #068a8f;
+            --island: #068a8f;
         }
 
         body {
@@ -148,18 +149,9 @@
             border-bottom: 3px solid transparent;
         }
 
+        .region-tab { color: #5a6678; }
         .region-tab:hover { background: var(--light); }
-        .region-tab.active { border-bottom-color: var(--primary); color: var(--primary); }
-        .region-tab[data-region="north"] { color: var(--north); }
-        .region-tab[data-region="central"] { color: var(--central); }
-        .region-tab[data-region="south"] { color: var(--south); }
-        .region-tab[data-region="east"] { color: var(--east); }
-        .region-tab[data-region="island"] { color: var(--island); }
-        .region-tab.active[data-region="north"] { border-bottom-color: var(--north); }
-        .region-tab.active[data-region="central"] { border-bottom-color: var(--central); }
-        .region-tab.active[data-region="south"] { border-bottom-color: var(--south); }
-        .region-tab.active[data-region="east"] { border-bottom-color: var(--east); }
-        .region-tab.active[data-region="island"] { border-bottom-color: var(--island); }
+        .region-tab.active { border-bottom-color: var(--primary); color: var(--primary); font-weight: 700; }
 
         .city-list {
             padding: 15px;
@@ -343,7 +335,7 @@
             white-space: nowrap;
         }
 
-        .route-btn:hover { background: #00A383; }
+        .route-btn:hover { background: #046d71; }
 
         /* 電腦版隱藏收合按鈕 */
         .route-collapse-btn { display: none; }
@@ -605,7 +597,7 @@
             color: white;
         }
 
-        .map-btn:hover { background: #0770C2; }
+        .map-btn:hover { background: #046d71; }
 
         .google-btn {
             background: #4285F4;
@@ -967,7 +959,7 @@
             display: none;
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, var(--secondary) 0%, #00A383 100%);
+            background: linear-gradient(135deg, var(--secondary) 0%, #068a8f 100%);
             color: white;
             border: none;
             cursor: pointer;
