@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>我們這一家</title>
 <meta name="description" content="全家玩樂入口:澳門周邊、台灣、仁仁德德去哪裡、旅遊行程">
-<meta name="theme-color" content="#f6f1e8">
+<meta name="theme-color" content="#f5f6f8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap">
 <style>
 :root{
-  --paper:#f6f1e8; --ink:#171f2c; --soft:#5a6678; --mute:#93a0b0; --line:#e7e0d2; --card:#fff;
+  --paper:#f5f6f8; --ink:#171f2c; --soft:#5a6678; --mute:#93a0b0; --line:#e6e7ea; --card:#fff;
   --serif:'Noto Serif TC',serif; --sans:'Noto Sans TC',sans-serif;
   --macau1:#ffb259; --macau2:#f2622c; --tw1:#2fc8a4; --tw2:#068a8f;
   --kids1:#5b8cf0; --kids2:#2746c2; --trip1:#b57cf0; --trip2:#7b3dc4;
@@ -87,7 +87,7 @@ footer{margin-top:50px;font-size:13px;color:var(--mute);text-align:center;border
       <h2>去哪裡</h2>
       <span class="arw">睇活動 →</span>
     </a>
-    <a class="d" href="#trips-sec" style="--c1:var(--trip1);--c2:var(--trip2)">
+    <a class="d" id="tripCard" href="#" style="--c1:var(--trip1);--c2:var(--trip2)">
       <span class="bar"></span><span class="num">04</span>
       <span class="k">旅遊行程</span>
       <h2>精選<br>行程</h2>
@@ -95,28 +95,18 @@ footer{margin-top:50px;font-size:13px;color:var(--mute);text-align:center;border
     </a>
   </section>
 
-  <div class="sec" id="trips-sec"><h3>旅遊行程</h3></div>
-  <div class="trips" id="trips"><div class="trip"><div class="none">載入中…</div></div></div>
-
   <footer>票價、班次、開放時間可能更改，出發前請以官方公告為準。</footer>
 </main>
 <script>
-// 行程列表:讀取已公開嘅行程(任何人都睇到,同行程頁一樣只讀「已發布」)
+// 將「精選行程」入口連去最新公開行程
 (function(){
   var SB='https://nikijysochwdfcqscgby.supabase.co';
   var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pa2lqeXNvY2h3ZGZjcXNjZ2J5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1MzQ2MTYsImV4cCI6MjEwODExMDYxNn0.1QDaEfWr9HgI5_jd_SGSca9m95arRFcYi22Xtacb_5s';
-  var TRIP_BASE='t/';
-  var box=document.getElementById('trips');
-  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-  fetch(SB+'/rest/v1/trips?select=slug,title,data&published=eq.true&order=updated_at.desc',{headers:{apikey:KEY,Authorization:'Bearer '+KEY}})
+  var card=document.getElementById('tripCard');
+  fetch(SB+'/rest/v1/trips?select=slug&published=eq.true&order=updated_at.desc&limit=1',{headers:{apikey:KEY,Authorization:'Bearer '+KEY}})
    .then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})
-   .then(function(rows){
-     if(!rows.length){box.innerHTML='<div class="trip"><div class="none">暫時未有公開行程。</div></div>';return}
-     box.innerHTML=rows.map(function(t){var c=(t.data&&t.data.cover)||{};var tags=(c.tags||[]).join(' · ');
-       var ph=c.image?'<span class="ph" style="background-image:url(\''+esc(c.image)+'\')"></span>':'';
-       return '<a class="trip" href="'+TRIP_BASE+encodeURIComponent(t.slug)+'/">'+ph+'<div class="tx">'+(tags?'<div class="tg">'+esc(tags)+'</div>':'')+'<b>'+esc(t.title)+'</b><small>'+esc(c.subtitle||'')+'</small></div></a>'}).join('')
-   })
-   .catch(function(){box.innerHTML='<div class="trip"><div class="none">行程載入失敗，請稍後重新整理。</div></div>'});
+   .then(function(rows){ if(rows&&rows[0]&&rows[0].slug){ card.href='t/'+encodeURIComponent(rows[0].slug)+'/'; } })
+   .catch(function(){});
 })();
 </script>
 </body>
