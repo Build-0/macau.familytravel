@@ -70,7 +70,7 @@ footer{margin-top:50px;font-size:13px;color:var(--mute);text-align:center;border
 </style>
 </head>
 <body>
-<div id="ver" style="position:fixed;top:6px;right:8px;z-index:200;font:700 11px/1 'Noto Sans TC',sans-serif;color:#9aa3af;background:rgba(255,255,255,.78);padding:4px 8px;border-radius:999px;pointer-events:none;letter-spacing:.02em">v 2026-11-17 10:18</div>
+<div id="ver" style="position:fixed;top:6px;right:8px;z-index:200;font:700 11px/1 'Noto Sans TC',sans-serif;color:#9aa3af;background:rgba(255,255,255,.78);padding:4px 8px;border-radius:999px;pointer-events:none;letter-spacing:.02em">v 2026-11-17 10:30</div>
 <main>
   <p class="over">Family · 全家玩樂入口</p>
   <h1>我們這一家<span class="dot">.</span></h1>
@@ -115,7 +115,7 @@ footer{margin-top:50px;font-size:13px;color:var(--mute);text-align:center;border
   var card=document.getElementById('tripCard');
   fetch(SB+'/rest/v1/trips?select=slug&published=eq.true&order=updated_at.desc&limit=1',{headers:{apikey:KEY,Authorization:'Bearer '+KEY}})
    .then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})
-   .then(function(rows){ if(rows&&rows[0]&&rows[0].slug){ card.href='t/'+encodeURIComponent(rows[0].slug)+'/'; } })
+   .then(function(rows){ if(rows&&rows[0]&&rows[0].slug){ card.href='trip/#/t/'+encodeURIComponent(rows[0].slug); } })
    .catch(function(){});
 })();
 </script>
