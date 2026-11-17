@@ -7,7 +7,7 @@
 
     <!-- PWA Meta Tags -->
     <meta name="description" content="澳門出發的周邊親子旅遊指南 - 珠海、中山、廣州、佛山、清遠、惠州、江門、陽江">
-    <meta name="theme-color" content="#D4A500">
+    <meta name="theme-color" content="#f6f1e8">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="澳門周邊遊">
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -27,11 +27,11 @@
             --primary-gradient: linear-gradient(135deg, #FFD699 0%, #FFB347 50%, #FF9500 100%);
             --header-bg: #1A365D;         /* 深海藍 - 標題背景 */
             --accent: #FF6B35;            /* 活力橙 - 強調按鈕 */
-            --text-dark: #1A365D;         /* 深色文字 */
+            --text-dark: #171f2c;         /* 深色文字(同首頁 ink) */
             --text-light: #6B7280;        /* 淺色文字 */
-            --bg-cream: #FFFCF5;          /* 溫暖奶油背景 */
+            --bg-cream: #f6f1e8;          /* 溫暖紙色背景(同首頁一致) */
             --bg-white: #FFFFFF;
-            --card-shadow: rgba(255, 179, 71, 0.25);
+            --card-shadow: rgba(23, 31, 44, 0.10);
             --dad-color: #0EA5E9;         /* 天藍色 */
             --mom-color: #EC4899;         /* 粉紅色 */
             --kid-color: #FF9500;         /* 鮮橙色 */
@@ -49,6 +49,13 @@
             background: var(--bg-cream);
             min-height: 100vh;
             padding-bottom: 70px;
+        }
+
+        /* 同首頁一致:標題用襯線字 */
+        .top-bar-title, .city-name, .type-name, .spot-name {
+            font-family: 'Noto Serif TC', serif;
+            font-weight: 900;
+            letter-spacing: -0.005em;
         }
 
         /* ==================== 頂部搜尋欄 ==================== */
@@ -359,7 +366,7 @@
         .spot-card:hover {
             transform: translateY(-4px);
             background: white;
-            box-shadow: 0 10px 30px rgba(255, 149, 0, 0.3);
+            box-shadow: 0 14px 32px rgba(23, 31, 44, 0.16);
         }
 
         /* 卡片分類顏色邊框 */
