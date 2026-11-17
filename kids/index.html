@@ -4,22 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>仁仁德德去邊度</title>
-<style>body{margin:0;font:15px "Noto Sans TC","PingFang TC",system-ui,sans-serif;background:#eef2f8;color:#152038;display:grid;place-items:center;min-height:100vh}p{color:#5d6780}</style>
+<link rel="preconnect" href="https://nikijysochwdfcqscgby.supabase.co" crossorigin>
+<link rel="dns-prefetch" href="https://nikijysochwdfcqscgby.supabase.co">
+<style>body{margin:0;font:15px "Noto Sans TC","PingFang TC",system-ui,sans-serif;background:#f5f6f8;color:#152038;display:grid;place-items:center;min-height:100vh}p{color:#5d6780}</style>
 </head>
 <body>
 <p id="msg">載入中…</p>
 <script>
-/* 空殼：版面同資料都由 Supabase 讀取，改版面唔使再上傳呢個檔案 */
+/* 空殼：版面同資料都由 Supabase 讀取，改版面唔使再上傳呢個檔案。
+   快取優先 + 競速：首屏最多等 350ms 就用上次快取出內容；
+   網絡快就出最新版並更新快取，所以多數情況即時見到又保持最新。 */
 (function(){
   var URL="https://nikijysochwdfcqscgby.supabase.co/rest/v1/kids_events?id=eq.layout&select=data",
       KEY="sb_publishable_CXS1oAAM1sTtfalOTFMOTA_FSZwA4gU", CK="kidsLayout";
   function show(html){document.open();document.write(html);document.close();}
-  fetch(URL,{cache:"no-store",headers:{apikey:KEY}})
+  var cached=null; try{cached=localStorage.getItem(CK);}catch(e){}
+  var done=false;
+  var timer=setTimeout(function(){ if(!done&&cached){done=true;show(cached);} }, 350);
+  fetch(URL,{headers:{apikey:KEY}})
     .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
     .then(function(rows){var h=rows&&rows[0]&&rows[0].data&&rows[0].data.html;if(!h)throw new Error("empty");
-      try{localStorage.setItem(CK,h);}catch(e){} show(h);})
-    .catch(function(){var h=null;try{h=localStorage.getItem(CK);}catch(e){}
-      if(h)show(h);else document.getElementById("msg").textContent="資料暫時載入唔到，請稍後再試。";});
+      try{localStorage.setItem(CK,h);}catch(e){}
+      if(!done){done=true;clearTimeout(timer);show(h);} })
+    .catch(function(){ clearTimeout(timer);
+      if(!done){done=true;
+        if(cached)show(cached);
+        else document.getElementById("msg").textContent="資料暫時載入唔到，請稍後再試。";} });
 })();
 </script>
 </body>
