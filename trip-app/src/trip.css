@@ -6,7 +6,7 @@
 
 /* ── 定位:資訊清晰嘅數碼旅行手冊。暖紙色、深色文字、一點主色;相片只係細縮圖點綴 ── */
 .trip {
-  --ink: #171f2c; --soft: #4f5f71; --mute: #7d8b9a; --paper: #f5f6f8; --card: #fff; --line: #e4dfd2; --navy: #14283f; --coral: #c9502a;
+  --ink: #171f2c; --soft: #4f5f71; --mute: #7d8b9a; --paper: #f5f6f8; --card: #fff; --line: #e4dfd2; --navy: #14283f; --coral: #7b3dc4; /* 行程模組主色=紫,對齊首頁行程卡;逐個行程仍可用 cover.accent 自訂 */
   --serif: 'Noto Serif TC', 'Source Han Serif TC', 'Songti TC', 'PMingLiU', 'Georgia', serif;
   font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--paper); color: var(--ink); min-height: 100vh; padding-bottom: calc(40px + env(safe-area-inset-bottom));
