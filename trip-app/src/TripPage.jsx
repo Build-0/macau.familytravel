@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { supabase } from './supabase.js'
 import { APP_BASE, SITE_BASE } from './site.js'
 import './trip.css'
@@ -57,22 +57,30 @@ function dedupeImages(d) {
 
 // 圖片:先用本站副本 → 失敗退返原網址 → 再失敗顯示柔和底色 + 標題
 // 冇指定 pos 時按相片方向自動揀裁切:直幅放入橫框 → 取偏上;橫幅放入直框 → 取中間
-function Pic({ src, alt, credit, cls = '', ratio, pos }) {
+function Pic({ src, alt, credit, cls = '', ratio, pos, eager }) {
   const [bad, setBad] = useState(false)
   const [cur, setCur] = useState(() => (src && IMGMAP[src] ? BASE + IMGMAP[src] : src))
   const [auto, setAuto] = useState('')
-  if (!src) return null
+  const [loaded, setLoaded] = useState(false)
+  const imgRef = useRef(null)
   const slotW = ratio ? (() => { const [a, b] = String(ratio).split('/').map(Number); return b ? a / b : 0 })() : 0
-  const onLoad = (e) => {
-    if (pos) return
-    const im = e.currentTarget
+  const mark = (im) => {
+    setLoaded(true)
+    if (pos || !im) return
     const ir = im.naturalWidth / im.naturalHeight
     if (slotW && ir < slotW) setAuto('50% 30%')
   }
+  // 防快取 gotcha:圖已喺快取、onLoad 喺掛 handler 前已觸發,就喺掛載後補認
+  useEffect(() => {
+    const im = imgRef.current
+    if (im && im.complete && im.naturalWidth > 0) mark(im)
+  }, [cur])
+  if (!src) return null
+  const onLoad = (e) => mark(e.currentTarget)
   return (
     <figure className={'tp-fig ' + cls}>
-      <div className="tp-img" style={ratio ? { aspectRatio: ratio } : undefined}>
-        {bad ? <div className="tp-ph"><span>{alt}</span></div> : <img src={cur} alt={alt || ''} loading="lazy" referrerPolicy="no-referrer" style={pos || auto ? { objectPosition: pos || auto } : undefined} onLoad={onLoad} onError={() => (cur !== src ? setCur(src) : setBad(true))} />}
+      <div className={'tp-img' + (loaded || bad ? ' tp-done' : '')} style={ratio ? { aspectRatio: ratio } : undefined}>
+        {bad ? <div className="tp-ph"><span>{alt}</span></div> : <img ref={imgRef} className={loaded ? 'tp-in' : ''} src={cur} alt={alt || ''} loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} referrerPolicy="no-referrer" style={pos || auto ? { objectPosition: pos || auto } : undefined} onLoad={onLoad} onError={() => (cur !== src ? setCur(src) : setBad(true))} />}
       </div>
       {credit && !bad && <figcaption>{shortCredit(credit)}</figcaption>}
     </figure>
@@ -318,7 +326,7 @@ export default function TripPage({ slug }) {
           <h1>{tparts.length > 1 && <small className="tp-kicker">{tparts[0]}</small>}<span>{tparts.length > 1 ? tparts.slice(1).join(' · ') : trip.title}</span></h1>
           {cov.subtitle && <p className="tp-sub1">{cov.subtitle}</p>}
           {cov.tags && cov.tags.length > 0 && <div className="tp-tags tp-tags-row">{cov.tags.map((t) => <span key={t}>{t}</span>)}</div>}
-          {cov.image && <Pic src={cov.image} alt={trip.title} cls="tp-cover" ratio="2 / 1" pos={cov.pos} credit={cov.credit} />}
+          {cov.image && <Pic src={cov.image} alt={trip.title} cls="tp-cover" ratio="2 / 1" pos={cov.pos} credit={cov.credit} eager />}
           {factsShown.length > 0 && (
             <dl className="tp-facts">
               {factsShown.map((s, i) => <div key={i}><dt>{s.label}</dt><dd>{s.value}</dd></div>)}
