@@ -823,6 +823,20 @@
                 position: static;
             }
         }
+        /* ── 下拉式篩選 pill ── */
+        .filter-section { display:flex; flex-wrap:wrap; gap:10px; padding:12px 15px 4px; overflow:visible; }
+        .fsel {
+            flex:1 1 calc(50% - 5px); min-width:150px; max-width:100%;
+            -webkit-appearance:none; appearance:none;
+            font:600 15px/1.2 'Noto Sans TC', sans-serif; color:var(--text-dark);
+            background-color:#fff; border:1px solid #e6e7ea; border-radius:14px;
+            padding:13px 42px 13px 16px;
+            box-shadow:0 1px 3px rgba(23,31,44,.06);
+            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%238a96a8' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 6.3l3-3 3 3'/%3E%3Cpath d='M5 9.7l3 3 3-3'/%3E%3C/svg%3E");
+            background-repeat:no-repeat; background-position:right 14px center;
+            cursor:pointer; outline:none; text-overflow:ellipsis;
+        }
+        .fsel:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(255,149,0,.15); }
     </style>
 </head>
 <body>
@@ -901,69 +915,60 @@
 
     <!-- 篩選區域 - 景點 -->
     <div class="filter-section" id="spotFilters">
-        <!-- 偏好篩選 -->
-        <div class="filter-row">
-            <span class="filter-label">偏好：</span>
-            <div class="filter-tag parents" data-prefer="parents">👨👩 爸媽共同</div>
-            <div class="filter-tag dad" data-prefer="dad">👨 爸爸愛</div>
-            <div class="filter-tag mom" data-prefer="mom">👩 媽媽愛</div>
-            <div class="filter-tag kid" data-prefer="kid">👶 小朋友愛</div>
-            <div class="filter-tag clear-btn" onclick="clearFilter('prefer')">重置</div>
-        </div>
-        <!-- 類型篩選 -->
-        <div class="filter-row">
-            <span class="filter-label">類型：</span>
-            <div class="filter-tag nature" data-type="nature">🌿 大自然</div>
-            <div class="filter-tag village" data-type="village">🏘️ 農村古村</div>
-            <div class="filter-tag resort" data-type="resort">♨️ 度假村</div>
-            <div class="filter-tag history" data-type="history">🏛️ 歷史人文</div>
-            <div class="filter-tag animal" data-type="animal">🦁 動物萌寵</div>
-            <div class="filter-tag park" data-type="park">🎢 主題樂園</div>
-            <div class="filter-tag island" data-type="island">🏝️ 海島海灘</div>
-            <div class="filter-tag clear-btn" onclick="clearFilter('type')">重置</div>
-        </div>
-        <!-- 行程篩選 -->
-        <div class="filter-row">
-            <span class="filter-label">行程：</span>
-            <div class="filter-tag" data-trip="day">☀️ 一日遊</div>
-            <div class="filter-tag" data-trip="overnight">🌙 兩天一夜</div>
-            <div class="filter-tag" data-trip="visited">✅ 已去過</div>
-            <div class="filter-tag" data-trip="annual">⭐ 有年卡</div>
-            <div class="filter-tag clear-btn" onclick="clearFilter('trip')">重置</div>
-        </div>
-        <!-- 季節篩選 -->
-        <div class="filter-row">
-            <span class="filter-label">季節：</span>
-            <div class="filter-tag spring" data-season="spring">🌸 春季</div>
-            <div class="filter-tag summer" data-season="summer">☀️ 夏季</div>
-            <div class="filter-tag autumn" data-season="autumn">🍂 秋季</div>
-            <div class="filter-tag winter" data-season="winter">❄️ 冬季</div>
-            <div class="filter-tag clear-btn" onclick="clearFilter('season')">重置</div>
-        </div>
+        <select class="fsel" id="selPrefer" onchange="onFilter('prefer', this.value)">
+            <option value="">全部偏好</option>
+            <option value="parents">👨👩 爸媽共同</option>
+            <option value="dad">👨 爸爸愛</option>
+            <option value="mom">👩 媽媽愛</option>
+            <option value="kid">👶 小朋友愛</option>
+        </select>
+        <select class="fsel" id="selType" onchange="onFilter('type', this.value)">
+            <option value="">所有類型</option>
+            <option value="nature">🌿 大自然</option>
+            <option value="village">🏘️ 農村古村</option>
+            <option value="resort">♨️ 度假村</option>
+            <option value="history">🏛️ 歷史人文</option>
+            <option value="animal">🦁 動物萌寵</option>
+            <option value="park">🎢 主題樂園</option>
+            <option value="island">🏝️ 海島海灘</option>
+        </select>
+        <select class="fsel" id="selTrip" onchange="onFilter('trip', this.value)">
+            <option value="">全部行程</option>
+            <option value="day">☀️ 一日遊</option>
+            <option value="overnight">🌙 兩天一夜</option>
+            <option value="visited">✅ 已去過</option>
+            <option value="annual">⭐ 有年卡</option>
+        </select>
+        <select class="fsel" id="selSeason" onchange="onFilter('season', this.value)">
+            <option value="">全部季節</option>
+            <option value="spring">🌸 春季</option>
+            <option value="summer">☀️ 夏季</option>
+            <option value="autumn">🍂 秋季</option>
+            <option value="winter">❄️ 冬季</option>
+        </select>
     </div>
 
     <!-- 篩選區域 - 美食 -->
     <div class="filter-section" id="foodFilters" style="display: none;">
-        <!-- 類型篩選 -->
-        <div class="filter-row">
-            <span class="filter-label">類型：</span>
-            <div class="filter-tag" data-foodtype="hotpot">🍲 火鍋</div>
-            <div class="filter-tag" data-foodtype="farmfood">🥬 農家菜</div>
-            <div class="filter-tag" data-foodtype="xinjiang">🍖 新疆菜</div>
-            <div class="filter-tag" data-foodtype="northwest">🍜 西北菜</div>
-            <div class="filter-tag" data-foodtype="cafe">☕ 咖啡廳</div>
-            <div class="filter-tag" data-foodtype="local">🦐 當地特色</div>
-            <div class="filter-tag clear-btn" onclick="clearFilter('foodtype')">重置</div>
-        </div>
-        <!-- 辣度/兒童友好 -->
-        <div class="filter-row">
-            <span class="filter-label">口味：</span>
-            <div class="filter-tag" data-spicy="none">😊 不辣</div>
-            <div class="filter-tag" data-spicy="mild">🌶️ 可辣可不辣</div>
-            <div class="filter-tag" data-spicy="hot">🔥 辣</div>
-            <div class="filter-tag" data-kidfriendly="true">👶 兒童友好</div>
-            <div class="filter-tag clear-btn" onclick="clearFilter('foodfilter')">重置</div>
-        </div>
+        <select class="fsel" id="selFoodType" onchange="onFilter('foodtype', this.value)">
+            <option value="">所有類型</option>
+            <option value="hotpot">🍲 火鍋</option>
+            <option value="farmfood">🥬 農家菜</option>
+            <option value="xinjiang">🍖 新疆菜</option>
+            <option value="northwest">🍜 西北菜</option>
+            <option value="cafe">☕ 咖啡廳</option>
+            <option value="local">🦐 當地特色</option>
+        </select>
+        <select class="fsel" id="selSpicy" onchange="onFilter('spicy', this.value)">
+            <option value="">全部辣度</option>
+            <option value="none">😊 不辣</option>
+            <option value="mild">🌶️ 可辣可不辣</option>
+            <option value="hot">🔥 辣</option>
+        </select>
+        <select class="fsel" id="selKid" onchange="onFilter('kidfriendly', this.value)">
+            <option value="">全部</option>
+            <option value="1">👶 兒童友好</option>
+        </select>
     </div>
 
     <!-- 主內容區 -->
@@ -2290,6 +2295,20 @@
         document.getElementById('toVisitSpots').textContent = total - visited;
     }
 
+    // 下拉篩選:設定對應篩選(單選)再重新渲染
+    function onFilter(cat, val) {
+        const arr = val ? [val] : [];
+        switch (cat) {
+            case 'prefer': activePrefers = arr; renderContent(); break;
+            case 'type': activeTypes = arr; renderContent(); break;
+            case 'trip': activeTrips = arr; renderContent(); break;
+            case 'season': activeSeasons = arr; renderContent(); break;
+            case 'foodtype': activeFoodTypes = arr; renderFoodPage(); break;
+            case 'spicy': activeSpicy = arr; renderFoodPage(); break;
+            case 'kidfriendly': activeKidFriendly = !!val; renderFoodPage(); break;
+        }
+    }
+
     // ==================== 事件監聽 ====================
     function setupEventListeners() {
         // 城市切換
@@ -2625,9 +2644,9 @@
 
         if (page === 'food') {
             spotFilters.style.display = 'none';
-            foodFilters.style.display = 'block';
+            foodFilters.style.display = 'flex';
         } else if (page === 'home') {
-            spotFilters.style.display = 'block';
+            spotFilters.style.display = 'flex';
             foodFilters.style.display = 'none';
         } else {
             spotFilters.style.display = 'none';
