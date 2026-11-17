@@ -27,7 +27,7 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
-main{max-width:1040px;margin:0 auto;padding:clamp(30px,6vw,64px) clamp(18px,5vw,40px) calc(60px + env(safe-area-inset-bottom))}
+main{max-width:1120px;margin:0 auto;padding:clamp(30px,6vw,64px) clamp(18px,5vw,40px) calc(60px + env(safe-area-inset-bottom))}
 
 /* HERO */
 .over{font-size:12.5px;font-weight:900;letter-spacing:.3em;color:var(--macau2);text-transform:uppercase;margin:0 0 14px}
@@ -40,6 +40,8 @@ h1 .dot{color:var(--macau2)}
 /* DESTINATIONS — 2×2 正方形 */
 .dests{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(min-width:560px){.dests{gap:18px}}
+/* 桌面闊螢幕:四張卡一行,卡唔會變巨型 */
+@media(min-width:880px){.dests{grid-template-columns:repeat(4,1fr);gap:20px}}
 .d{position:relative;display:flex;flex-direction:column;text-decoration:none;color:inherit;
    aspect-ratio:1/1;border-radius:20px;overflow:hidden;padding:18px 18px 18px 24px;background:var(--card);
    box-shadow:0 10px 26px rgba(23,31,44,.09);transition:transform .18s ease,box-shadow .18s ease}
@@ -70,7 +72,7 @@ footer{margin-top:50px;font-size:13px;color:var(--mute);text-align:center;border
 </style>
 </head>
 <body>
-<div id="ver" style="position:fixed;top:6px;right:8px;z-index:200;font:700 11px/1 'Noto Sans TC',sans-serif;color:#9aa3af;background:rgba(255,255,255,.78);padding:4px 8px;border-radius:999px;pointer-events:none;letter-spacing:.02em">v 2026-11-17 12:25</div>
+<div id="ver" style="position:fixed;top:6px;right:8px;z-index:200;font:700 11px/1 'Noto Sans TC',sans-serif;color:#9aa3af;background:rgba(255,255,255,.78);padding:4px 8px;border-radius:999px;pointer-events:none;letter-spacing:.02em">v 2026-11-17 12:45</div>
 <main>
   <p class="over">Family · 全家玩樂入口</p>
   <h1>我們這一家<span class="dot">.</span></h1>
