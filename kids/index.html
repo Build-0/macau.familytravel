@@ -12,21 +12,23 @@
 <p id="msg">載入中…</p>
 <script>
 /* 空殼：版面同資料都由 Supabase 讀取，改版面唔使再上傳呢個檔案。
-   快取優先 + 競速：首屏最多等 350ms 就用上次快取出內容；
-   網絡快就出最新版並更新快取，所以多數情況即時見到又保持最新。 */
+   快取優先：有上次快取就即時出(唔等網絡,順滑唔頓)；
+   同時喺背景攞最新版,如有更新就靜靜更新快取,下次入即見新版。
+   冇快取(首次)先等網絡。 */
 (function(){
   var URL="https://nikijysochwdfcqscgby.supabase.co/rest/v1/kids_events?id=eq.layout&select=data",
       KEY="sb_publishable_CXS1oAAM1sTtfalOTFMOTA_FSZwA4gU", CK="kidsLayout";
   function show(html){document.open();document.write(html);document.close();}
   var cached=null; try{cached=localStorage.getItem(CK);}catch(e){}
   var done=false;
-  var timer=setTimeout(function(){ if(!done&&cached){done=true;show(cached);} }, 350);
+  // 有快取：下一個 tick(解析完)即出,唔等 350ms,消除「載入中…」閃動
+  if(cached){ setTimeout(function(){ if(!done){done=true;show(cached);} }, 0); }
   fetch(URL,{headers:{apikey:KEY}})
     .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
     .then(function(rows){var h=rows&&rows[0]&&rows[0].data&&rows[0].data.html;if(!h)throw new Error("empty");
       try{localStorage.setItem(CK,h);}catch(e){}
-      if(!done){done=true;clearTimeout(timer);show(h);} })
-    .catch(function(){ clearTimeout(timer);
+      if(!done){done=true;show(h);} })   // 已由快取出咗就唔再重寫,只更新快取
+    .catch(function(){
       if(!done){done=true;
         if(cached)show(cached);
         else document.getElementById("msg").textContent="資料暫時載入唔到，請稍後再試。";} });
