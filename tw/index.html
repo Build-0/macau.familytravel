@@ -1173,7 +1173,6 @@
                 <select class="fsel" id="selPrefer" onchange="onPreferFilter(this.value)">
                     <option value="">全部偏好</option>
                     <option value="kid">👶 親子友善</option>
-                    <option value="pregnant">🤰 孕婦OK</option>
                 </select>
             </div>
 
@@ -2413,7 +2412,6 @@
                     <div class="card-badges">
                         <span class="badge">📍 ${item.type}</span>
                         ${item.kid ? '<span class="badge kid">👶 親子友善</span>' : ''}
-                        ${item.pregnant ? '<span class="badge pregnant">🤰 孕婦OK</span>' : ''}
                     </div>
                     <div class="card-title">${item.name}</div>
                     <div class="card-subtitle">${item.address}</div>
