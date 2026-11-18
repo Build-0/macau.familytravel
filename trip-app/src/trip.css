@@ -194,9 +194,14 @@
     align-items: start;
   }
   .tp-body > .tp-foot { grid-column: 1 / -1; }
-  .tp-col-main > .tp-day:first-child { margin-top: 20px; }
-  .tp-col-side > .tp-sec:first-child { margin-top: 20px; }
-  .tp-col-side .tp-sec { margin-top: 22px; }
+  /* 每個區塊(每日 / 交通 / 酒店 / 預算 / 確認)之間有明顯分隔:頂線 + 留白,
+     一眼睇得出邊到邊,唔會成舊溝埋 */
+  .tp-col-main > *, .tp-col-side > * { margin-top: 0; }
+  .tp-col-main > * + *, .tp-col-side > * + * { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line); }
+  .tp-col-main > :first-child, .tp-col-side > :first-child { margin-top: 18px; }
+  /* 區塊標題更突出 */
+  .tp-h { font-size: 22px !important; }
+  .tp-day h2 { font-size: 24px; }
 }
 
 .tp-more p { font-size: 14px; line-height: 1.55; color: var(--soft); margin-top: 4px; }
