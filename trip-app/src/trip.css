@@ -168,9 +168,9 @@
 
 /* 桌面闊螢幕(≥960px):兩欄排版,用盡闊度,唔好淨係中間一條窄 */
 @media (min-width: 960px) {
-  .tp-wrap { max-width: 1120px; padding: 0 28px; }
+  .tp-wrap { max-width: 1400px; padding: 0 28px; }
   /* 貼頂導航:背景條全闊,但啲字對齊返置中內容嘅左右邊,唔好飄去最左 */
-  .tp-nav { padding-left: max(28px, calc((100vw - 1120px) / 2 + 28px)); padding-right: max(28px, calc((100vw - 1120px) / 2 + 28px)); }
+  .tp-nav { padding-left: max(28px, calc((100vw - 1400px) / 2 + 28px)); padding-right: max(28px, calc((100vw - 1400px) / 2 + 28px)); }
 
   /* 標題區:左邊文字+摘要,右邊封面;手機 DOM 次序不變,靠 grid-area 重排 */
   .tp-has-cover .tp-wrap {
