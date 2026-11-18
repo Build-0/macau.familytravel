@@ -26,6 +26,13 @@ const osmEmbed = (m) => {
 }
 // 圖下面嘅相片說明用精簡版;完整來源(連同「Wikimedia Commons」等)集中放喺「相片來源」
 const shortCredit = (c) => String(c || '').replace(/\s*\/\s*(Wikimedia Commons|Pexels|Unsplash|Pixabay)/i, '')
+// Wikimedia 原圖好大(成 1400px),手機每次入都要慢慢 load 先顯示 → 閃/窒。
+// 按用途縮到合適寬度(封面大啲、縮圖細啲),load 快好多、少好多閃。
+const wikiThumb = (u, w) => {
+  if (!u || !/wiki\/Special:FilePath/i.test(u)) return u
+  if (/[?&]width=/i.test(u)) return u.replace(/([?&]width=)\d+/i, '$1' + w)
+  return u + (u.includes('?') ? '&' : '?') + 'width=' + w
+}
 const isTbd = (v) => /待定|待確認|待查/.test(String(v))
 
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -59,7 +66,8 @@ function dedupeImages(d) {
 // 冇指定 pos 時按相片方向自動揀裁切:直幅放入橫框 → 取偏上;橫幅放入直框 → 取中間
 function Pic({ src, alt, credit, cls = '', ratio, pos, eager }) {
   const [bad, setBad] = useState(false)
-  const [cur, setCur] = useState(() => (src && IMGMAP[src] ? BASE + IMGMAP[src] : src))
+  const ext = wikiThumb(src, eager ? 1000 : 520) // 外部圖縮到合適寬度,手機 load 快、少閃
+  const [cur, setCur] = useState(() => (src && IMGMAP[src] ? BASE + IMGMAP[src] : ext))
   const [auto, setAuto] = useState('')
   const [loaded, setLoaded] = useState(false)
   const imgRef = useRef(null)
@@ -80,7 +88,7 @@ function Pic({ src, alt, credit, cls = '', ratio, pos, eager }) {
   return (
     <figure className={'tp-fig ' + cls}>
       <div className={'tp-img' + (loaded || bad ? ' tp-done' : '')} style={ratio ? { aspectRatio: ratio } : undefined}>
-        {bad ? <div className="tp-ph"><span>{alt}</span></div> : <img ref={imgRef} className={loaded ? 'tp-in' : ''} src={cur} alt={alt || ''} loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} referrerPolicy="no-referrer" style={pos || auto ? { objectPosition: pos || auto } : undefined} onLoad={onLoad} onError={() => (cur !== src ? setCur(src) : setBad(true))} />}
+        {bad ? <div className="tp-ph"><span>{alt}</span></div> : <img ref={imgRef} className={loaded ? 'tp-in' : ''} src={cur} alt={alt || ''} loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} referrerPolicy="no-referrer" style={pos || auto ? { objectPosition: pos || auto } : undefined} onLoad={onLoad} onError={() => (cur !== ext ? setCur(ext) : setBad(true))} />}
       </div>
       {credit && !bad && <figcaption>{shortCredit(credit)}</figcaption>}
     </figure>
