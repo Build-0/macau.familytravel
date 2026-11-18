@@ -72,7 +72,7 @@ footer{margin-top:50px;font-size:13px;color:var(--mute);text-align:center;border
 </style>
 </head>
 <body>
-<div id="ver" style="position:fixed;top:6px;right:8px;z-index:200;font:700 11px/1 'Noto Sans TC',sans-serif;color:#9aa3af;background:rgba(255,255,255,.78);padding:4px 8px;border-radius:999px;pointer-events:none;letter-spacing:.02em">v 2026-11-17 12:45</div>
+<div id="ver" style="position:fixed;top:6px;right:8px;z-index:200;font:700 11px/1 'Noto Sans TC',sans-serif;color:#9aa3af;background:rgba(255,255,255,.78);padding:4px 8px;border-radius:999px;pointer-events:none;letter-spacing:.02em"></div>
 <main>
   <p class="over">Family · 全家玩樂入口</p>
   <h1>我們這一家<span class="dot">.</span></h1>
@@ -109,15 +109,45 @@ footer{margin-top:50px;font-size:13px;color:var(--mute);text-align:center;border
   <footer>票價、班次、開放時間可能更改，出發前請以官方公告為準。</footer>
 </main>
 <script>
-// 將「精選行程」入口連去最新公開行程
+// 將「精選行程」入口連去最新公開行程(快取 slug,返嚟即時有得撳,唔使等 fetch)
 (function(){
   var SB='https://nikijysochwdfcqscgby.supabase.co';
   var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pa2lqeXNvY2h3ZGZjcXNjZ2J5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1MzQ2MTYsImV4cCI6MjEwODExMDYxNn0.1QDaEfWr9HgI5_jd_SGSca9m95arRFcYi22Xtacb_5s';
   var card=document.getElementById('tripCard');
+  function setHref(slug){ if(slug) card.href='trip/#/t/'+encodeURIComponent(slug); }
+  // 1) 先用上次記住嘅 slug 即時填 href(避免未 fetch 完撳親冇反應)
+  try{ setHref(localStorage.getItem('homeTripSlug')); }catch(e){}
+  // 2) 再向 Supabase 攞最新,順手更新快取
   fetch(SB+'/rest/v1/trips?select=slug&published=eq.true&order=updated_at.desc&limit=1',{headers:{apikey:KEY,Authorization:'Bearer '+KEY}})
    .then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})
-   .then(function(rows){ if(rows&&rows[0]&&rows[0].slug){ card.href='trip/#/t/'+encodeURIComponent(rows[0].slug); } })
+   .then(function(rows){ if(rows&&rows[0]&&rows[0].slug){ setHref(rows[0].slug); try{localStorage.setItem('homeTripSlug',rows[0].slug);}catch(e){} } })
    .catch(function(){});
+})();
+// 預取 trip SPA 嘅 JS/CSS(背景載定,撳 04 卡入 trip 就唔使等 bundle download,減少成版 reload 嘅窒)
+(function(){
+  function warm(){
+    fetch('trip/index.html',{cache:'force-cache'})
+     .then(function(r){return r.ok?r.text():Promise.reject()})
+     .then(function(html){
+       var urls=[], m, re=/(?:src|href)="([^"]+\.(?:js|css))"/g;
+       while((m=re.exec(html))){ urls.push(m[1]); }
+       urls.slice(0,12).forEach(function(u){
+         var abs = u.charAt(0)==='/' ? u : 'trip/'+u.replace(/^\.?\//,'');
+         var l=document.createElement('link');
+         l.rel = /\.css$/.test(u) ? 'prefetch' : 'modulepreload';
+         l.href = abs; if(l.rel==='prefetch') l.as='style';
+         document.head.appendChild(l);
+       });
+     }).catch(function(){});
+  }
+  if('requestIdleCallback' in window) requestIdleCallback(warm,{timeout:2500}); else setTimeout(warm,1200);
+})();
+// 版本號:自動顯示本頁最後更新時間(唔再手動寫死)
+(function(){
+  var el=document.getElementById('ver'); if(!el) return;
+  var d=new Date(document.lastModified); if(isNaN(d)) return;
+  var p=function(n){return(n<10?'0':'')+n;};
+  el.textContent='v '+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());
 })();
 </script>
 <script>

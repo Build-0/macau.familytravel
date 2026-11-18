@@ -803,27 +803,51 @@
         @media (max-width: 768px) {
             .spots-grid {
                 grid-template-columns: 1fr;
+                gap: 12px;
             }
 
             .top-bar-title {
                 display: none;
             }
 
+            .top-bar { padding: 9px 12px; gap: 8px; }
+
+            /* 手機版：壓縮頂部 chrome,等景點卡快啲上第一屏 */
+            .stats-bar { padding: 7px 12px; }
+            .stat-number { font-size: 1.1rem; }
+            .stat-label { font-size: .65rem; }
+
+            .city-bar { padding: 6px 0; }
             .city-tab {
                 padding: 6px 12px;
+                font-size: .9rem;
+            }
+            .city-distance { font-size: .68rem; margin-top: 1px; }
+
+            /* 篩選下拉收細、一行兩個貼實 */
+            .filter-section { position: static; padding: 9px 12px 3px; gap: 8px; }
+            .fsel {
+                flex: 1 1 calc(50% - 4px);
+                font-size: 13.5px;
+                padding: 10px 34px 10px 12px;
+                border-radius: 12px;
+                background-position: right 11px center;
             }
 
-            /* 手機版：只固定搜尋欄，其他不固定 */
-            .filter-section {
-                position: static;
-            }
-
+            /* 內容區貼近篩選,段落間距收窄 */
+            .main-content { padding: 12px; padding-bottom: 80px; }
+            .city-section { margin-bottom: 20px; }
             .city-header {
                 position: static;
+                padding: 11px 14px;
+                margin-bottom: 12px;
             }
-
+            .city-name { font-size: 1.25rem; }
+            .type-section { padding: 12px; margin-bottom: 18px; }
             .type-header {
                 position: static;
+                padding: 9px 12px;
+                margin-bottom: 12px;
             }
         }
         /* ── 下拉式篩選 pill ── */
@@ -2068,7 +2092,7 @@
 
                     // 季節標籤
                     let seasonHtml = '';
-                    const seasonMap = { spring: '🌸', summer: '🌞', autumn: '🍂', winter: '❄️' };
+                    const seasonMap = { spring: '🌸', summer: '☀️', autumn: '🍂', winter: '❄️' };
                     if (spot.season) {
                         const seasons = typeof spot.season === 'string' ? spot.season.split(',') : spot.season;
                         if (seasons.length > 0 && seasons.length < 4) {
