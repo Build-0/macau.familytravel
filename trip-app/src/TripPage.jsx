@@ -310,8 +310,8 @@ export default function TripPage({ slug }) {
   const theme = {}
   if (cov.accent) theme['--coral'] = cov.accent
   if (cov.dark) theme['--navy'] = cov.dark
-  // 右欄(參考資料)有冇嘢;冇就唔分兩欄,行程佔滿闊度
-  const hasSide = !!((d.transport && d.transport.length) || d.hotel || d.budget || pending.length || hasL3)
+  // 右欄(酒店/預算/確認)有冇嘢;冇就唔分兩欄,行程佔滿闊度(交通已歸左欄)
+  const hasSide = !!(d.hotel || d.budget || pending.length || hasL3)
 
   return (
     <div className="trip" style={theme}>
@@ -347,8 +347,6 @@ export default function TripPage({ slug }) {
       <div className={"tp-wrap" + (hasSide ? " tp-body" : "")}>
         <div className="tp-col-main">
         {days.map((day, i) => <Day key={i} day={day} n={i + 1} id={'tp-d' + (i + 1)} />)}
-        </div>
-        <div className="tp-col-side">
         {d.transport && d.transport.length > 0 && (
           <section id="tp-tr" className="tp-sec">
             <h2 className="tp-h">交通安排</h2>
@@ -363,6 +361,8 @@ export default function TripPage({ slug }) {
             ))}
           </section>
         )}
+        </div>
+        <div className="tp-col-side">
 
         {d.hotel && (
           <section id="tp-hotel" className="tp-sec">
