@@ -603,23 +603,44 @@
         /* Card Actions */
         .card-actions {
             display: flex;
-            gap: 8px;
+            flex-wrap: wrap;
+            gap: 6px;
             padding: 0 15px 15px;
         }
 
         .action-btn {
-            flex: 1;
-            padding: 10px;
+            height: 40px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-family: inherit;
             font-size: 0.85rem;
+            line-height: 1;
+            white-space: nowrap;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 6px;
             transition: all 0.3s;
+        }
+
+        /* 主掣(標記去過/吃過/買過)保留文字,撐開填滿左邊 */
+        .check-btn {
+            flex: 1 1 auto;
+            min-width: max-content;
+            padding: 0 12px;
+        }
+
+        /* 其餘功能掣(地圖/附近/天氣/Google)統一做 44px icon 方格,
+           咁一行放得晒、每張卡高度一致、唔會再有高瘦或孤兒掣 */
+        .map-btn,
+        .nearby-btn,
+        .weather-btn,
+        .google-btn {
+            flex: 0 0 44px;
+            width: 44px;
+            padding: 0;
+            font-size: 1rem;
         }
 
         .check-btn {
@@ -2433,16 +2454,16 @@
                         <i class="fas fa-${isCompleted ? 'check' : 'map-marker-alt'}"></i>
                         ${isCompleted ? '已去過' : '標記去過'}
                     </button>
-                    <button class="action-btn map-btn" onclick="showOnMap(${item.lat}, ${item.lng}, '${item.name}')">
-                        <i class="fas fa-map"></i> 地圖
+                    <button class="action-btn map-btn" title="喺地圖睇位置" onclick="showOnMap(${item.lat}, ${item.lng}, '${item.name}')">
+                        <i class="fas fa-map"></i>
                     </button>
-                    <button class="action-btn nearby-btn" onclick="showNearby(${item.lat}, ${item.lng}, '${item.id}')">
-                        <i class="fas fa-location-arrow"></i> 附近
+                    <button class="action-btn nearby-btn" title="搵附近景點／美食" onclick="showNearby(${item.lat}, ${item.lng}, '${item.id}')">
+                        <i class="fas fa-location-arrow"></i>
                     </button>
-                    <button class="action-btn weather-btn" onclick="showWeather('${cities[item.city]?.name || item.city}')">
+                    <button class="action-btn weather-btn" title="睇天氣" onclick="showWeather('${cities[item.city]?.name || item.city}')">
                         <i class="fas fa-cloud-sun"></i>
                     </button>
-                    <button class="action-btn google-btn" onclick="googleSearchItem('${item.name} ${item.address}')">
+                    <button class="action-btn google-btn" title="Google 搜尋" onclick="googleSearchItem('${item.name} ${item.address}')">
                         <i class="fab fa-google"></i>
                     </button>
                 </div>
@@ -2481,13 +2502,13 @@
                         <i class="fas fa-${isCompleted ? 'check' : 'utensils'}"></i>
                         ${isCompleted ? '已吃過' : '標記吃過'}
                     </button>
-                    <button class="action-btn map-btn" onclick="showOnMap(${item.lat}, ${item.lng}, '${item.name}')">
-                        <i class="fas fa-map"></i> 地圖
+                    <button class="action-btn map-btn" title="喺地圖睇位置" onclick="showOnMap(${item.lat}, ${item.lng}, '${item.name}')">
+                        <i class="fas fa-map"></i>
                     </button>
-                    <button class="action-btn nearby-btn" onclick="showNearby(${item.lat}, ${item.lng}, '${item.id}')">
-                        <i class="fas fa-location-arrow"></i> 附近
+                    <button class="action-btn nearby-btn" title="搵附近景點／美食" onclick="showNearby(${item.lat}, ${item.lng}, '${item.id}')">
+                        <i class="fas fa-location-arrow"></i>
                     </button>
-                    <button class="action-btn google-btn" onclick="googleSearchItem('${item.name} ${item.address}')">
+                    <button class="action-btn google-btn" title="Google 搜尋" onclick="googleSearchItem('${item.name} ${item.address}')">
                         <i class="fab fa-google"></i>
                     </button>
                 </div>
@@ -2519,10 +2540,10 @@
                         <i class="fas fa-${isCompleted ? 'check' : 'gift'}"></i>
                         ${isCompleted ? '已買過' : '標記買過'}
                     </button>
-                    <button class="action-btn map-btn" onclick="showOnMap(${item.lat}, ${item.lng}, '${item.name}')">
-                        <i class="fas fa-map"></i> 地圖
+                    <button class="action-btn map-btn" title="喺地圖睇位置" onclick="showOnMap(${item.lat}, ${item.lng}, '${item.name}')">
+                        <i class="fas fa-map"></i>
                     </button>
-                    <button class="action-btn google-btn" onclick="googleSearchItem('${item.name}')">
+                    <button class="action-btn google-btn" title="Google 搜尋" onclick="googleSearchItem('${item.name}')">
                         <i class="fab fa-google"></i>
                     </button>
                 </div>
@@ -2565,11 +2586,21 @@
     }
 
     function showOnMap(lat, lng, name) {
-        map.flyTo([lat, lng], 15);
-        L.popup()
-            .setLatLng([lat, lng])
-            .setContent(`<div class="popup-title">${name}</div>`)
-            .openOn(map);
+        const mapContainer = document.getElementById('mapContainer');
+        // 手機版:地圖收埋咗就先打開
+        if (mapContainer && getComputedStyle(mapContainer).display === 'none') {
+            toggleMap();
+        }
+        // 桌面版地圖喺卡片上方,撳「地圖」要捲返上去睇到(之前淨係 flyTo,地圖喺畫面外=好似冇反應)
+        (mapContainer || document.getElementById('map')).scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+            map.invalidateSize();
+            map.flyTo([lat, lng], 15);
+            L.popup()
+                .setLatLng([lat, lng])
+                .setContent(`<div class="popup-title">${name}</div>`)
+                .openOn(map);
+        }, 320);
     }
 
     // ==================== Google 搜尋 ====================
