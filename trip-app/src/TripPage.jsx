@@ -219,6 +219,35 @@ function Nav({ items }) {
   )
 }
 
+// 出發前確認:真可以撳嘅剔,撳一下打剔、再撳取消,狀態存喺本機(按行程 slug)
+function CheckList({ items, storeKey }) {
+  const [done, setDone] = useState(() => {
+    try { return new Set(JSON.parse(localStorage.getItem(storeKey) || '[]')) } catch { return new Set() }
+  })
+  const toggle = (key) => {
+    setDone((prev) => {
+      const next = new Set(prev)
+      if (next.has(key)) next.delete(key); else next.add(key)
+      try { localStorage.setItem(storeKey, JSON.stringify([...next])) } catch { /* ignore */ }
+      return next
+    })
+  }
+  return (
+    <ul className="tp-todo">
+      {items.map((c, i) => {
+        const on = done.has(c)
+        return (
+          <li key={i} className={on ? 'on' : ''} role="checkbox" aria-checked={on} tabIndex={0}
+              onClick={() => toggle(c)}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(c) } }}>
+            {c}
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
 export default function TripPage({ slug }) {
   const [st, setSt] = useState({ s: 'loading' }) // loading | ok | missing | error
   const [tick, setTick] = useState(0)
@@ -410,7 +439,7 @@ export default function TripPage({ slug }) {
         {(pending.length > 0 || hasL3) && (
           <section id="tp-check" className="tp-sec">
             <h2 className="tp-h">出發前確認</h2>
-            {pending.length > 0 && <ul className="tp-todo">{pending.map((c, i) => <li key={i}>{c}</li>)}</ul>}
+            {pending.length > 0 && <CheckList items={pending} storeKey={'trip:checks:' + slug} />}
             {(d.tips || []).length > 0 && (
               <details className="tp-acc"><summary>小提醒<em className="tp-count">{d.tips.length}</em></summary><div><ul>{d.tips.map((t, i) => <li key={i}>{t}</li>)}</ul></div></details>
             )}

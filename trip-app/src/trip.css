@@ -130,9 +130,13 @@
 .tp-acc { border-top: 1px solid var(--line); }
 .tp-sec .tp-acc:last-of-type { border-bottom: 1px solid var(--line); }
 .tp-todo { list-style: none; margin: 0 0 8px; padding: 0; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
-.tp-todo li { padding: 9px 14px 9px 38px; position: relative; font-size: 15px; line-height: 1.5; }
+.tp-todo li { padding: 9px 14px 9px 38px; position: relative; font-size: 15px; line-height: 1.5; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: color .15s ease; }
 .tp-todo li + li { border-top: 1px solid var(--line); }
-.tp-todo li::before { content: ''; position: absolute; left: 14px; top: 12px; width: 14px; height: 14px; border: 2px solid var(--coral); border-radius: 4px; }
+.tp-todo li::before { content: ''; position: absolute; left: 14px; top: 12px; width: 14px; height: 14px; border: 2px solid var(--coral); border-radius: 4px; background: transparent; transition: background .15s ease; }
+.tp-todo li:focus-visible { outline: 2px solid var(--coral); outline-offset: -2px; border-radius: 10px; }
+.tp-todo li.on::before { background: var(--coral); }
+.tp-todo li.on::after { content: ''; position: absolute; left: 18.5px; top: 13px; width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.tp-todo li.on { color: var(--mute); text-decoration: line-through; }
 .tp-acc summary { cursor: pointer; padding: 12px 0; font-weight: 700; font-size: 16px; list-style: none; display: flex; align-items: center; }
 .tp-acc summary::-webkit-details-marker { display: none; }
 .tp-acc summary::after { content: '+'; margin-left: auto; color: var(--coral); font-size: 22px; font-weight: 400; }
