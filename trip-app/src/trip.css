@@ -61,6 +61,9 @@
 .tp-nav::-webkit-scrollbar { display: none; }
 .tp-nav button { flex: none; border: 0; border-bottom: 3px solid transparent; background: none; font: inherit; font-size: 16px; font-weight: 700; color: var(--mute); padding: 11px 0 8px; cursor: pointer; }
 .tp-nav button.on { color: var(--ink); border-bottom-color: var(--coral); }
+/* 貼頂導航入面嘅「首頁」:碌到邊都撳到返首頁,唔使碌返上去 */
+.tp-nav-home { flex: none; align-self: center; display: inline-flex; align-items: center; text-decoration: none; font-size: 13.5px; font-weight: 700; color: var(--soft); padding: 5px 13px; border: 1px solid var(--line); border-radius: 99px; background: var(--card); white-space: nowrap; }
+.tp-nav-home:hover { color: var(--ink); }
 
 /* 每日:標題 + 細代表圖,然後係時間表 */
 .tp-day { margin-top: 28px; scroll-margin-top: 48px; }

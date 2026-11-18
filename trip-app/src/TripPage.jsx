@@ -214,6 +214,7 @@ function Nav({ items }) {
   }, [active])
   return (
     <nav className="tp-nav" aria-label="行程導航">
+      <a className="tp-nav-home" href={SITE_BASE}>‹ 首頁</a>
       {items.map((x) => <button key={x.id} type="button" className={active === x.id ? 'on' : ''} onClick={() => go(x.id)}>{x.label}</button>)}
     </nav>
   )
