@@ -2365,14 +2365,20 @@
         // 過濾掉已完成的項目（不顯示為卡片）
         const pendingItems = items.filter(item => !completedItems.has(item.id));
 
+        // 已完成記錄:只喺「全部類型」而且有已完成項目先顯示;揀咗某個類型(景點/美食/伴手禮)就收起,免阻閱讀
+        const showCompleted = currentCategory === 'all' && completedItems.size > 0;
+        const completedSection = document.querySelector('.completed-section');
+        if (completedSection) completedSection.style.display = showCompleted ? '' : 'none';
+
         if (pendingItems.length === 0) {
             const cityName = cities[currentCity]?.name || '';
             const allDone = items.length > 0; // 有項目但全部已完成
+            const doneSub = showCompleted ? '去下面「已完成記錄」睇返,或者換個類型／偏好／城市。' : '換個類型、偏好或者城市睇吓。';
             container.innerHTML = `
                 <div class="empty-state">
                     <span class="es-emoji">${allDone ? '🎉' : '🔍'}</span>
                     <div class="es-title">${allDone ? `${cityName}呢格你全部打晒卡喇!` : '暫時冇符合嘅項目'}</div>
-                    <div class="es-sub">${allDone ? '去下面「已完成記錄」睇返,或者換個類型／偏好／城市。' : '試吓換個類型、偏好或者城市。'}</div>
+                    <div class="es-sub">${allDone ? doneSub : '試吓換個類型、偏好或者城市。'}</div>
                 </div>`;
         } else {
             container.innerHTML = pendingItems.map(item => createCard(item)).join('');
