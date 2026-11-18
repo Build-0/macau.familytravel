@@ -432,6 +432,46 @@
         .city-shortcut-btn.active[data-region="east"] { background: var(--east); }
         .city-shortcut-btn.active[data-region="island"] { background: var(--island); }
 
+        /* 下拉式篩選器(沿用 macau 風格) */
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 14px 20px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+        .fsel {
+            flex: 0 1 220px;
+            min-width: 150px;
+            -webkit-appearance: none;
+            appearance: none;
+            font: 600 15px/1.2 'Noto Sans TC', sans-serif;
+            color: var(--dark);
+            background-color: #fff;
+            border: 1px solid #e6e7ea;
+            border-radius: 14px;
+            padding: 13px 42px 13px 16px;
+            box-shadow: 0 1px 3px rgba(23,31,44,.06);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%238a96a8' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 6.3l3-3 3 3'/%3E%3Cpath d='M5 9.7l3 3 3-3'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            cursor: pointer;
+            outline: none;
+            text-overflow: ellipsis;
+        }
+        .fsel:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(6,138,143,.15); }
+
+        /* 空狀態提示(主卡區冇未完成項目時唔好一片空白) */
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: #8a96a8;
+        }
+        .empty-state .es-emoji { font-size: 2.4rem; display: block; margin-bottom: 10px; }
+        .empty-state .es-title { font-size: 1.05rem; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+        .empty-state .es-sub { font-size: 0.9rem; line-height: 1.6; }
+
         /* Cards Container */
         .cards-container {
             flex: 1;
@@ -902,23 +942,17 @@
                 padding: 10px;
             }
 
-            /* 篩選欄:手機版壓成單行橫向滑動,唔好摺三行食位 */
-            .category-tabs {
-                flex-wrap: nowrap;
-                align-items: center;
-                padding: 10px 12px;
-                gap: 8px;
+            /* 下拉篩選器:手機版兩個一行,加淡背景分隔 */
+            .filter-section {
+                padding: 12px;
+                gap: 10px;
                 background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
                 border-bottom: 2px solid #dee2e6;
                 width: 100%;
                 max-width: 100vw;
                 box-sizing: border-box;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
             }
-            .category-tabs::-webkit-scrollbar { display: none; }
-            .category-tab, .filter-toggle { flex: 0 0 auto; white-space: nowrap; }
+            .fsel { flex: 1 1 calc(50% - 5px); min-width: 0; }
             .category-tab {
                 padding: 10px 15px;
                 font-size: 0.85rem;
@@ -944,8 +978,6 @@
                 border-color: var(--secondary);
             }
             .filter-divider { display: none; }
-            /* 地區圓點同地區分頁+城市 pill 重複,手機版收起慳位 */
-            .city-shortcuts { display: none; }
 
             /* 手機版路線規劃可收合 */
             .route-planner { padding: 0; }
@@ -1131,17 +1163,18 @@
                 </div>
             </div>
 
-            <div class="category-tabs">
-                <div class="category-tab active" data-category="all">全部</div>
-                <div class="category-tab" data-category="spot">📍 景點</div>
-                <div class="category-tab" data-category="food">🍜 美食</div>
-                <div class="category-tab" data-category="gift">🎁 伴手禮</div>
-                <div class="filter-divider"></div>
-                <div class="filter-toggle" id="filterKid" onclick="toggleFilter('kid')">👶 親子友善</div>
-                <div class="filter-toggle" id="filterPregnant" onclick="toggleFilter('pregnant')">🤰 孕婦OK</div>
-                <div class="city-shortcuts" id="cityShortcuts">
-                    <!-- 城市縮寫按鈕由 JS 動態生成 -->
-                </div>
+            <div class="filter-section">
+                <select class="fsel" id="selCategory" onchange="onTypeFilter(this.value)">
+                    <option value="all">全部類型</option>
+                    <option value="spot">📍 景點</option>
+                    <option value="food">🍜 美食</option>
+                    <option value="gift">🎁 伴手禮</option>
+                </select>
+                <select class="fsel" id="selPrefer" onchange="onPreferFilter(this.value)">
+                    <option value="">全部偏好</option>
+                    <option value="kid">👶 親子友善</option>
+                    <option value="pregnant">🤰 孕婦OK</option>
+                </select>
             </div>
 
             <div class="cards-container">
@@ -2189,6 +2222,7 @@
     // 渲染城市縮寫按鈕
     function renderCityShortcuts() {
         const container = document.getElementById('cityShortcuts');
+        if (!container) return; // 地區圓點已移除,改用下拉篩選
         const regionCities = Object.entries(cities)
             .filter(([id, city]) => city.region === currentRegion);
 
@@ -2311,7 +2345,18 @@
         // 過濾掉已完成的項目（不顯示為卡片）
         const pendingItems = items.filter(item => !completedItems.has(item.id));
 
-        container.innerHTML = pendingItems.map(item => createCard(item)).join('');
+        if (pendingItems.length === 0) {
+            const cityName = cities[currentCity]?.name || '';
+            const allDone = items.length > 0; // 有項目但全部已完成
+            container.innerHTML = `
+                <div class="empty-state">
+                    <span class="es-emoji">${allDone ? '🎉' : '🔍'}</span>
+                    <div class="es-title">${allDone ? `${cityName}呢格你全部打晒卡喇!` : '暫時冇符合嘅項目'}</div>
+                    <div class="es-sub">${allDone ? '去下面「已完成記錄」睇返,或者換個類型／偏好／城市。' : '試吓換個類型、偏好或者城市。'}</div>
+                </div>`;
+        } else {
+            container.innerHTML = pendingItems.map(item => createCard(item)).join('');
+        }
 
         // 更新地圖顯示
         clearMarkers();
@@ -2333,6 +2378,18 @@
             filterPregnant = !filterPregnant;
             document.getElementById('filterPregnant').classList.toggle('active', filterPregnant);
         }
+        renderCards();
+    }
+
+    // 下拉篩選:類型(景點/美食/伴手禮)
+    function onTypeFilter(v) {
+        currentCategory = v || 'all';
+        renderCards();
+    }
+    // 下拉篩選:偏好(親子友善 / 孕婦OK,互斥)
+    function onPreferFilter(v) {
+        filterKid = (v === 'kid');
+        filterPregnant = (v === 'pregnant');
         renderCards();
     }
 
@@ -2688,14 +2745,6 @@
             });
         });
 
-        // 城市縮寫按鈕點擊
-        document.getElementById('cityShortcuts').addEventListener('click', (e) => {
-            const btn = e.target.closest('.city-shortcut-btn');
-            if (btn) {
-                selectCity(btn.dataset.city);
-            }
-        });
-
         // 城市切換
         document.getElementById('cityList').addEventListener('click', (e) => {
             const btn = e.target.closest('.city-btn');
@@ -2704,15 +2753,7 @@
             }
         });
 
-        // 類別切換
-        document.querySelectorAll('.category-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                currentCategory = tab.dataset.category;
-                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                renderCards();
-            });
-        });
+        // 類型／偏好改用下拉篩選(見 onTypeFilter / onPreferFilter)
 
         // 搜尋
         document.getElementById('searchInput').addEventListener('keypress', (e) => {
