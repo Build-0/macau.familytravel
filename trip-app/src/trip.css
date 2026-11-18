@@ -194,14 +194,39 @@
     align-items: start;
   }
   .tp-body > .tp-foot { grid-column: 1 / -1; }
-  /* 每個區塊(每日 / 交通 / 酒店 / 預算 / 確認)之間有明顯分隔:頂線 + 留白,
-     一眼睇得出邊到邊,唔會成舊溝埋 */
+  /* 每段(每日 / 交通 / 酒店 / 預算 / 確認)做成獨立白卡,一眼分到每段 */
   .tp-col-main > *, .tp-col-side > * { margin-top: 0; }
-  .tp-col-main > * + *, .tp-col-side > * + * { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--line); }
-  .tp-col-main > :first-child, .tp-col-side > :first-child { margin-top: 18px; }
-  /* 區塊標題更突出 */
-  .tp-h { font-size: 22px !important; }
+  .tp-col-main > .tp-day,
+  .tp-col-main > .tp-sec,
+  .tp-col-side > .tp-sec {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px 20px 20px;
+    box-shadow: 0 6px 16px rgba(23, 31, 44, .05);
+    margin-top: 22px;
+  }
+  .tp-col-main > :first-child, .tp-col-side > :first-child { margin-top: 16px; }
+  .tp-h { font-size: 21px !important; margin-bottom: 12px !important; }
   .tp-day h2 { font-size: 24px; }
+
+  /* 內容卡去自己嘅邊框底色、融入段卡,橫向內距清零對齊 */
+  .tp-day .tp-sched,
+  .tp-sec .tp-tr,
+  .tp-sec .tp-hotel,
+  .tp-sec .tp-table,
+  .tp-sec .tp-bud,
+  .tp-sec .tp-todo { background: transparent; border: 0; border-radius: 0; }
+  .tp-day .tp-sched { margin-top: 10px; }
+  .tp-day .tp-row { padding-left: 0; padding-right: 0; }
+  .tp-sec .tp-tr { padding: 12px 0; margin-bottom: 0; }
+  .tp-sec .tp-tr + .tp-tr { border-top: 1px solid var(--line); }
+  .tp-sec .tp-hotel { padding: 0; }
+  .tp-sec .tp-table td { padding-left: 0; padding-right: 0; }
+  .tp-sec .tp-bud li { padding-left: 0; padding-right: 0; }
+  .tp-sec .tp-todo li { padding-left: 24px; padding-right: 0; }
+  .tp-sec .tp-todo li::before { left: 0; }
+  .tp-sec .tp-todo li.on::after { left: 4.5px; }
 }
 
 .tp-more p { font-size: 14px; line-height: 1.55; color: var(--soft); margin-top: 4px; }
