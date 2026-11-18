@@ -310,11 +310,13 @@ export default function TripPage({ slug }) {
   const theme = {}
   if (cov.accent) theme['--coral'] = cov.accent
   if (cov.dark) theme['--navy'] = cov.dark
+  // 右欄(參考資料)有冇嘢;冇就唔分兩欄,行程佔滿闊度
+  const hasSide = !!((d.transport && d.transport.length) || d.hotel || d.budget || pending.length || hasL3)
 
   return (
     <div className="trip" style={theme}>
       {trip.published === false && <div className="tp-draft">草稿預覽 · 未公開,只有你登入後睇到</div>}
-      <header id="tp-top" className="tp-head">
+      <header id="tp-top" className={"tp-head" + (cov.image ? " tp-has-cover" : "")}>
         <div className="tp-wrap">
           <div className="tp-head-top">
             <a href={SITE_BASE} className="tp-home" style={{ flex: 'none', display: 'inline-flex', alignItems: 'center', border: '1px solid var(--line)', background: 'var(--card)', color: 'var(--soft)', fontSize: '14px', fontWeight: 700, padding: '6px 12px', borderRadius: '99px', textDecoration: 'none', whiteSpace: 'nowrap' }}>‹ 首頁</a>
@@ -323,24 +325,30 @@ export default function TripPage({ slug }) {
               <button type="button" onClick={copy}>{copied ? '已複製 ✓' : '複製連結'}</button>
             </div>
           </div>
-          <h1>{tparts.length > 1 && <small className="tp-kicker">{tparts[0]}</small>}<span>{tparts.length > 1 ? tparts.slice(1).join(' · ') : trip.title}</span></h1>
-          {cov.subtitle && <p className="tp-sub1">{cov.subtitle}</p>}
-          {cov.tags && cov.tags.length > 0 && <div className="tp-tags tp-tags-row">{cov.tags.map((t) => <span key={t}>{t}</span>)}</div>}
+          <div className="tp-hero-info">
+            <h1>{tparts.length > 1 && <small className="tp-kicker">{tparts[0]}</small>}<span>{tparts.length > 1 ? tparts.slice(1).join(' · ') : trip.title}</span></h1>
+            {cov.subtitle && <p className="tp-sub1">{cov.subtitle}</p>}
+            {cov.tags && cov.tags.length > 0 && <div className="tp-tags tp-tags-row">{cov.tags.map((t) => <span key={t}>{t}</span>)}</div>}
+          </div>
           {cov.image && <Pic src={cov.image} alt={trip.title} cls="tp-cover" ratio="2 / 1" pos={cov.pos} credit={cov.credit} eager />}
-          {factsShown.length > 0 && (
-            <dl className="tp-facts">
-              {factsShown.map((s, i) => <div key={i}><dt>{s.label}</dt><dd>{s.value}</dd></div>)}
-            </dl>
-          )}
-          <Summary d={d} />
+          <div className="tp-hero-meta">
+            {factsShown.length > 0 && (
+              <dl className="tp-facts">
+                {factsShown.map((s, i) => <div key={i}><dt>{s.label}</dt><dd>{s.value}</dd></div>)}
+              </dl>
+            )}
+            <Summary d={d} />
+          </div>
         </div>
       </header>
 
       <Nav items={navItems} />
 
-      <div className="tp-wrap">
+      <div className={"tp-wrap" + (hasSide ? " tp-body" : "")}>
+        <div className="tp-col-main">
         {days.map((day, i) => <Day key={i} day={day} n={i + 1} id={'tp-d' + (i + 1)} />)}
-
+        </div>
+        <div className="tp-col-side">
         {d.transport && d.transport.length > 0 && (
           <section id="tp-tr" className="tp-sec">
             <h2 className="tp-h">交通安排</h2>
@@ -417,6 +425,7 @@ export default function TripPage({ slug }) {
             )}
           </section>
         )}
+        </div>
 
         <footer className="tp-foot">
           <p>票價、班次、開放時間可能更改,出發前請以官方公告為準。</p>

@@ -155,11 +155,42 @@
 .tp-note { font-size: 13.5px; color: var(--mute); margin-top: 6px !important; }
 .tp-foot { margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 13px; color: var(--mute); line-height: 1.8; text-align: center; }
 
-/* 平板/桌面:同一個單欄手冊,放寬少少 */
+/* 平板:同一個單欄手冊,放寬少少 */
 @media (min-width: 700px) {
   .tp-head h1 { font-size: 34px; }
   .tp-day-th { width: 120px; }
   .tp-map { height: 240px; }
+}
+
+/* 桌面闊螢幕(≥960px):兩欄排版,用盡闊度,唔好淨係中間一條窄 */
+@media (min-width: 960px) {
+  .tp-wrap { max-width: 1120px; padding: 0 28px; }
+
+  /* 標題區:左邊文字+摘要,右邊封面;手機 DOM 次序不變,靠 grid-area 重排 */
+  .tp-has-cover .tp-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "top top" "info cover" "meta cover";
+    column-gap: 44px;
+    align-items: start;
+  }
+  .tp-has-cover .tp-head-top { grid-area: top; }
+  .tp-has-cover .tp-hero-info { grid-area: info; }
+  .tp-has-cover .tp-cover { grid-area: cover; margin-top: 2px; align-self: start; }
+  .tp-has-cover .tp-hero-meta { grid-area: meta; }
+  .tp-head h1 { font-size: 38px; }
+
+  /* 主體:左行程、右參考資料(交通/酒店/預算/確認) */
+  .tp-body {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    column-gap: 44px;
+    align-items: start;
+  }
+  .tp-body > .tp-foot { grid-column: 1 / -1; }
+  .tp-col-main > .tp-day:first-child { margin-top: 20px; }
+  .tp-col-side > .tp-sec:first-child { margin-top: 20px; }
+  .tp-col-side .tp-sec { margin-top: 22px; }
 }
 
 .tp-more p { font-size: 14px; line-height: 1.55; color: var(--soft); margin-top: 4px; }
