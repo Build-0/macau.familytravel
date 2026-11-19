@@ -3,12 +3,14 @@ import { supabase } from './supabase.js'
 import Login from './Login.jsx'
 import TripsAdmin from './TripsAdmin.jsx'
 import TripPage, { tripSlug } from './TripPage.jsx'
+import TripsList from './TripsList.jsx'
 import { SITE_BASE } from './site.js'
 
-// #/t/<slug>:公開行程頁(唔使登入);#/manage:行程管理(要登入);其餘跳返網站首頁
+// #/t/<slug>:公開行程頁(唔使登入);#/trips:行程一覽(公開);#/manage:行程管理(要登入);其餘跳返網站首頁
 const route = () => {
   const s = tripSlug()
   if (s) return { page: 'trip', slug: s }
+  if (/^#\/trips\b/.test(window.location.hash)) return { page: 'trips' }
   if (/^#\/manage/.test(window.location.hash)) return { page: 'manage' }
   return { page: 'home' }
 }
@@ -22,6 +24,7 @@ export default function App() {
   }, [])
   useEffect(() => { if (r.page === 'home') window.location.replace(SITE_BASE) }, [r.page])
   if (r.page === 'trip') return <TripPage key={r.slug} slug={r.slug} />
+  if (r.page === 'trips') return <TripsList />
   if (r.page === 'manage') return <Manage />
   return null
 }

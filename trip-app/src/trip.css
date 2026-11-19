@@ -238,3 +238,28 @@
 .tp-rt .tp-verify { display: block; margin: 4px 0 0; padding: 0 4px; font-size: 11.5px; text-align: center; }
 .tp-ilink { color: #2a6aa8; font-weight: 700; text-decoration: none; white-space: nowrap; }
 .tp-en { display: block; font-family: inherit; font-size: 13.5px; font-weight: 600; letter-spacing: .02em; color: var(--mute); margin-top: 1px; }
+
+/* ── 行程一覽(#/trips):所有已公開行程嘅卡片 ── */
+.tl-wrap { max-width: 980px; margin: 0 auto; padding: 0 18px 40px; }
+.tl-top { padding: 14px 0 0; }
+.tl-home { display: inline-flex; align-items: center; border: 1px solid var(--line); background: var(--card); color: var(--soft); font-size: 14px; font-weight: 700; padding: 6px 12px; border-radius: 99px; text-decoration: none; }
+.tl-hd { padding: 18px 0 20px; }
+.tl-kick { display: block; font-size: 14px; font-weight: 700; letter-spacing: .1em; color: var(--mute); margin-bottom: 4px; }
+.tl-hd h1 { font-family: var(--serif); font-size: 30px; font-weight: 800; color: var(--ink); }
+.tl-hd p { margin-top: 8px; font-size: 15px; color: var(--soft); line-height: 1.6; max-width: 560px; }
+.tl-msg { color: var(--mute); font-size: 16px; padding: 20px 0; }
+.tl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.tl-card { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; text-decoration: none; color: inherit; transition: transform .2s ease, box-shadow .2s ease; }
+.tl-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(20, 40, 63, .1); }
+.tl-thumb { position: relative; aspect-ratio: 16 / 10; background: linear-gradient(135deg, #e8edf3, #eef1ec); overflow: hidden; }
+.tl-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tl-ph { position: absolute; inset: 0; display: grid; place-items: center; background: linear-gradient(135deg, #cfd9e4, #e8dfd0); color: #5a6a7c; font-family: var(--serif); font-size: 15px; font-weight: 700; padding: 14px; text-align: center; line-height: 1.4; }
+.tl-body { padding: 13px 15px 16px; display: flex; flex-direction: column; gap: 7px; }
+.tl-body h2 { font-family: var(--serif); font-size: 18px; font-weight: 800; line-height: 1.35; color: var(--ink); }
+.tl-meta { font-size: 13.5px; font-weight: 700; color: var(--coral); }
+.tl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.tl-tags span { font-size: 12px; font-weight: 700; color: var(--soft); background: #efebe1; padding: 2px 9px; border-radius: 99px; }
+@media (max-width: 560px) {
+  .tl-grid { grid-template-columns: 1fr; }
+  .tl-hd h1 { font-size: 26px; }
+}
