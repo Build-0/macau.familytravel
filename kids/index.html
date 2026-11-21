@@ -26,8 +26,9 @@
   fetch(URL,{headers:{apikey:KEY}})
     .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
     .then(function(rows){var h=rows&&rows[0]&&rows[0].data&&rows[0].data.html;if(!h)throw new Error("empty");
+      var changed=(h!==cached);
       try{localStorage.setItem(CK,h);}catch(e){}
-      if(!done){done=true;show(h);} })   // 已由快取出咗就唔再重寫,只更新快取
+      if(!done){done=true;show(h);} else if(changed){done=true;show(h);} })   // 快取出咗但內容有更新 → 即刻重畫最新版,唔使 refresh 兩次
     .catch(function(){
       if(!done){done=true;
         if(cached)show(cached);
