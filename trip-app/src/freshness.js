@@ -25,7 +25,7 @@ export function showUpdateModal(curTime, latestTime) {
   const g = document.createElement('button')
   g.textContent = '立即更新'
   g.style.cssText = "display:block;width:100%;padding:12px;border:0;border-radius:12px;background:#1f4f9c;color:#fff;font:700 15px/1 inherit;cursor:pointer;margin-bottom:8px"
-  g.onclick = () => location.reload()
+  g.onclick = () => location.replace(location.pathname + '?r=' + Date.now() + location.hash)
   const l = document.createElement('button')
   l.textContent = '稍後'
   l.style.cssText = "display:block;width:100%;padding:12px;border:0;border-radius:12px;background:#eef1f6;color:#5d6780;font:700 15px/1 inherit;cursor:pointer"
@@ -47,7 +47,7 @@ export function watchFreshness(getInfo) {
   }
   const onVis = () => { if (!document.hidden) check() }
   document.addEventListener('visibilitychange', onVis)
-  const id = setInterval(check, 180000)
+  const id = setInterval(check, 60000)
   check()
   return () => { document.removeEventListener('visibilitychange', onVis); clearInterval(id) }
 }
