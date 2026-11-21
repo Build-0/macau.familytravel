@@ -141,23 +141,27 @@ footer{margin-top:50px;font-size:13px;color:var(--mute);text-align:center;border
 /* 版本更新偵測:伺服器最新版本比本頁新就彈提示(切返 tab / 定時 check) */
 (function(){
   var myLM = Date.parse(document.lastModified) || Date.now(), notified = false;
-  function toast(){
-    if(notified) return; notified = true;
-    var b=document.createElement('div'); b.setAttribute('role','status');
-    b.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:999999;display:flex;align-items:center;gap:10px;max-width:92vw;padding:12px 14px 12px 18px;background:#171f2c;color:#fff;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.3);font:600 14px/1.3 "Noto Sans TC","PingFang TC",system-ui,sans-serif';
-    var t=document.createElement('span'); t.textContent='🔄 有新版本'; t.style.whiteSpace='nowrap';
-    var go=document.createElement('button'); go.textContent='撳我更新';
-    go.style.cssText='padding:7px 15px;border:0;border-radius:99px;background:#2fc8a4;color:#06251f;font:700 14px/1 inherit;cursor:pointer;white-space:nowrap';
-    go.onclick=function(){location.reload();};
-    var x=document.createElement('span'); x.textContent='×';
-    x.style.cssText='cursor:pointer;opacity:.55;font-size:20px;line-height:1;padding:0 2px';
-    x.onclick=function(){b.remove();};
-    b.appendChild(t); b.appendChild(go); b.appendChild(x); document.body.appendChild(b);
+  function fmt(ms){var d=new Date(ms);if(isNaN(d))return '—';var p=function(n){return(n<10?'0':'')+n;};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());}
+  function modal(cur,latest){
+    if(document.getElementById('upd-modal'))return;
+    var ov=document.createElement('div');ov.id='upd-modal';ov.setAttribute('role','alertdialog');
+    ov.style.cssText="position:fixed;inset:0;z-index:2147483647;background:rgba(20,30,50,.4);display:flex;align-items:center;justify-content:center;padding:20px;font-family:'Noto Sans TC','PingFang TC',system-ui,sans-serif";
+    var row=function(k,v){return '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;background:#f1f3f7;border-radius:10px;padding:10px 14px;font-size:14px"><span style="color:#5d6780">'+k+'</span><b style="color:#152038;font-variant-numeric:tabular-nums">'+v+'</b></div>';};
+    var c=document.createElement('div');
+    c.style.cssText="background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.3);padding:24px 22px;width:300px;max-width:92vw;text-align:center";
+    c.innerHTML='<div style="font-size:30px;line-height:1;color:#2b4c7e;margin-bottom:10px">↻</div><div style="font-size:18px;font-weight:800;margin-bottom:16px;color:#152038">有新版本</div><div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">'+row('目前',cur)+row('最新',latest)+'</div>';
+    var g=document.createElement('button');g.textContent='立即更新';
+    g.style.cssText="display:block;width:100%;padding:12px;border:0;border-radius:12px;background:#1f4f9c;color:#fff;font:700 15px/1 inherit;cursor:pointer;margin-bottom:8px";
+    g.onclick=function(){location.reload();};
+    var l=document.createElement('button');l.textContent='稍後';
+    l.style.cssText="display:block;width:100%;padding:12px;border:0;border-radius:12px;background:#eef1f6;color:#5d6780;font:700 15px/1 inherit;cursor:pointer";
+    l.onclick=function(){ov.remove();};
+    c.appendChild(g);c.appendChild(l);ov.appendChild(c);document.body.appendChild(ov);
   }
   function check(){
     if(notified||document.hidden) return;
     fetch(location.pathname+location.search,{cache:'no-store',method:'HEAD'})
-      .then(function(r){var lm=Date.parse(r.headers.get('last-modified'));if(lm&&lm>myLM+2000)toast();})
+      .then(function(r){var lm=Date.parse(r.headers.get('last-modified'));if(lm&&lm>myLM+2000){notified=true;modal(fmt(myLM),fmt(lm));}})
       .catch(function(){});
   }
   document.addEventListener('visibilitychange',function(){if(!document.hidden)check();});

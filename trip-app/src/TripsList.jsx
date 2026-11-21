@@ -66,7 +66,8 @@ export default function TripsList() {
   useEffect(() => watchFreshness(async () => {
     const { data } = await supabase.from('trips').select('updated_at').eq('published', true)
     if (!data) return null
-    return data.length + '|' + data.reduce((m, r) => (r.updated_at > m ? r.updated_at : m), '')
+    const max = data.reduce((m, r) => (r.updated_at > m ? r.updated_at : m), '')
+    return { sig: data.length + '|' + max, time: max }
   }), [])
 
   const rows = st.s === 'ok' ? st.rows : null

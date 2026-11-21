@@ -300,7 +300,7 @@ export default function TripPage({ slug }) {
   // 統一更新提示:呢個行程喺 Supabase 有改動(updated_at 變)就彈「有新版本」
   useEffect(() => watchFreshness(async () => {
     const { data } = await supabase.from('trips').select('updated_at').eq('slug', slug).eq('published', true).maybeSingle()
-    return data ? data.updated_at : null
+    return data ? { sig: data.updated_at, time: data.updated_at } : null
   }), [slug])
 
   const trip = st.s === 'ok' ? st.trip : null
