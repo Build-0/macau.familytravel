@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from './supabase.js'
+import { watchFreshness } from './freshness.js'
 import { SITE_BASE } from './site.js'
 import './trip.css'
 
@@ -61,6 +62,12 @@ export default function TripsList() {
     return () => { alive = false }
   }, [])
   useEffect(() => { document.title = '精選行程' }, [])
+  // 統一更新提示:有行程新增/發布/改動(published 行程嘅數目或 updated_at 變)就彈「有新版本」
+  useEffect(() => watchFreshness(async () => {
+    const { data } = await supabase.from('trips').select('updated_at').eq('published', true)
+    if (!data) return null
+    return data.length + '|' + data.reduce((m, r) => (r.updated_at > m ? r.updated_at : m), '')
+  }), [])
 
   const rows = st.s === 'ok' ? st.rows : null
   return (

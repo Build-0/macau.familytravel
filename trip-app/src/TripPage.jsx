@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { supabase } from './supabase.js'
+import { watchFreshness } from './freshness.js'
 import { APP_BASE, SITE_BASE } from './site.js'
 import './trip.css'
 
@@ -295,6 +296,12 @@ export default function TripPage({ slug }) {
     })()
     return () => { alive = false }
   }, [slug, tick])
+
+  // 統一更新提示:呢個行程喺 Supabase 有改動(updated_at 變)就彈「有新版本」
+  useEffect(() => watchFreshness(async () => {
+    const { data } = await supabase.from('trips').select('updated_at').eq('slug', slug).eq('published', true).maybeSingle()
+    return data ? data.updated_at : null
+  }), [slug])
 
   const trip = st.s === 'ok' ? st.trip : null
   useEffect(() => { if (trip) document.title = trip.title }, [trip])
