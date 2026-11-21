@@ -72,7 +72,6 @@ footer{margin-top:50px;font-size:13px;color:var(--mute);text-align:center;border
 </style>
 </head>
 <body>
-<div id="ver" style="position:fixed;top:6px;right:8px;z-index:200;font:700 11px/1 'Noto Sans TC',sans-serif;color:#9aa3af;background:rgba(255,255,255,.78);padding:4px 8px;border-radius:999px;pointer-events:none;letter-spacing:.02em"></div>
 <main>
   <p class="over">Family · 全家玩樂入口</p>
   <h1>我們這一家<span class="dot">.</span></h1>
@@ -128,13 +127,6 @@ footer{margin-top:50px;font-size:13px;color:var(--mute);text-align:center;border
      }).catch(function(){});
   }
   if('requestIdleCallback' in window) requestIdleCallback(warm,{timeout:2500}); else setTimeout(warm,1200);
-})();
-// 版本號:自動顯示本頁最後更新時間(唔再手動寫死)
-(function(){
-  var el=document.getElementById('ver'); if(!el) return;
-  var d=new Date(document.lastModified); if(isNaN(d)) return;
-  var p=function(n){return(n<10?'0':'')+n;};
-  el.textContent='v '+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());
 })();
 </script>
 <script>
