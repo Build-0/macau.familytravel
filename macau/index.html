@@ -72,7 +72,7 @@
             top: 0;
             z-index: 100;
             background: #fff;
-            padding: 12px 15px;
+            padding: 12px max(15px, calc((100% - 1500px) / 2));
             display: flex;
             align-items: center;
             gap: 12px;
@@ -268,6 +268,8 @@
         .main-content {
             padding: 15px;
             padding-bottom: 80px;
+            max-width: 1500px;
+            margin: 0 auto;
         }
 
         /* ==================== 城市區塊 ==================== */
@@ -694,7 +696,7 @@
             background: white;
             display: flex;
             justify-content: space-around;
-            padding: 8px 0;
+            padding: 8px max(0px, calc((100% - 1500px) / 2));
             padding-bottom: max(8px, env(safe-area-inset-bottom));
             border-top: 1px solid #eee;
             z-index: 1000;
