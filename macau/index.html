@@ -221,7 +221,7 @@
         /* ==================== 城市選擇欄 ==================== */
         .city-bar {
             background: white;
-            padding: 10px 0;
+            padding: 10px max(0px, calc((100% - 1500px) / 2));
             border-bottom: 1px solid #eee;
             overflow-x: auto;
             white-space: nowrap;
@@ -736,7 +736,7 @@
         /* ==================== 統計信息 ==================== */
         .stats-bar {
             background: white;
-            padding: 12px 15px;
+            padding: 12px max(15px, calc((100% - 1500px) / 2));
             display: flex;
             justify-content: space-around;
             border-bottom: 1px solid #eee;
@@ -853,7 +853,7 @@
             }
         }
         /* ── 下拉式篩選 pill ── */
-        .filter-section { display:flex; flex-wrap:wrap; gap:10px; padding:12px 15px 4px; overflow:visible; }
+        .filter-section { display:flex; flex-wrap:wrap; gap:10px; padding:12px max(15px, calc((100% - 1500px) / 2)) 4px; overflow:visible; }
         .fsel {
             flex:1 1 calc(50% - 5px); min-width:150px; max-width:100%;
             -webkit-appearance:none; appearance:none;
