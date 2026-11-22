@@ -240,7 +240,7 @@
 .tp-en { display: block; font-family: inherit; font-size: 13.5px; font-weight: 600; letter-spacing: .02em; color: var(--mute); margin-top: 1px; }
 
 /* ── 行程一覽(#/trips):所有已公開行程嘅卡片 ── */
-.tl-wrap { max-width: 980px; margin: 0 auto; padding: 0 18px 40px; }
+.tl-wrap { max-width: 1600px; margin: 0 auto; padding: 0 18px 40px; }
 .tl-top { padding: 14px 0 0; }
 .tl-home { display: inline-flex; align-items: center; border: 1px solid var(--line); background: var(--card); color: var(--soft); font-size: 14px; font-weight: 700; padding: 6px 12px; border-radius: 99px; text-decoration: none; }
 .tl-hd { padding: 18px 0 20px; }
