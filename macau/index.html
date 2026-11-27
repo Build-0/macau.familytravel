@@ -417,6 +417,8 @@
         .spot-badge.day { background: var(--primary-light); color: var(--primary-dark); }
         .spot-badge.overnight { background: #E8EEF3; color: var(--header-bg); }
         .spot-badge.annual { background: #C8E6C9; color: #2E7D32; }
+        .spot-badge.indoor { background: #FFE0B2; color: #E65100; }
+        .spot-badge.outdoor { background: #DCEDC8; color: #558B2F; }
 
         .spot-body {
             padding: 10px 18px 15px;
@@ -903,6 +905,10 @@
             <div class="city-tab active" data-city="all">
                 <span>全部</span>
             </div>
+            <div class="city-tab" data-city="funzone">
+                <span>🎪 玩樂場</span>
+                <span class="city-distance">室內外</span>
+            </div>
             <div class="city-tab" data-city="zhuhai">
                 <span>🏝️ 珠海</span>
                 <span class="city-distance">最近</span>
@@ -1030,6 +1036,33 @@
     <script>
     // ==================== 景點資料 ====================
     const spotsData = {
+        funzone: {
+            name: "室內外玩樂場",
+            icon: "🎪",
+            distance: "唔知去邊?入去揀",
+            transport: "澳門為主·偶爾珠海",
+            types: {
+                indoor: {
+                    name: "室內",
+                    icon: "🏠",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "teamLab SuperNature（威尼斯人）", place: "indoor", trip: "day", desc: "金光會展沉浸式數碼藝術空間，波波宇宙、光影花園，細路大人都啱玩", address: "澳門威尼斯人金光會展", hours: "每日 11:00-19:00（尾場 18:15）", transport: "威尼斯人金光會展A館", tips: "成人 MOP288 / 小童(3-12歲) MOP208；持任何金沙酒店房卡 7 折，餐廳單據 85 折" },
+                        { name: "傳奇英雄科技城（新濠影滙）", place: "indoor", trip: "day", desc: "VR／AR 沉浸式科技樂園，全息演唱會、虛擬實景冒險，適合大啲嘅細路", address: "澳門新濠影滙東翼2樓", hours: "週二至日 12:00-21:00（週一休，尾場 19:00）", transport: "新濠影滙東翼2樓", tips: "英雄區（時代廣場1樓）可能暫停，出發前打 +853 8865 8888 確認" },
+                        { name: "慕拉士波波池", place: "indoor", trip: "day", desc: "慕拉士大馬路工廈樓上嘅室內波波池遊樂場，落雨/天氣熱嘅後備選擇", address: "澳門慕拉士大馬路", hours: "⏰ 待你話我確實店名/樓層再補上", transport: "慕拉士大馬路工廈樓上", tips: "呢個查唔到官方資料，你知道係邊間就話我知，我即刻補返時間" }
+                    ]
+                },
+                outdoor: {
+                    name: "室外",
+                    icon: "🌳",
+                    prefer: ["kid"],
+                    spots: [
+                        { name: "石排灣郊野公園・大熊貓館", place: "outdoor", trip: "day", desc: "路環免費郊野公園，睇大熊貓、小熊貓、金絲猴，有兒童遊樂設施", address: "澳門路環石排灣郊野公園", hours: "公園 06:00-22:00；大熊貓館 週二至日 10:00-13:00 / 14:00-17:00（週一休，尾場 16:45）", transport: "15/21A/25/26/50 號巴士", tips: "免費入場！人多時可上市政署網站預約" },
+                        { name: "新濠影滙水上樂園", place: "outdoor", trip: "day", desc: "戶外水上樂園，滑水梯、人工浪、兒童戲水區，夏天消暑首選", address: "澳門新濠影滙水上樂園", hours: "12:00-20:00（夏季開放，約 4 月底至 11 月初）", transport: "新濠影滙（時代廣場扶手電梯上）", tips: "標準票 MOP398 / 小童 MOP258，1 米以下免費；⚠️ 2026/11/2–2027/4/29 戶外休館，暫時去唔到" }
+                    ]
+                }
+            }
+        },
         zhuhai: {
             name: "珠海",
             icon: "🏝️",
@@ -2072,7 +2105,11 @@
 
                     let badgesHtml = '';
                     if (spot.annual) badgesHtml += '<span class="spot-badge annual">⭐ 年卡</span>';
-                    if (spot.trip === 'day') {
+                    if (spot.place === 'indoor') {
+                        badgesHtml += '<span class="spot-badge indoor">🏠 室內</span>';
+                    } else if (spot.place === 'outdoor') {
+                        badgesHtml += '<span class="spot-badge outdoor">🌳 室外</span>';
+                    } else if (spot.trip === 'day') {
                         badgesHtml += '<span class="spot-badge day">☀️ 一日遊</span>';
                     } else {
                         badgesHtml += '<span class="spot-badge overnight">🌙 兩天一夜</span>';
