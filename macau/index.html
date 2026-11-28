@@ -248,6 +248,8 @@
         .spot-card.mac-flash { animation: macFlash 1.6s ease; }
         @keyframes macFlash { 0%,100% { box-shadow: 0 2px 8px rgba(0,0,0,.08); } 25%,60% { box-shadow: 0 0 0 3px var(--primary, #f6a623), 0 6px 18px rgba(246,166,35,.45); } }
         .mac-map-toggle { display: none; }
+        /* 新版面：城市/類型標題唔好 sticky（舊 sticky 位算錯會擋住卡片） */
+        .mac-right .city-header, .mac-right .type-header { position: static; top: auto; }
         @media (max-width: 1000px) {
             .mac-layout { grid-template-columns: 1fr; }
             .mac-side { position: static; max-height: none; display: flex; gap: 8px; overflow-x: auto; overflow-y: hidden; border-right: none; border-bottom: 1px solid #eee; padding: 10px; }
