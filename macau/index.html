@@ -230,6 +230,35 @@
 
         .city-bar::-webkit-scrollbar { display: none; }
 
+        /* ===== 台灣格式：左城市欄 + 右地圖 + 卡片 ===== */
+        .mac-layout { display: grid; grid-template-columns: 300px 1fr; max-width: 1500px; margin: 0 auto; align-items: start; }
+        .mac-side { position: sticky; top: 10px; align-self: start; max-height: calc(100vh - 20px); overflow-y: auto; padding: 12px; background: #fff; border-right: 1px solid #eee; }
+        .mac-side::-webkit-scrollbar { width: 6px; }
+        .mac-side::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+        .mac-side-title { font-weight: 800; color: var(--header-bg, #1a365d); font-size: 1rem; margin: 4px 6px 10px; }
+        .mac-city-btn { width: 100%; padding: 11px 14px; background: #f2f4f7; border: 2px solid transparent; border-radius: 10px; margin-bottom: 7px; cursor: pointer; text-align: left; font-family: inherit; font-size: .95rem; display: flex; justify-content: space-between; align-items: center; gap: 8px; transition: .2s; color: #2d3748; }
+        .mac-city-btn:hover { border-color: var(--primary, #f6a623); transform: translateX(3px); }
+        .mac-city-btn.active { background: var(--header-bg, #1a365d); color: #fff; }
+        .mac-city-btn .cnt { font-size: .8rem; opacity: .65; font-weight: 700; }
+        .mac-city-btn.active .cnt { opacity: .85; }
+        .mac-right { min-width: 0; }
+        .mac-mapwrap { position: relative; height: 380px; margin: 10px 12px 0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+        #macauMap { height: 100%; width: 100%; }
+        .mac-map-hint { position: absolute; top: 10px; left: 10px; z-index: 400; background: rgba(255,255,255,.92); padding: 6px 12px; border-radius: 999px; font-size: .78rem; color: #555; box-shadow: 0 1px 4px rgba(0,0,0,.12); pointer-events: none; }
+        .spot-card.mac-flash { animation: macFlash 1.6s ease; }
+        @keyframes macFlash { 0%,100% { box-shadow: 0 2px 8px rgba(0,0,0,.08); } 25%,60% { box-shadow: 0 0 0 3px var(--primary, #f6a623), 0 6px 18px rgba(246,166,35,.45); } }
+        .mac-map-toggle { display: none; }
+        @media (max-width: 1000px) {
+            .mac-layout { grid-template-columns: 1fr; }
+            .mac-side { position: static; max-height: none; display: flex; gap: 8px; overflow-x: auto; overflow-y: hidden; border-right: none; border-bottom: 1px solid #eee; padding: 10px; }
+            .mac-side-title { display: none; }
+            .mac-city-btn { width: auto; flex: 0 0 auto; margin-bottom: 0; white-space: nowrap; }
+            .mac-city-btn:hover { transform: none; }
+            .mac-mapwrap { display: none; height: 300px; margin: 10px 12px 0; }
+            .mac-mapwrap.show { display: block; }
+            .mac-map-toggle { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 10px 12px 0; padding: 10px; background: var(--header-bg, #1a365d); color: #fff; border: none; border-radius: 10px; font-family: inherit; font-size: .9rem; font-weight: 600; cursor: pointer; width: calc(100% - 24px); }
+        }
+
         .city-container {
             display: inline-flex;
             gap: 0;
@@ -1035,6 +1064,114 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
     // ==================== 景點資料 ====================
+    // 景點座標（高德 GCJ-02；自動 geocode + 香港 5 個手動修正）
+    const spotCoords = {
+        "funzone::teamLab SuperNature（威尼斯人）": [113.566975, 22.144621],
+        "funzone::傳奇英雄科技城（新濠影滙）": [113.567197, 22.138208],
+        "funzone::慕拉士波波池": [113.557099, 22.204105],
+        "funzone::石排灣郊野公園・大熊貓館": [113.560371, 22.122465],
+        "funzone::新濠影滙水上樂園": [113.56611, 22.138067],
+        "zhuhai::橫琴花海長廊": [113.517874, 22.157852],
+        "zhuhai::野狸島": [113.589934, 22.277654],
+        "zhuhai::綠手指有機農園": [113.144483, 22.079394],
+        "zhuhai::東澳島": [113.712927, 22.01927],
+        "zhuhai::外伶仃島": [114.042626, 22.098159],
+        "zhuhai::桂山島": [113.830122, 22.141482],
+        "zhuhai::萬山島": [113.728994, 21.941823],
+        "zhuhai::廟灣島": [114.019066, 21.865802],
+        "zhuhai::鳳凰灣悅榕莊": [113.602296, 22.312564],
+        "zhuhai::鳳凰灣悅椿酒店": [113.604079, 22.312895],
+        "zhuhai::星樂度露營小鎮": [113.469728, 22.132622],
+        "zhuhai::海泉灣度假區": [113.117467, 22.065024],
+        "zhuhai::御溫泉": [113.551445, 22.215499],
+        "zhuhai::小矮人萌寵樂園": [113.117893, 22.067067],
+        "zhuhai::嶺南大地百草園": [113.244016, 22.367625],
+        "zhuhai::家和四季生態農場": [113.394325, 22.177575],
+        "zhuhai::長隆海洋王國": [113.538507, 22.09875],
+        "zhuhai::長隆宇宙飛船": [113.539033, 22.093207],
+        "zhuhai::國家地理探險家中心": [113.620525, 22.349075],
+        "zhuhai::珠海太空中心": [113.38403, 22.01611],
+        "zhuhai::LUCKY SPACE不二的潮": [113.304725, 22.166925],
+        "zhongshan::逍遙谷": [113.433991, 22.429522],
+        "zhongshan::桂南村 + 旗溪生態農場": [113.45882, 22.396397],
+        "zhongshan::咀香園杏仁餅工場": [113.367385, 22.522075],
+        "zhongshan::厨邦醬油文化博覽館": [113.516993, 22.570346],
+        "zhongshan::德羿瑞翔朱古力工場": [113.450955, 22.555995],
+        "zhongshan::中山潮空間運動街區": [113.383021, 22.531504],
+        "zhongshan::金鐘水庫樂園": [113.385517, 22.478757],
+        "zhongshan::冰雪樂園": [113.531464, 22.442888],
+        "guangzhou::廣州長隆野生動物世界": [113.315593, 23.00266],
+        "guangzhou::廣州動物園": [113.305342, 23.140884],
+        "guangzhou::華南植物園": [113.367139, 23.181902],
+        "guangzhou::流溪河國家森林公園": [113.782528, 23.74822],
+        "guangzhou::鎮湖村（相思街）": [113.27431, 23.295157],
+        "guangzhou::艾米稻香小鎮": [113.563494, 23.547771],
+        "guangzhou::羅洞工匠小鎮": [113.615285, 23.497394],
+        "guangzhou::桂峰村": [114.00745, 23.807736],
+        "guangzhou::廣東科學中心": [113.362465, 23.039403],
+        "guangzhou::正佳自然科學博物館": [113.327178, 23.132121],
+        "guangzhou::正佳極地海洋世界": [113.327025, 23.132143],
+        "guangzhou::正佳企鵝冰雪世界": [113.326721, 23.132415],
+        "guangzhou::正佳雨林生態植物園": [113.32733, 23.132357],
+        "guangzhou::廣州熱雪奇蹟": [113.232793, 23.427736],
+        "guangzhou::廣州市兒童樂園": [113.243318, 23.149088],
+        "guangzhou::長隆國際大馬戲": [113.331398, 23.00342],
+        "guangzhou::長隆水上樂園": [113.324377, 23.002051],
+        "guangzhou::從化天人山水度假區": [113.590192, 23.435376],
+        "guangzhou::從化碧水灣溫泉度假村": [113.716214, 23.699154],
+        "guangzhou::增城三英溫泉度假酒店": [113.782341, 23.559562],
+        "guangzhou::增城白水寨森林海度假區": [113.761145, 23.567184],
+        "foshan::逢簡水鄉": [113.154462, 22.813153],
+        "foshan::長鹿旅遊休博園": [113.289411, 22.878357],
+        "foshan::順德歡樂海岸PLUS": [113.303499, 22.816365],
+        "foshan::史努比繽紛世界": [113.309922, 22.795665],
+        "foshan::阿農灣農耕文化園": [112.992951, 22.996131],
+        "foshan::高明盈香生態園": [112.767783, 22.93638],
+        "foshan::西樵山": [112.976074, 22.908475],
+        "foshan::南風古灶": [113.079185, 23.005324],
+        "qingyuan::古龍峽景區": [112.957388, 23.78032],
+        "qingyuan::玄真漂流": [113.015586, 23.746386],
+        "qingyuan::查理巧克力樂園": [113.381656, 24.305905],
+        "qingyuan::清遠長隆度假區": [113.161845, 23.574046],
+        "qingyuan::故鄉里民俗文化村": [113.064117, 23.483794],
+        "qingyuan::銀盞森林溫泉": [113.131041, 23.553853],
+        "qingyuan::熹樂谷溫泉": [113.491925, 23.766275],
+        "qingyuan::佛岡碧桂園溫泉": [113.633427, 23.849513],
+        "huizhou::惠州西湖": [114.394446, 23.090256],
+        "huizhou::永記生態園": [114.706744, 23.041577],
+        "huizhou::巽寮灣": [114.750731, 22.677064],
+        "huizhou::雙月灣": [114.872458, 22.602305],
+        "huizhou::南昆山溫德姆溫泉酒店": [113.985242, 23.567005],
+        "jiangmen::開平碉樓（自力村、立園）": [112.566042, 22.349721],
+        "jiangmen::馬降龍古村落": [112.569106, 22.283683],
+        "jiangmen::江門彩虹村": [113.107207, 22.58216],
+        "jiangmen::大石頭風景區": [113.014275, 22.536525],
+        "yangjiang::春灣風景區": [111.95257, 22.440798],
+        "yangjiang::凌霄岩": [111.831738, 22.59074],
+        "yangjiang::敏捷歡樂黃金海岸": [111.946154, 21.612459],
+        "yangjiang::大角灣": [111.847476, 21.569849],
+        "yangjiang::珍珠灣": [112.2088, 21.743389],
+        "yangjiang::陽江溫泉度假村": [112.184578, 21.983159],
+        "hongkong::香港迪士尼樂園": [114.047326, 22.309841],
+        "hongkong::香港海洋公園": [114.176657, 22.236499],
+        "hongkong::維多利亞港": [114.176217, 22.290393],
+        "hongkong::星光大道": [114.178304, 22.290228],
+        "hongkong::山頂纜車": [114.164407, 22.275084],
+        "hongkong::天星小輪": [114.16625, 22.28445],
+        "hongkong::昂坪360": [113.907259, 22.253563],
+        "hongkong::香港摩天輪": [114.166642, 22.282583],
+        "hongkong::前九廣鐵路鐘樓": [114.1745, 22.290853],
+        "hongkong::香港科學館": [114.182503, 22.298227],
+        "hongkong::香港杜莎夫人蠟像館": [114.154782, 22.268594],
+        "hongkong::銅鑼灣": [114.189409, 22.278213],
+        "hongkong::旺角": [114.165451, 22.321528],
+        "hongkong::赤柱市集": [114.217476, 22.215347],
+        "hongkong::大澳": [113.870854, 22.251501],
+        "hongkong::南丫島": [114.13543, 22.189721],
+        "hongkong::長洲": [114.033127, 22.210216],
+        "hongkong::坪洲": [114.044497, 22.282077],
+        "hongkong::淺水灣": [114.201143, 22.23394]
+    };
     const spotsData = {
         funzone: {
             name: "室內外玩樂場",
@@ -1926,11 +2063,103 @@
     // 季節篩選
     let activeSeasons = [];
 
+    // ==================== 台灣格式：側欄 + 高德地圖 ====================
+    const AMAP_KEY = '2a6fc60fb7db330e996d9a6747ce7142';
+    const AMAP_JSCODE = '18fd6026a92efb81a35f0e7c30d68e3b';
+    const cityOrder = ['funzone','zhuhai','zhongshan','guangzhou','foshan','qingyuan','huizhou','jiangmen','yangjiang','hongkong'];
+    let macauMap = null, macMarkers = [], amapReady = false;
+
+    function cityCount(c) { return Object.values(c.types).reduce((m,t)=>m+t.spots.length,0); }
+
+    function buildMacauLayout() {
+        const cityBar = document.querySelector('.city-bar');
+        const spotFilters = document.getElementById('spotFilters');
+        const foodFilters = document.getElementById('foodFilters');
+        const mainContent = document.getElementById('mainContent');
+        if (!cityBar || !mainContent || document.querySelector('.mac-layout')) return;
+
+        const layout = document.createElement('div'); layout.className = 'mac-layout';
+        const side = document.createElement('aside'); side.className = 'mac-side'; side.id = 'macSide';
+        const right = document.createElement('div'); right.className = 'mac-right';
+        const toggle = document.createElement('button'); toggle.className = 'mac-map-toggle';
+        toggle.innerHTML = '<i class="fas fa-map-marked-alt"></i> 顯示 / 收起地圖';
+        toggle.onclick = () => { const w = document.querySelector('.mac-mapwrap'); if (w) { w.classList.toggle('show'); if (w.classList.contains('show')) { setTimeout(() => { if (macauMap) macauMap.resize(); renderMapMarkers(); }, 60); } } };
+        const mapwrap = document.createElement('div'); mapwrap.className = 'mac-mapwrap';
+        mapwrap.innerHTML = '<div id="macauMap"></div><div class="mac-map-hint">📍 撳地圖標記可跳去卡片</div>';
+
+        cityBar.style.display = 'none';
+        cityBar.parentNode.insertBefore(layout, cityBar.nextSibling);
+        right.appendChild(toggle); right.appendChild(mapwrap);
+        right.appendChild(spotFilters); right.appendChild(foodFilters); right.appendChild(mainContent);
+        layout.appendChild(side); layout.appendChild(right);
+        renderCitySidebar();
+    }
+
+    function renderCitySidebar() {
+        const side = document.getElementById('macSide'); if (!side) return;
+        const total = Object.values(spotsData).reduce((n,c)=>n+cityCount(c),0);
+        let html = '<div class="mac-side-title">🌏 揀地區</div>';
+        html += `<button class="mac-city-btn ${currentCity==='all'?'active':''}" data-c="all">全部 <span class="cnt">${total}</span></button>`;
+        cityOrder.forEach(k => { const c = spotsData[k]; if (!c) return;
+            html += `<button class="mac-city-btn ${currentCity===k?'active':''}" data-c="${k}">${c.icon} ${c.name} <span class="cnt">${cityCount(c)}</span></button>`; });
+        side.innerHTML = html;
+        side.querySelectorAll('.mac-city-btn').forEach(b => b.onclick = () => selectCity(b.dataset.c));
+    }
+
+    function selectCity(key) {
+        currentCity = key;
+        document.querySelectorAll('#macSide .mac-city-btn').forEach(b => b.classList.toggle('active', b.dataset.c === key));
+        document.querySelectorAll('.city-tab').forEach(t => t.classList.toggle('active', t.dataset.city === key));
+        if (currentPage === 'food') { renderFoodPage(); }
+        else if (currentPage !== 'home') { switchPage('home'); }
+        else { renderContent(); }
+    }
+
+    function loadAMap() {
+        window._AMapSecurityConfig = { securityJsCode: AMAP_JSCODE };
+        const s = document.createElement('script');
+        s.src = `https://webapi.amap.com/maps?v=2.0&key=${AMAP_KEY}`;
+        s.onload = () => { amapReady = true; initMacauMap(); renderMapMarkers(); };
+        s.onerror = () => { const w = document.querySelector('.mac-mapwrap'); if (w) w.style.display = 'none'; };
+        document.head.appendChild(s);
+    }
+
+    function initMacauMap() {
+        if (macauMap || !window.AMap) return;
+        macauMap = new AMap.Map('macauMap', { zoom: 9, center: [113.54, 22.19], viewMode: '2D' });
+    }
+
+    function renderMapMarkers() {
+        if (!amapReady || !macauMap || !window.AMap) return;
+        const _wrap = document.querySelector('.mac-mapwrap');
+        if (_wrap && getComputedStyle(_wrap).display === 'none') return;
+        macauMap.resize();
+        if (macMarkers.length) { macauMap.remove(macMarkers); macMarkers = []; }
+        const seen = new Set();
+        document.querySelectorAll('#mainContent .spot-card').forEach(card => {
+            const sec = card.closest('.city-section'); const ck = sec && sec.dataset.city;
+            const name = (card.querySelector('.spot-name')?.textContent || '').trim();
+            if (!ck || !name) return;
+            const key = ck + '::' + name; if (seen.has(key)) return;
+            const co = spotCoords[key]; if (!co) return; seen.add(key);
+            const mk = new AMap.Marker({ position: [co[0], co[1]], title: name, anchor: 'bottom-center' });
+            mk.on('click', () => {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                card.classList.remove('mac-flash'); void card.offsetWidth; card.classList.add('mac-flash');
+                new AMap.InfoWindow({ content: `<div style="font-weight:700;padding:2px 4px">${name}</div>`, offset: new AMap.Pixel(0, -32) }).open(macauMap, [co[0], co[1]]);
+            });
+            macMarkers.push(mk);
+        });
+        if (macMarkers.length) { macauMap.add(macMarkers); macauMap.setFitView(macMarkers, false, [50, 50, 50, 50], 14); }
+    }
+
     // ==================== 初始化 ====================
     function init() {
+        buildMacauLayout();
         renderContent();
         setupEventListeners();
         updateStats();
+        loadAMap();
     }
 
     // ==================== 渲染內容 ====================
@@ -2339,6 +2568,7 @@
         }
 
         container.innerHTML = html;
+        if (typeof renderMapMarkers === 'function') renderMapMarkers();
     }
 
     // ==================== 更新統計 ====================
@@ -2727,6 +2957,10 @@
         } else if (page === 'route') {
             renderRoutePage();
         }
+
+        const _mw = document.querySelector('.mac-mapwrap'), _mt = document.querySelector('.mac-map-toggle');
+        if (_mw) _mw.style.display = (page === 'home') ? '' : 'none';
+        if (_mt) _mt.style.display = (page === 'home') ? '' : 'none';
 
         scrollToTop();
     }
