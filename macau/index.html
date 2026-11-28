@@ -250,8 +250,6 @@
         .mac-map-toggle { display: none; }
         /* 新版面：城市/類型標題唔好 sticky（舊 sticky 位算錯會擋住卡片） */
         .mac-right .city-header, .mac-right .type-header { position: static; top: auto; }
-        /* 揀咗單一城市時，側邊已顯示城市，卡片上方城市 bar 收起（「全部」view 保留做分隔） */
-        #mainContent[data-single="1"] .city-header { display: none; }
         @media (max-width: 1000px) {
             .mac-layout { grid-template-columns: 1fr; }
             .mac-side { position: static; max-height: none; display: flex; gap: 8px; overflow-x: auto; overflow-y: hidden; border-right: none; border-bottom: 1px solid #eee; padding: 10px; }
@@ -2574,7 +2572,6 @@
         }
 
         container.innerHTML = html;
-        container.dataset.single = (currentCity !== 'all') ? '1' : '0';
         if (typeof renderMapMarkers === 'function') renderMapMarkers();
     }
 
