@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>澳門周邊親子遊</title>
+    <title>澳門及周邊城市</title>
 
     <!-- PWA Meta Tags -->
     <meta name="description" content="澳門出發的周邊親子旅遊指南 - 珠海、中山、廣州、佛山、清遠、惠州、江門、陽江">
@@ -903,7 +903,7 @@
     <!-- 頂部搜尋欄 -->
     <div class="top-bar">
         <a href="../" aria-label="返回首頁" style="flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;padding:8px 13px;background:rgba(26,54,93,.92);color:#fff;border-radius:999px;font-size:.95rem;font-weight:700;text-decoration:none;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.2)">‹ 首頁</a>
-        <div class="top-bar-title">🌏 澳門周邊親子遊</div>
+        <div class="top-bar-title">🌏 澳門及周邊城市</div>
         <div class="search-box">
             <input type="text" class="search-input" id="searchInput" placeholder="查找景點、美食...">
             <button class="search-btn" onclick="doSearch()">
@@ -2101,7 +2101,7 @@
         let html = '<div class="mac-side-title">🌏 揀地區</div>';
         html += `<button class="mac-city-btn ${currentCity==='all'?'active':''}" data-c="all">全部 <span class="cnt">${total}</span></button>`;
         cityOrder.forEach(k => { const c = spotsData[k]; if (!c) return;
-            html += `<button class="mac-city-btn ${currentCity===k?'active':''}" data-c="${k}">${c.icon} ${c.name} <span class="cnt">${cityCount(c)}</span></button>`; });
+            html += `<button class="mac-city-btn ${currentCity===k?'active':''}" data-c="${k}">${c.name} <span class="cnt">${cityCount(c)}</span></button>`; });
         side.innerHTML = html;
         side.querySelectorAll('.mac-city-btn').forEach(b => b.onclick = () => selectCity(b.dataset.c));
     }
