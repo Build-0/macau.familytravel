@@ -897,6 +897,17 @@
             cursor:pointer; outline:none; text-overflow:ellipsis;
         }
         .fsel:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(255,149,0,.15); }
+        /* 統計搬去側欄（桌面）；手機還原頂部 stats-bar */
+        .stats-bar { display: none; }
+        .mac-side-stats { display: flex; justify-content: space-around; gap: 6px; margin-top: 12px; padding: 12px 6px; background: #eef1f6; border: 1px solid #dfe3ea; border-radius: 12px; }
+        .mac-side-stats .mss-item { display: flex; flex-direction: column; align-items: center; flex: 1; }
+        .mac-side-stats .mss-num { font-weight: 800; font-size: 1.2rem; color: var(--primary, #f6a623); line-height: 1.1; }
+        .mac-side-stats .mss-label { font-size: 0.72rem; color: #667085; margin-top: 3px; }
+        .mac-right .spot-card { cursor: pointer; }
+        @media (max-width: 1000px) {
+            .stats-bar { display: flex; }
+            .mac-side-stats { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -2069,7 +2080,7 @@
     const AMAP_KEY = '2a6fc60fb7db330e996d9a6747ce7142';
     const AMAP_JSCODE = '18fd6026a92efb81a35f0e7c30d68e3b';
     const cityOrder = ['funzone','zhuhai','zhongshan','guangzhou','foshan','qingyuan','huizhou','jiangmen','yangjiang','hongkong'];
-    let macauMap = null, macMarkers = [], amapReady = false;
+    let macauMap = null, macMarkers = [], macMarkerByKey = {}, amapReady = false;
 
     function cityCount(c) { return Object.values(c.types).reduce((m,t)=>m+t.spots.length,0); }
 
@@ -2087,23 +2098,42 @@
         toggle.innerHTML = '<i class="fas fa-map-marked-alt"></i> 顯示 / 收起地圖';
         toggle.onclick = () => { const w = document.querySelector('.mac-mapwrap'); if (w) { w.classList.toggle('show'); if (w.classList.contains('show')) { setTimeout(() => { if (macauMap) macauMap.resize(); renderMapMarkers(); }, 60); } } };
         const mapwrap = document.createElement('div'); mapwrap.className = 'mac-mapwrap';
-        mapwrap.innerHTML = '<div id="macauMap"></div><div class="mac-map-hint">📍 撳地圖標記可跳去卡片</div>';
+        mapwrap.innerHTML = '<div id="macauMap"></div><div class="mac-map-hint">📍 撳卡片睇位置 · 撳標記跳卡片</div>';
 
         cityBar.style.display = 'none';
         cityBar.parentNode.insertBefore(layout, cityBar.nextSibling);
+        right.appendChild(spotFilters); right.appendChild(foodFilters);
         right.appendChild(toggle); right.appendChild(mapwrap);
-        right.appendChild(spotFilters); right.appendChild(foodFilters); right.appendChild(mainContent);
+        right.appendChild(mainContent);
         layout.appendChild(side); layout.appendChild(right);
+        // 撳卡片（卡身，避開掣/連結）→ 地圖飛去個 pin
+        mainContent.addEventListener('click', (e) => {
+            if (e.target.closest('a, button')) return;
+            const card = e.target.closest('.spot-card'); if (!card) return;
+            const sec = card.closest('.city-section'); const ck = sec && sec.dataset.city;
+            const nm = (card.querySelector('.spot-name')?.textContent || '').trim();
+            if (ck && nm && spotCoords[ck + '::' + nm]) focusSpotOnMap(ck, nm);
+        });
         renderCitySidebar();
     }
 
     function renderCitySidebar() {
         const side = document.getElementById('macSide'); if (!side) return;
         const total = Object.values(spotsData).reduce((n,c)=>n+cityCount(c),0);
+        let gTotal = 0, gVisited = 0;
+        Object.values(spotsData).forEach(c => {
+            Object.values(c.types).forEach(t => t.spots.forEach(s => { gTotal++; if (s.visited) gVisited++; }));
+            if (c.visited) { gTotal += c.visited.length; gVisited += c.visited.length; }
+        });
         let html = '<div class="mac-side-title">🌏 揀地區</div>';
         html += `<button class="mac-city-btn ${currentCity==='all'?'active':''}" data-c="all">全部 <span class="cnt">${total}</span></button>`;
         cityOrder.forEach(k => { const c = spotsData[k]; if (!c) return;
             html += `<button class="mac-city-btn ${currentCity===k?'active':''}" data-c="${k}">${c.name} <span class="cnt">${cityCount(c)}</span></button>`; });
+        html += `<div class="mac-side-stats">
+            <div class="mss-item"><span class="mss-num">${gTotal}</span><span class="mss-label">景點</span></div>
+            <div class="mss-item"><span class="mss-num">${gVisited}</span><span class="mss-label">已去過</span></div>
+            <div class="mss-item"><span class="mss-num">${gTotal - gVisited}</span><span class="mss-label">待探索</span></div>
+        </div>`;
         side.innerHTML = html;
         side.querySelectorAll('.mac-city-btn').forEach(b => b.onclick = () => selectCity(b.dataset.c));
     }
@@ -2137,6 +2167,7 @@
         if (_wrap && getComputedStyle(_wrap).display === 'none') return;
         macauMap.resize();
         if (macMarkers.length) { macauMap.remove(macMarkers); macMarkers = []; }
+        macMarkerByKey = {};
         const seen = new Set();
         document.querySelectorAll('#mainContent .spot-card').forEach(card => {
             const sec = card.closest('.city-section'); const ck = sec && sec.dataset.city;
@@ -2150,9 +2181,25 @@
                 card.classList.remove('mac-flash'); void card.offsetWidth; card.classList.add('mac-flash');
                 new AMap.InfoWindow({ content: `<div style="font-weight:700;padding:2px 4px">${name}</div>`, offset: new AMap.Pixel(0, -32) }).open(macauMap, [co[0], co[1]]);
             });
-            macMarkers.push(mk);
+            macMarkers.push(mk); macMarkerByKey[key] = mk;
         });
         if (macMarkers.length) { macauMap.add(macMarkers); macauMap.setFitView(macMarkers, false, [50, 50, 50, 50], 14); }
+    }
+
+    function focusSpotOnMap(ck, name) {
+        if (!macauMap || !window.AMap) return;
+        const co = spotCoords[ck + '::' + name]; if (!co) return;
+        const wrap = document.querySelector('.mac-mapwrap');
+        const isMobile = window.matchMedia('(max-width: 1000px)').matches;
+        if (isMobile && wrap && !wrap.classList.contains('show')) wrap.classList.add('show');
+        setTimeout(() => {
+            macauMap.resize();
+            macauMap.setZoomAndCenter(15, [co[0], co[1]], false, 300);
+            new AMap.InfoWindow({ content: `<div style="font-weight:700;padding:2px 4px">${name}</div>`, offset: new AMap.Pixel(0, -32) }).open(macauMap, [co[0], co[1]]);
+            const mk = macMarkerByKey[ck + '::' + name];
+            if (mk && mk.setAnimation) { mk.setAnimation('AMAP_ANIMATION_BOUNCE'); setTimeout(() => mk.setAnimation && mk.setAnimation('AMAP_ANIMATION_NONE'), 1400); }
+            if (isMobile && wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, isMobile ? 130 : 0);
     }
 
     // ==================== 初始化 ====================
